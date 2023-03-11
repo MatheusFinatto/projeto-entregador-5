@@ -1,0 +1,9 @@
+{% extends 'layout.html' %} {% block title %}My Flask App - Home{% endblock %}
+{% block content %}
+<ul>
+  <!-- itera o array items, recebido no render_template, dentro de "home" -->
+  {% for item in items %}
+  <li>{{ item }}</li>
+  {% endfor %}
+</ul>
+{% endblock %}

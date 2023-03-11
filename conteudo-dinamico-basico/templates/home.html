@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My Flask App</title>
+  </head>
+  <body>
+    <h1>Welcome to my Flask app!</h1>
+    <p>Here's some dynamic content:</p>
+    <ul>
+      <!-- itera o array items, recebido no render_template, dentro de "home" -->
+      {% for item in items %}
+      <li>{{ item }}</li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>
