@@ -7,3 +7,7 @@ body {
 main {
   flex: 1 0 auto;
 }
+
+.page-footer {
+  background-color: rgb(118, 184, 63);
+}
