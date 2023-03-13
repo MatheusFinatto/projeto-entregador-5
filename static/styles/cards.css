@@ -1,0 +1,8 @@
+.games-card {
+  color: black;
+}
+
+.games-card .card-image {
+  height: 200;
+  width: 100;
+}

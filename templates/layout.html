@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var elems = document.querySelectorAll(".sidenav");
+        var instances = M.Sidenav.init(elems);
+      });
+    </script>
     <meta charset="UTF-8" />
     <title>{% block title %} {% endblock %}</title>
     <link
@@ -21,16 +27,88 @@
       type="text/css"
       href="{{ url_for('static', filename='styles/footer.css') }}"
     />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/main.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/cards.css') }}"
+    />
   </head>
   <body>
     <nav>
       <div class="nav-wrapper">
-        <a href="#!" class="brand-logo"
-          ><i class="material-icons">cloud</i>Logo</a
+        <a href="/">
+          <img
+            class="brand-logo"
+            src="../static/img/channels4_profile.png"
+            alt="steam-verde-icon"
+          />
+        </a>
+
+        <a href="#" data-target="mobile-demo" class="right sidenav-trigger"
+          ><i class="material-icons">menu</i></a
         >
+
         <ul class="right hide-on-med-and-down">
           <li>
-            <a href="badges.html"><i class="material-icons">view_module</i></a>
+            <a href="/top-games">
+              <i class="material-icons left">view_module</i>
+              List of top games
+            </a>
+          </li>
+          <li>
+            <a href="/top-games">
+              <i class="material-icons left">view_module</i>
+              List of top games
+            </a>
+          </li>
+          <li>
+            <a href="/top-games">
+              <i class="material-icons left">view_module</i>
+              List of top games
+            </a>
+          </li>
+        </ul>
+
+        <ul class="sidenav" id="mobile-demo">
+          <li style="display: flex">
+            <label class="label-icon" for="search"
+              ><i class="material-icons left" style="color: black"
+                >search</i
+              ></label
+            >
+            <!-- <i class="material-icons" style="color: black">search</i> -->
+            <input type="text" placeholder="Search" style="margin-top: 5px" />
+          </li>
+          <!-- <li>
+            
+              <div class="input-field inline">
+                <input
+                  id="search_sidenav"
+                  type="search"
+                  required
+                  placeholder="Search"
+                />
+               
+                <i class="material-icons">close</i>
+              </div>
+            </form>
+          </li> -->
+          <li>
+            <a href="sass.html">
+              <i class="material-icons left">search</i>
+              Link with Left Icon
+            </a>
+          </li>
+          <li>
+            <a href="/top-games">
+              <i class="material-icons left">view_module</i>
+              List of top games
+            </a>
           </li>
           <li>
             <a href="collapsible.html"><i class="material-icons">refresh</i></a>
@@ -39,21 +117,20 @@
             <a href="mobile.html"><i class="material-icons">more_vert</i></a>
           </li>
         </ul>
+
         <form>
-          <div class="right input-field">
+          <div class="right input-field hide-on-med-and-down">
             <input id="search" type="search" required />
-            <label class="label-icon" for="search"
-              ><i class="material-icons">search</i></label
-            >
+            <label class="label-icon" for="search">
+              <i class="material-icons">search</i>
+            </label>
             <i class="material-icons">close</i>
           </div>
         </form>
       </div>
     </nav>
 
-    <main>
-      <div class="container">{% block content %}{% endblock %}</div>
-    </main>
+    <main>{% block content %}{% endblock %}</main>
     <footer class="page-footer">
       <div class="container">
         <div class="row">

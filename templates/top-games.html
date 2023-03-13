@@ -1,0 +1,24 @@
+{% extends "layout.html" %} {% block title %} Steam verde {% endblock %} {%
+block content %}
+<h1 class="center-align">Top games</h1>
+
+<div class="games-card">
+  {% for i in range(0,5) %}
+  <div class="row">
+    {% for i in range(0,6) %}
+    <div class="col s12 m4 l2">
+      <div class="card">
+        <div class="card-image">
+          <!-- <img src="../static/img/mineirinho.jpg" /> -->
+        </div>
+        <div class="card-content">
+          <p>Mineirinho</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

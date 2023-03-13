@@ -1,3 +1,13 @@
 nav {
   background-color: rgb(118, 184, 63);
 }
+
+nav img {
+  margin: 4px 0 0 20px;
+  height: 55px;
+  width: 55px;
+}
+
+.sidenav {
+  padding: 10px;
+}
