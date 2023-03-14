@@ -1,11 +1,18 @@
 nav {
   background-color: rgb(118, 184, 63);
+  min-height: 64px;
 }
 
 nav img {
   margin: 4px 0 0 20px;
   height: 55px;
   width: 55px;
+}
+
+@media only screen and (max-width: 993px) {
+  nav img {
+    margin: 4px 0 0 0;
+  }
 }
 
 .sidenav {

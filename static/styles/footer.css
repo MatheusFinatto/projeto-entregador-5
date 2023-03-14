@@ -1,3 +1,4 @@
+/* makes the footer go to bottom */
 body {
   display: flex;
   min-height: 100vh;

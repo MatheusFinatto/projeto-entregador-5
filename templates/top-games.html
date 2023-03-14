@@ -1,24 +1,18 @@
 {% extends "layout.html" %} {% block title %} Steam verde {% endblock %} {%
 block content %}
-<h1 class="center-align">Top games</h1>
+<div class="container">
+  <h1 class="title">Best rated games</h1>
 
-<div class="games-card">
-  {% for i in range(0,5) %}
-  <div class="row">
-    {% for i in range(0,4) %}
-    <div id="card-component">
-      <div class="card">
-        <div class="card-image">
-          <img src="../static/img/mineirinho.jpg" />
-        </div>
-        <div class="card-content">
-          <p>Mineirinho</p>
-        </div>
-      </div>
+  <section class="games-container">
+    {% for item in newJson %} {% if 'game' in item %}
+    <div class="game-card">
+      <img src="https:{{ item['url'] }}" />
+      <h2>{{ item['game'].name }}</h2>
+      <h2>{{ item['game'].name }}</h2>
+      <button>placeholder</button>
     </div>
-    {% endfor %}
-  </div>
-  {% endfor %}
-</div>
+    {% endif %} {% endfor %}
+  </section>
 
-{% endblock %}
+  {% endblock %}
+</div>

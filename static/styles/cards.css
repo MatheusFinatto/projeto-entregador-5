@@ -1,33 +1,99 @@
-.row {
-  display: grid;
-  gap: 50px;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  justify-content: center;
-  align-items: center;
+.title {
+  color: white;
+  text-align: center;
+  margin: 2rem;
 }
 
-@media only screen and (max-width: 1400px) {
-  .row {
+.container {
+  align-items: center;
+  justify-items: center;
+  justify-content: center;
+}
+
+.games-container {
+  display: grid;
+  place-items: center;
+  justify-items: center;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-column-gap: 1%;
+  max-width: 100%;
+}
+
+.game-card {
+  color: white;
+  margin-bottom: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  background-color: #111a24;
+  padding-top: 5%;
+  border-radius: 2px;
+  width: 380px;
+  height: 700px;
+}
+
+.games-container div img,
+.games-container div h2,
+.games-container div p {
+  margin-bottom: 1rem;
+}
+
+.games-container div svg {
+  background-color: transparent;
+  color: #76b83f;
+}
+
+.games-container div button {
+  background-color: #304a67;
+  border: 1px solid #000811;
+  color: white;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.5s;
+  height: 3rem;
+  width: 7rem;
+}
+
+.games-container div button:hover {
+  background-color: transparent;
+  color: #76b83f;
+}
+
+.games-container h2 {
+  font-size: 1.3em;
+  margin: 0 70px;
+}
+
+.games-container img {
+  height: 420px;
+  width: 320px;
+}
+
+@media only screen and (max-width: 1700px) {
+  .games-container {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+@media only screen and (max-width: 1300px) {
+  .games-container {
     grid-template-columns: 1fr 1fr;
   }
 }
-@media only screen and (max-width: 400px) {
-  .row {
+@media only screen and (max-width: 900px) {
+  .games-container {
     grid-template-columns: 1fr;
   }
 }
-
-#card-component {
-  width: 300px;
-  margin: 0 0 30px 3%;
-}
-
-.games-card {
-  color: black;
-  width: 100%;
-}
-
-.games-card .card-image {
-  height: 100%;
-  width: 100%;
+@media only screen and (max-width: 415px) {
+  .game-card {
+    width: 90%;
+  }
+  .games-container img {
+    width: 95%;
+  }
 }
