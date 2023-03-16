@@ -1,17 +1,18 @@
 {% extends "layout.html" %} {% block title %} Steam verde {% endblock %} {%
 block content %}
 <div class="container">
-  <h1 class="title">Best rated games</h1>
+  <h1 class="title">Best rated games!</h1>
 
   <section class="games-container">
-    {% for item in newJson %} {% if 'game' in item %}
+    {% for item in newJson %}
     <div class="game-card">
-      <img src="https:{{ item['url'] }}" />
-      <h2>{{ item['game'].name }}</h2>
-      <h2>{{ item['game'].name }}</h2>
+      <img src="https:{{ item['cover']['url'] }}" />
+      <h2>{{ item.name }}</h2>
+      <p style="font-size: 14px;">Rating: {{item.rating|round}} based on {{item.rating_count}} votes</p>
+
       <button>placeholder</button>
     </div>
-    {% endif %} {% endfor %}
+    {% endfor %}
   </section>
 
   {% endblock %}
