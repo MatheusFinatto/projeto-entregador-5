@@ -1,11 +1,38 @@
-from flask import Flask
-from routes_functions import top_games, index
+from flask import Flask, render_template, jsonify, request
+import requests
 
 app = Flask(__name__)
 
-app.add_url_rule('/top-games', view_func=top_games.top_games)
-app.add_url_rule('/', view_func=index.index)
+HEADERS = {
+    'Client-ID': 'tvpgyurlv8vc88kd9dzum9s0ldlbf2',
+    'Authorization': 'Bearer f1fzl61lle5vii2zwca6x2ghswne5z',
+    'Content-Type': 'application/json',
+}
+
+
+@app.route('/top-games')
+def top_games():
+    rating_count = request.args.get('rating_count', default=1000, type=int)
+    url = 'https://api.igdb.com/v4/games'
+    data = f'fields name, cover.url, rating, rating_count; where rating != null & rating_count != null & rating_count > {rating_count}; sort rating desc; limit 50;'
+    headers = HEADERS
+    response = requests.post(url, headers=headers, data=data)
+    newJson = []
+    if response.ok:
+        # response.json() é um array de objetos (url de imagens)
+        newJson = {"data": response.json().copy()}
+        for i in range(len(response.json())):
+            newJson["data"][i]['cover']["url"] = response.json(
+            )[i]['cover']["url"].replace("t_thumb", "t_1080p")
+        return render_template('top-games.html', newJson=newJson)
+    else:
+        return jsonify({'error': 'Failed to retrieve game cover.'}), response.status_code
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 
 if __name__ == '__main__':
-    app.run(use_reloader=True)
+    app.run(debug=True, use_reloader=True)

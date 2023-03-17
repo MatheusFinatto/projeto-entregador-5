@@ -4,6 +4,12 @@ block content %}
 <div class="container">
   <h1 class="title">Best rated games!</h1>
 
+  <form id="rating_count_form" action="/top-games" method="get">
+    <label for="rating_count">Minimum number of ratings:</label>
+    <input type="number" id="rating_count" name="rating_count" value="{{ rating_count }}">
+    <button type="submit">Submit</button>
+  </form>
+
   <section class="games-container">
     {% for item in newJson["data"] %}
     <div class="game-card">

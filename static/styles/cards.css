@@ -2,6 +2,41 @@
   color: white;
   text-align: center;
   margin: 2rem;
+  margin-bottom: 0;
+}
+
+#rating_count_form {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 30px 0;
+}
+
+#rating_count_form label {
+  font-size: 1rem;
+}
+#rating_count_form input {
+  color: white;
+  width: 50px;
+  margin: 0 10px;
+  font-size: 1rem;
+  text-align: center;
+  height: 2rem;
+}
+#rating_count_form button {
+  background-color: #304a67;
+  border: 1px solid #000811;
+  color: white;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.5s;
+  height: 2rem;
+  width: 5rem;
 }
 
 .container {
