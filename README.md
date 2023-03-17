@@ -1,4 +1,6 @@
-<h1>projeto-entregador-5</h1>
+<h1>projeto-entregador-5 / Games Library </h1>
+
+<p>Welcome to our Games Library, a Flask app that utilizes the IGDB API to display information about games. Whether you're a games buff or simply looking for something new to play, our app has you covered!</p>
 
 <h2>How to Run the App</h2>
 <ol>
