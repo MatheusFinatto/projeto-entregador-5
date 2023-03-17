@@ -1,4 +1,17 @@
-<h1>projeto-entregador-5</h1>
+<h1>projeto-entregador-5 / Games Library </h1>
+
+<p>Welcome to our Games Library, a Flask app that utilizes the IGDB API to display information about games. Whether you're a games buff or simply looking for something new to play, our app has you covered!</p>
+
+<h2>How to Run the App</h2>
+<ol>
+    <li>Download the app's repository to your local machine.</li>
+    <li>Open your terminal and navigate to the project directory.</li>
+    <li>Run the command <code>pip install -r requirements.txt</code> to install the necessary dependencies.</li>
+    <li>Run the command <code>flask run</code> to start the development server.</li>
+    <li>Once the server has started, open your web browser and go to the link where the app is being hosted. For
+        example, the link might be <code>http://127.0.0.1:5000/</code>.</li>
+</ol>
+<p>By following these simple steps, you'll be able to run the app locally on your machine.</p>
 
 <h2>API Data</h2>
 
@@ -20,3 +33,5 @@
 <h4>Client-ID: tvpgyurlv8vc88kd9dzum9s0ldlbf2</h4>
 <h4>Authorization: Bearer f1fzl61lle5vii2zwca6x2ghswne5z</h4>
 <h4>URL: https://api.igdb.com/v4/[ENDPOINT]</h4>
+
+
