@@ -16,11 +16,10 @@ def top_games():
     newJson = []
     if response.ok:
         # response.json() é um array de objetos (url de imagens)
-        newJson = response.json().copy()
+        newJson = {"data": response.json().copy()}
         for i in range(len(response.json())):
-            newJson[i]['cover']["url"] = response.json(
+            newJson["data"][i]['cover']["url"] = response.json(
             )[i]['cover']["url"].replace("t_thumb", "t_1080p")
-        print(newJson)
         return render_template('top-games.html', newJson=newJson)
     else:
         return jsonify({'error': 'Failed to retrieve game cover.'}), response.status_code
