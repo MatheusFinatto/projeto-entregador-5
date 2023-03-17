@@ -25,7 +25,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around;
   background-color: #111a24;
   padding-top: 5%;
   border-radius: 2px;
@@ -33,10 +32,8 @@
   height: 700px;
 }
 
-.games-container div img,
-.games-container div h2,
 .games-container div p {
-  margin-bottom: 1rem;
+  margin-bottom: 20px;
 }
 
 .games-container div svg {
@@ -66,7 +63,12 @@
 
 .games-container h2 {
   font-size: 1.3em;
-  margin: 0 70px;
+  margin: 20px 70px 50px 70px;
+}
+
+.games-container h3 {
+  font-size: 1em;
+  margin: 0;
 }
 
 .games-container img {
@@ -96,4 +98,15 @@
   .games-container img {
     width: 95%;
   }
+}
+
+.star-rating {
+  max-width: 125px;
+  overflow: hidden;
+  display: flex;
+}
+
+.star-rating img {
+  min-width: 25px;
+  height: 25px;
 }

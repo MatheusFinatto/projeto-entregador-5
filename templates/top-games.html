@@ -1,18 +1,45 @@
 {% extends "layout.html" %} {% block title %} Steam verde {% endblock %} {%
 block content %}
+
 <div class="container">
-  <h1 class="title">Best rated games</h1>
+  <h1 class="title">Best rated games!</h1>
 
   <section class="games-container">
-    {% for item in newJson %} {% if 'game' in item %}
+    {% for item in newJson["data"] %}
     <div class="game-card">
-      <img src="https:{{ item['url'] }}" />
-      <h2>{{ item['game'].name }}</h2>
-      <h2>{{ item['game'].name }}</h2>
-      <button>placeholder</button>
-    </div>
-    {% endif %} {% endfor %}
-  </section>
+      <img src="https:{{ item['cover']['url'] }}" />
+      <h2>{{ item.name }}</h2>
 
-  {% endblock %}
+      <h3>{{"%.2f"|format(item.rating/20)}}/5.00
+      </h3>
+      <section class="stars">
+        <div class="star-rating">
+          <img src="../static/img/Star_full.svg.png" alt="Full star">
+          <img src="../static/img/Star_full.svg.png" alt="Full star">
+          <img src="../static/img/Star_full.svg.png" alt="Full star">
+          <img src="../static/img/Star_full.svg.png" alt="Full star">
+          <img src="../static/img/Star_full.svg.png" alt="Full star">
+        </div>
+      </section>
+
+      <p style="font-size: 10px;"> Based on {{item.rating_count}} votes </p>
+
+      <button>Details</button>
+    </div>
+    {% endfor %}
+  </section>
 </div>
+
+<script>
+  const starRatings = document.querySelectorAll(".star-rating");
+  const json = JSON.parse('{{newJson|tojson}}');
+  const data = json.data
+
+  for (let i = 0; i < starRatings.length; i++) {
+    const rating = json.data[i].rating.toFixed(2)
+    const starWidth = rating / 20 * 25;
+    starRatings[i].style.width = `${starWidth}px`;
+  }
+</script>
+
+{% endblock %}
