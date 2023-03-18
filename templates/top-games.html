@@ -5,19 +5,30 @@ block content %}
   <h1 class="title">Best rated games!</h1>
 
   <form id="rating_count_form" action="/top-games" method="get">
-    <label for="rating_count">Minimum number of ratings:</label>
-    <input type="number" id="rating_count" name="rating_count" value="{{ rating_count }}">
+    <label for="rating_count">Minimum number of votes:</label>
+    <input type="number" id="rating_count" name="rating_count" value="{{ rating_count }}" placeholder="1000">
     <button type="submit">Filter</button>
   </form>
 
   <section class="games-container">
     {% for item in newJson["data"] %}
     <div class="game-card">
-      <img src="https:{{ item['cover']['url'] }}" />
+      <img src="https:{{ item['cover']['url'] }}" id="cover" />
       <h2>{{ item.name }}</h2>
-
-      <h3>{{"%.2f"|format(item.rating/20)}}/5.00
-      </h3>
+      <section>
+        <h3>Platforms</h3>
+        <ul class="platforms">
+          {% for platform in item["platforms"] %}
+          <li>
+            {% if platform['platform_logo'] %}
+            <img src='https:{{platform["platform_logo"]["url"]}}' alt="game plataform">
+            <p id='platform-name'>{{platform['name']}}</p>
+            {% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+      </section>
+      <h3>Rating</h3>
       <section class="stars">
         <div class="star-rating">
           <img src="../static/img/Star_full.svg.png" alt="Full star">
@@ -28,7 +39,8 @@ block content %}
         </div>
       </section>
 
-      <p style="font-size: 10px;"> Based on {{item.rating_count}} votes </p>
+      <h4 id='rating-number'>({{"%.2f"|format(item.rating/20)}}/5.00)</h4>
+      <span style="font-size: 10px;"> Based on {{item.rating_count}} votes </span>
 
       <button>Details</button>
     </div>
@@ -37,10 +49,12 @@ block content %}
 </div>
 
 <script>
+
+
   const starRatings = document.querySelectorAll(".star-rating");
   const json = JSON.parse('{{newJson|tojson}}');
   const data = json.data
-
+  console.log(json.data)
   for (let i = 0; i < starRatings.length; i++) {
     const rating = json.data[i].rating.toFixed(2)
     const starWidth = rating / 20 * 25;

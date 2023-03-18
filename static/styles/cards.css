@@ -29,7 +29,7 @@
   border: 1px solid #000811;
   color: white;
   border-radius: 5px;
-  font-size: 1.1rem;
+  font-size: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -63,8 +63,9 @@
   background-color: #111a24;
   padding-top: 5%;
   border-radius: 2px;
-  width: 380px;
-  height: 700px;
+  width: 420px;
+  height: 1000px;
+  text-align: center;
 }
 
 .games-container div p {
@@ -89,6 +90,7 @@
   transition: 0.5s;
   height: 3rem;
   width: 7rem;
+  margin-top: 20px;
 }
 
 .games-container div button:hover {
@@ -97,18 +99,63 @@
 }
 
 .games-container h2 {
-  font-size: 1.3em;
-  margin: 20px 70px 50px 70px;
+  font-size: 1.6rem;
+  margin: 30px 0 0 0;
+  max-width: 300px;
+  height: 80px;
 }
 
 .games-container h3 {
   font-size: 1em;
+  margin: 15px 0 0 0;
+}
+
+#cover {
+  width: 367.5px;
+  height: 490px;
+}
+
+.star-rating {
+  max-width: 125px;
+  overflow: hidden;
+  display: flex;
+  margin-bottom: 5px;
+}
+
+.star-rating img {
+  min-width: 25px;
+  height: 25px;
+}
+
+#rating-number {
+  font-size: 0.5rem;
   margin: 0;
 }
 
-.games-container img {
-  height: 420px;
-  width: 320px;
+.platforms {
+  display: flex;
+  width: 340px;
+  justify-content: center;
+  margin-top: 10px;
+  flex-wrap: wrap;
+  height: 138px;
+  overflow: hidden;
+}
+
+.platforms li {
+  max-width: 55px;
+}
+
+.platforms img {
+  margin: 0 5px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+}
+
+#platform-name {
+  font-size: 0.5rem;
+  margin: 0;
 }
 
 @media only screen and (max-width: 1700px) {
@@ -129,19 +176,15 @@
 @media only screen and (max-width: 415px) {
   .game-card {
     width: 90%;
+    height: 270vw;
   }
-  .games-container img {
+  #cover {
     width: 95%;
   }
-}
-
-.star-rating {
-  max-width: 125px;
-  overflow: hidden;
-  display: flex;
-}
-
-.star-rating img {
-  min-width: 25px;
-  height: 25px;
+  .platforms {
+    width: 95%;
+  }
+  #cover {
+    height: 110vw;
+  }
 }

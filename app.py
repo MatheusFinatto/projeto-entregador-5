@@ -15,7 +15,8 @@ HEADERS = {
 def top_games():
     rating_count = request.args.get('rating_count', default=1000, type=int)
     url = 'https://api.igdb.com/v4/games'
-    data = f'fields name, cover.url, rating, rating_count; where rating != null & rating_count != null & rating_count > {rating_count}; sort rating desc; limit 50;'
+
+    data = f'fields name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url; where rating_count > {rating_count}; sort rating desc; limit 50;'
     headers = HEADERS
     response = requests.post(url, headers=headers, data=data)
     newJson = []
