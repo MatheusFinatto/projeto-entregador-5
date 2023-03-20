@@ -1,9 +1,0 @@
-function que checa se a url da imagem da API existe... talvez seja necessária no futuro
-
-
-# def check_image(url):
-#     response = requests.get(url)
-#     status = response.status_code
-#     if status != 200:
-#         url = url.replace("t_720p", "t_1080p")
-# check_image(f"http:{cover_url}")
