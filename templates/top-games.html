@@ -63,8 +63,10 @@ block content %}
 
             {% if item["platforms"]|length > 6 %}
             <li class="show-all-platforms-li" id='A{{item["id"]}}' onclick="showAllPlatforms(this.id)">
-              <button id="show-all-platforms">+</button>
-              <p class="platform-name">See more</p>
+              <button id="show-all-platforms">
+                <i id='plus-sign' class="fi fi-br-plus"></i>
+              </button>
+              <p class="platform-name">Show more</p>
             </li>
             {% endif %}
 
@@ -127,14 +129,14 @@ block content %}
     platformButtonShow.style.display = "none";
 
     //creates a new <li> (show-less-button li), appends html to it, gives it an 'onclick' event that reverts the action above and 
-      const newEl = document.createElement("li");
-      newEl.innerHTML = `<button id = 'show-all-platforms'>-</button><p class="platform-name">See less</p> `
-      newEl.onclick = () => {
-        for (each of platformListItems) each.style.display = "none";
-        platformButtonShow.style.display = "flex";
-        newEl.style.display = 'none'
-      }
-    
+    const newEl = document.createElement("li");
+    newEl.innerHTML = `<button id = 'hide-all-platforms'><i id='plus-sign' class="fi fi-br-plus"></i></button><p class="platform-name">Show less</p> `
+    newEl.onclick = () => {
+      for (each of platformListItems) each.style.display = "none";
+      platformButtonShow.style.display = "flex";
+      newEl.style.display = 'none'
+    }
+
     //appends the 'show less button li' to the last <li> of the game. 
     platformListItems[platformListItems.length - 1].after(newEl);
 
