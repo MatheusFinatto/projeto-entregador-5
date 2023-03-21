@@ -1,0 +1,43 @@
+.form-box {
+    text-align: center;
+    margin: auto; 
+    width: 50%;
+}
+
+.spacing {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.input-field {
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+.submit-button {
+    background-color: rgb(99, 155, 54);
+    /* rgba(18, 112, 0) */
+}
+
+.submit-button:hover {
+    background-color: rgb(118, 184, 63);
+}
+
+input[type="text"],
+input[type="password"] {
+    color: white;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-bottom-color: rgb(118, 184, 63) !important;
+}
+
+.password-constraints {
+    text-align: left;
+    font-size: 0.80em;
+    display: none;
+    margin-bottom: 10px;
+    /* visibility: hidden; */
+}
