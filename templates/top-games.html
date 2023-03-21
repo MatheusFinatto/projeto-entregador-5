@@ -3,12 +3,20 @@ block content %}
 
 <div class="container">
   <h1 class="title">Best rated games!</h1>
-
-  <form id="rating_count_form" action="/top-games" method="get">
-    <label for="rating_count">Minimum number of votes:</label>
-    <input type="number" id="rating_count" name="rating_count" value="{{ rating_count }}" placeholder="1000" />
-    <button type="submit">Filter</button>
-  </form>
+  <div id="filters">
+    <form id="rating_count_form" action="/top-games" method="get">
+      <div class="form-container">
+        <label for="rating_count">Minimum number of votes:</label>
+        <input type="number" id="rating_count" name="rating_count" value="{{ rating_count }}" placeholder="1000" />
+        <label for="limit">Number of games displayed:</label>
+        <input type="number" id="rating_count" name="limit" value="{{ limit }}" placeholder="20" />
+        <button type="submit">Filter</button>
+      </div>
+    </form>
+    <div id='add-filters'>
+      <button onclick="showFilters(this)">Show filters</button>
+    </div>
+  </div>
 
   <section class="games-container">
     {% for item in newJson["data"] %}
@@ -117,7 +125,6 @@ block content %}
   // <!-- Platforms script for "show more" button-->
   //when clicked, a show more button calls this function with "this.id" as param 
   function showAllPlatforms(clicked_id) {
-
     //captures the <li> and <button> of the game, based on the id 
     //the id's are ordered by "A + item.id" for <li> and "B + item.id" for <button>
     const platformListItems = document.querySelectorAll(`#${clicked_id.replace("A", "B")}`);
@@ -125,6 +132,7 @@ block content %}
 
     //iterates over all li's of the game, transforming their display from 'none' to 'flex'
     for (each of platformListItems) each.style.display = "flex";
+
     //transforms 'show-more-button' display from 'flex' to 'none'
     platformButtonShow.style.display = "none";
 
@@ -139,8 +147,24 @@ block content %}
 
     //appends the 'show less button li' to the last <li> of the game. 
     platformListItems[platformListItems.length - 1].after(newEl);
-
   }
+
+  function showFilters(button) {
+    const rating_count_form = document.querySelector("#rating_count_form");
+    rating_count_form.style.display = "flex";
+    button.blur();
+    button.innerText = "Hide filters";
+    button.setAttribute("onclick", "hideFilters(this)");
+  }
+
+  function hideFilters(button) {
+    const rating_count_form = document.querySelector("#rating_count_form");
+    rating_count_form.style.display = "none";
+    button.blur();
+    button.innerText = "Show filters";
+    button.setAttribute("onclick", "showFilters(this)");
+  }
+
 </script>
 
 {% endblock %}
