@@ -5,16 +5,17 @@
         <h1>Login</h1>
         <div class="input-field">
           <label for="username"><b>Username</b></label>
-          <input type="text" placeholder="Enter Username" name="username" required>
+          <input id="username" type="text" placeholder="Enter Username" name="username" required>
         </div>
   
         <div class="input-field">
           <label for="password"><b>Password</b></label>
-          <input type="password" placeholder="Enter Password" name="password" required>
+          <input id="password" type="password" placeholder="Enter Password" name="password" required>
         </div>
   
         <button class="waves-effect waves-light btn-large submit-button" type="submit">Login</button>
       </form>
+      <p class="spacing">No account? <a href="register">Create one</a></p>
     </div>
   </div>
 {% endblock %}
