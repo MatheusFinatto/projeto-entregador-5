@@ -14,7 +14,7 @@ $(document).ready(function(){
         }
     });
 
-    $('#password').change(function() {
+    $('#password').keyup(function() {
         var str = $("#password").val();
         errors = validatePassword(str);
         if (errors == 0) {
