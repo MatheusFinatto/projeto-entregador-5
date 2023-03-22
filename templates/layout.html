@@ -19,6 +19,9 @@
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/footer.css') }}" />
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/main.css') }}" />
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/cards.css') }}" />
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/login.css') }}" />
+  <script src="{{ url_for('static', filename='scripts/jquery.js') }}"></script>
+  <script src="{{ url_for('static', filename='scripts/register.js') }}"></script>
 </head>
 
 <body>
@@ -103,7 +106,18 @@
     </div>
   </nav>
 
-  <main>{% block content %}{% endblock %}</main>
+  <main>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="register-message-alert">
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
   <footer class="page-footer">
     <div>
       <div class="row">

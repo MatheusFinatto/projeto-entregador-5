@@ -1,21 +1,21 @@
-{% extends "layout-login.html" %} {% block title %} Steam verde {% endblock %} {% block content %}
+{% extends "layout.html" %} {% block title %} Steam verde {% endblock %} {% block content %}
   <div class="container">
     <div class="form-box">
-      <form action="{{ url_for('login')}}" method="POST">
+      <form action="{{ url_for('register')}}" method="POST">
         <h1>Register</h1>
         <div class="input-field">
             <label for="email"><b>Email</b></label>
-            <input id="email" type="text" placeholder="Enter Email" name="email" required>
+            <input id="email" type="text" name="email" value="{{ request.form['email'] }}">
         </div>
 
         <div class="input-field">
           <label for="username"><b>Username</b></label>
-          <input id="username" type="text" placeholder="Enter Username" name="username" required>
+          <input id="username" type="text" name="username" value="{{ request.form['username'] }}">
         </div>
   
         <div class="input-field">
           <label for="password"><b>Password</b></label>
-          <input id="password" type="password" placeholder="Enter Password" name="password" required>
+          <input id="password" type="password" name="password" value="{{ request.form['password'] }}">
 
           <div class="password-constraints">
               <ul>
@@ -30,7 +30,7 @@
   
         <div class="input-field">
           <label for="confirm-password"><b>Confirm Password</b></label>
-          <input id="confirm-password" type="password" placeholder="Enter the Same Password" name="confirm-password" required>
+          <input id="confirm-password" type="password" name="confirm-password" value="{{ request.form['confirm-password'] }}">
         </div>
   
         <button class="waves-effect waves-light btn-large submit-button" type="submit">Register</button>

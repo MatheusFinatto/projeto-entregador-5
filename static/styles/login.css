@@ -41,3 +41,13 @@ input[type="password"]:focus {
     margin-bottom: 10px;
     /* visibility: hidden; */
 }
+
+.register-message-alert {
+    padding: 20px;
+    width: 25%;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+    color: #970020;
+    background-color: #ffd5de;
+}

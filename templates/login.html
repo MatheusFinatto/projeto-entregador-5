@@ -1,16 +1,16 @@
-{% extends "layout-login.html" %} {% block title %} Steam verde {% endblock %} {% block content %}
+{% extends "layout.html" %} {% block title %} Steam verde {% endblock %} {% block content %}
   <div class="container">
     <div class="form-box">
       <form action="{{ url_for('login')}}" method="POST">
         <h1>Login</h1>
         <div class="input-field">
           <label for="username"><b>Username</b></label>
-          <input id="username" type="text" placeholder="Enter Username" name="username" required>
+          <input id="username" type="text" value="{{ email }}" name="username">
         </div>
   
         <div class="input-field">
           <label for="password"><b>Password</b></label>
-          <input id="password" type="password" placeholder="Enter Password" name="password" required>
+          <input id="password" type="password" name="password">
         </div>
   
         <button class="waves-effect waves-light btn-large submit-button" type="submit">Login</button>
