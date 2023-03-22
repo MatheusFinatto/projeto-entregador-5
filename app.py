@@ -1,8 +1,13 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, url_for, flash, redirect
+import sys
 import requests
 import sqlite3
 
 app = Flask(__name__)
+# A secret key funciona para o Flask para deixar uma sessão segura e poder lembrar todos os request
+# e mensagens acionadas em cada sessão. Apenas podem ser modificados dados de uma sessão com a secret key
+# https://www.digitalocean.com/community/tutorials/how-to-use-web-forms-in-a-flask-application
+app.config['SECRET_KEY'] = '27f09c6a065869155e37ed8e7830865a6046ec7d425c2f5c'
 
 HEADERS = {
     'Client-ID': 'tvpgyurlv8vc88kd9dzum9s0ldlbf2',
@@ -38,6 +43,21 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
+def addUser(email, username, password):
+    conn = sqlite3.connect('database.db')
+    try:
+        cur = conn.cursor()
+        cur.execute("INSERT INTO users (email, username, password) VALUES (?, ?, ?)",
+            (email, username, password)
+        )
+        
+        conn.commit()
+        conn.close()
+
+        return True
+    except:
+        return False
+
 
 @app.route('/')
 def index():
@@ -49,8 +69,9 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    
     if request.method == 'POST':
-        return null
+        return render_template('login.html')
     else:
         return render_template('login.html')
 
@@ -58,9 +79,27 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        return null
-    else:
-        return render_template('register.html')
+        email = request.form['email']
+        username = request.form['username']
+        password = request.form['password']
+        confirm_password = request.form['confirm-password']
+
+        if not email:
+            flash('Email is required!', 'message-error')
+        elif not username:
+            flash('Username is required!', 'message-error')
+        elif not password:
+            flash('Password is required!', 'message-error')
+        elif not confirm_password:
+            flash('Confirmed Password is required!', 'message-error')
+        else:
+            if addUser(email, username, password):
+                flash('Your account was created!', 'message-success')
+                return redirect(url_for('.login'))
+            else:
+                flash('Your account could not be created!', 'message-error')
+        
+    return render_template('register.html')
 
 
 if __name__ == '__main__':

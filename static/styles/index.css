@@ -21,6 +21,28 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
+.message-error {
+  padding: 20px;
+  width: 25%;
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+  color: #970020;
+  background-color: #ffd5de;
+  border-radius: 5px;
+}
+
+.message-success {
+  padding: 20px;
+  width: 25%;
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+  color: #180106;
+  background-color: #cffbc8;
+  border-radius: 5px;
+}
+
 #intro {
   margin-top: 100px;
   display: grid;

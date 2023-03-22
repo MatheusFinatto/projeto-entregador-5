@@ -35,7 +35,7 @@
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/footer.css') }}" />
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/main.css') }}" />
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/cards.css') }}" />
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/login.css') }}" />
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/login_register.css') }}" />
 
   <!-- Jquery scripts -->
   <script src="{{ url_for('static', filename='scripts/jquery.js') }}"></script>
@@ -135,7 +135,29 @@
     </div>
   </nav>
 
-  <main>{% block content %}{% endblock %}</main>
+  <main>
+    {% with messages = get_flashed_messages(category_filter=["message-error"]) %}
+      {% if messages %}
+        <ul class="message-error">
+        {% for message in messages %}
+          <li>{{ message }}</li>
+          {{ break }}
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    {% with messages = get_flashed_messages(category_filter=["message-success"]) %}
+      {% if messages %}
+        <ul class="message-success">
+        {% for message in messages %}
+          <li>{{ message }}</li>
+          {{ break }}
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
   <footer class="page-footer">
     <!-- <div>
       <div class="row">
