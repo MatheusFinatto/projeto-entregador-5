@@ -16,6 +16,43 @@ HEADERS = {
 }
 
 
+def get_db_connection():
+    conn = sqlite3.connect('database.db')
+    conn.row_factory = sqlite3.Row
+    return conn
+
+def addUser(email, username, password):
+    conn = get_db_connection()
+    try:
+        cur = conn.cursor()
+        cur.execute("INSERT INTO users (email, username, password) VALUES (?, ?, ?)",
+            (email, username, password)
+        )
+        
+        conn.commit()
+        conn.close()
+
+        return True
+    except:
+        conn.close()
+        return False
+
+
+def searchUser(email, password):
+    conn = get_db_connection()
+    try:
+        conn.execute("SELECT * users WHERE email = ?",
+            (email)
+        )
+        
+        conn.close()
+        return True
+    except:
+        conn.close()
+        flash('Email address or Password are incorrect!', 'message-error')
+        return False
+
+
 @app.route('/top-games')
 def top_games():
     rating_count = request.args.get('rating_count', default=1000, type=int)
@@ -38,27 +75,6 @@ def top_games():
         return jsonify({'error': 'Failed to retrieve game cover.'}), response.status_code
 
 
-def get_db_connection():
-    conn = sqlite3.connect('database.db')
-    conn.row_factory = sqlite3.Row
-    return conn
-
-def addUser(email, username, password):
-    conn = sqlite3.connect('database.db')
-    try:
-        cur = conn.cursor()
-        cur.execute("INSERT INTO users (email, username, password) VALUES (?, ?, ?)",
-            (email, username, password)
-        )
-        
-        conn.commit()
-        conn.close()
-
-        return True
-    except:
-        return False
-
-
 @app.route('/')
 def index():
     conn = get_db_connection()
@@ -71,7 +87,19 @@ def index():
 def login():
     
     if request.method == 'POST':
-        return render_template('login.html')
+        email = request.form['email']
+        password = request.form['password']
+
+        if not email:
+            flash('Email is required!', 'message-error')
+        elif not password:
+            flash('Password is required!', 'message-error')
+        else:
+            # Tenta encontra o usuario na base de dados
+            if searchUser(email, password):
+                return render_template('landing.html', email=email)
+            else:
+                return render_template('login.html')
     else:
         return render_template('login.html')
 
@@ -100,6 +128,11 @@ def register():
                 flash('Your account could not be created!', 'message-error')
         
     return render_template('register.html')
+
+
+@app.route('/landing')
+def landing():
+    return render_template('landing.html')
 
 
 if __name__ == '__main__':
