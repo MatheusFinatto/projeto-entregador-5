@@ -12,3 +12,7 @@ main {
 .page-footer {
   background-color: rgb(118, 184, 63);
 }
+
+#footer-copyright {
+  justify-content: center;
+}

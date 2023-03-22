@@ -1,42 +1,51 @@
-.title {
-  color: white;
-  text-align: center;
-  margin: 2rem;
-  margin-bottom: 0;
+#filters {
+  margin: 30px;
+}
+
+#add-filters {
+  display: flex;
+  justify-content: flex-end;
+  margin: 2 0px;
+}
+
+#add-filters button {
+  font-size: 1rem;
+  height: auto;
+  width: auto;
+  padding: 5px;
 }
 
 #rating_count_form {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
   margin: 30px 0;
+  align-items: end;
+  display: none;
+}
+#rating_count_form .form-container {
+  border-radius: 5px;
+  padding: 10px;
+  border: 1px solid #76b83f;
+  display: flex;
+  flex-direction: column;
 }
 
 #rating_count_form label {
   font-size: 1rem;
 }
+
 #rating_count_form input {
   color: white;
   width: 50px;
-  margin: 0 10px;
   font-size: 1rem;
   text-align: center;
-  height: 2rem;
+  height: 1.8rem;
 }
 #rating_count_form button {
-  background-color: #304a67;
-  border: 1px solid #000811;
-  color: white;
-  border-radius: 5px;
-  font-size: 1.1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: 0.5s;
+  font-size: 1rem;
   height: 2rem;
   width: 5rem;
+  align-self: center;
 }
 
 .container {
@@ -63,8 +72,10 @@
   background-color: #111a24;
   padding-top: 5%;
   border-radius: 2px;
-  width: 380px;
-  height: 700px;
+  width: 420px;
+  height: auto;
+  text-align: center;
+  padding-bottom: 30px;
 }
 
 .games-container div p {
@@ -77,38 +88,119 @@
 }
 
 .games-container div button {
-  background-color: #304a67;
-  border: 1px solid #000811;
-  color: white;
-  border-radius: 5px;
-  font-size: 1.1rem;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: 0.5s;
-  height: 3rem;
-  width: 7rem;
-}
-
-.games-container div button:hover {
-  background-color: transparent;
-  color: #76b83f;
+  margin-top: 20px;
 }
 
 .games-container h2 {
-  font-size: 1.3em;
-  margin: 20px 70px 50px 70px;
+  font-size: 1.6rem;
+  margin: 15px 0 0 0;
+  max-width: 300px;
+  height: 60px;
 }
 
 .games-container h3 {
   font-size: 1em;
+  margin: 15px 0 0 0;
+}
+
+#cover {
+  width: 367.5px;
+  height: 490px;
+  box-shadow: 0px -4px 20px 10px #293e55;
+  margin-bottom: 20px;
+}
+
+.star-rating {
+  max-width: 125px;
+  overflow: hidden;
+  display: flex;
+  margin-bottom: 5px;
+}
+
+.star-rating img {
+  min-width: 25px;
+  height: 25px;
+}
+
+#rating-number {
+  font-size: 0.5rem;
   margin: 0;
 }
 
-.games-container img {
-  height: 420px;
-  width: 320px;
+.platforms {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin-top: 10px;
+  flex-wrap: wrap;
+  overflow: hidden;
+}
+
+.platforms img {
+  margin: 5px 0;
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  min-height: 28px;
+  border-radius: 50%;
+  border: 1px solid black;
+}
+
+#show-all-platforms {
+  background-color: #293e55;
+  margin: 5px 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 1.3rem;
+}
+#show-all-platforms:hover {
+  background-color: transparent;
+  color: #76b83f;
+  border: 1px solid #76b83f;
+}
+
+#hide-all-platforms {
+  background-color: #293e55;
+  margin: 5px 0;
+  min-width: 30px;
+  min-height: 30px;
+  width: 30px;
+  height: 30px;
+  max-width: 30px;
+  max-height: 30px;
+  border-radius: 50%;
+  border: 1px solid black;
+  font-size: 1.3rem;
+  transform: rotate(45deg);
+}
+#hide-all-platforms:hover {
+  background-color: transparent;
+  border: 1px solid rgb(145, 30, 30);
+  color: rgb(145, 30, 30);
+}
+
+.platforms li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 60px;
+  max-height: 60px;
+  min-width: 50px;
+  max-width: 50px;
+  margin: 0 1px;
+}
+
+.platforms li p {
+  font-size: 0.5rem;
+  margin: 0;
+}
+
+#no-platforms-exception {
+  font-size: 0.8rem;
+  width: 100%;
+  margin-top: 15px;
 }
 
 @media only screen and (max-width: 1700px) {
@@ -125,23 +217,36 @@
   .games-container {
     grid-template-columns: 1fr;
   }
+  #filters {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
 }
 @media only screen and (max-width: 415px) {
   .game-card {
     width: 90%;
   }
-  .games-container img {
+  #cover {
     width: 95%;
+  }
+  #cover {
+    height: 110vw;
   }
 }
 
-.star-rating {
-  max-width: 125px;
-  overflow: hidden;
-  display: flex;
+#plus-sign {
+  font-size: 1rem;
+  align-items: center;
+  width: 14px;
+  height: 14px;
+  display: block;
 }
-
-.star-rating img {
-  min-width: 25px;
-  height: 25px;
+#plus-sign:before {
+  display: block;
+  font-size: 1rem;
+  align-items: center;
+  width: 14px;
+  height: 14px;
 }

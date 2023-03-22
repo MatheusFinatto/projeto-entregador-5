@@ -8,6 +8,9 @@ nav img {
   height: 55px;
   width: 55px;
 }
+nav a:hover {
+  color: white;
+}
 
 @media only screen and (max-width: 993px) {
   nav img {

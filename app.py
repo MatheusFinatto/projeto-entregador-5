@@ -19,8 +19,10 @@ HEADERS = {
 @app.route('/top-games')
 def top_games():
     rating_count = request.args.get('rating_count', default=1000, type=int)
+    limit = request.args.get('limit', default=20, type=int)
     url = 'https://api.igdb.com/v4/games'
-    data = f'fields name, cover.url, rating, rating_count; where rating != null & rating_count != null & rating_count > {rating_count}; sort rating desc; limit 50;'
+
+    data = f'fields name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url; where rating_count > {rating_count}; sort rating desc; limit {limit};'
     headers = HEADERS
     response = requests.post(url, headers=headers, data=data)
     newJson = []
@@ -30,7 +32,8 @@ def top_games():
         for i in range(len(response.json())):
             newJson["data"][i]['cover']["url"] = response.json(
             )[i]['cover']["url"].replace("t_thumb", "t_1080p")
-        return render_template('top-games.html', newJson=newJson)
+        return render_template('top-games.html',
+                               newJson=newJson)
     else:
         return jsonify({'error': 'Failed to retrieve game cover.'}), response.status_code
 
@@ -97,6 +100,7 @@ def register():
                 flash('Your account could not be created!', 'message-error')
         
     return render_template('register.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True)
