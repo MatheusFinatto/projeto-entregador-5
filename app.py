@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, url_for, flash, redirect, Response
+from flask import Flask, render_template, jsonify, request, url_for, flash, redirect
 import sys
 import requests
 import sqlite3
@@ -51,10 +51,11 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    username = request.args['username']
     if request.method == 'POST':
         return render_template('login.html')
     else:
-        return render_template('login.html')
+        return render_template('login.html', username=username)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -74,7 +75,7 @@ def register():
         elif not confirm_password:
             flash('Confirmed Password is required!')
         else:
-            return redirect(render_template('login', username=username))
+            return redirect(url_for('.login', username=username))
         
     return render_template('register.html')
 
