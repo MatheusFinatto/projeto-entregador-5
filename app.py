@@ -51,11 +51,11 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    username = request.args['username']
+    
     if request.method == 'POST':
         return render_template('login.html')
     else:
-        return render_template('login.html', username=username)
+        return render_template('login.html')
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -67,15 +67,16 @@ def register():
         confirm_password = request.form['confirm-password']
 
         if not email:
-            flash('Email is required!')
+            flash('Email is required!', 'message-error')
         elif not username:
-            flash('Username is required!')
+            flash('Username is required!', 'message-error')
         elif not password:
-            flash('Password is required!')
+            flash('Password is required!', 'message-error')
         elif not confirm_password:
-            flash('Confirmed Password is required!')
+            flash('Confirmed Password is required!', 'message-error')
         else:
-            return redirect(url_for('.login', username=username))
+            flash('Your account was created', 'message-success')
+            return redirect(url_for('.login'))
         
     return render_template('register.html')
 
