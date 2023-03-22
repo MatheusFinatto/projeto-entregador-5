@@ -40,6 +40,21 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
+def addUser(email, username, password):
+    conn = sqlite3.connect('database.db')
+    try:
+        cur = conn.cursor()
+        cur.execute("INSERT INTO users (email, username, password) VALUES (?, ?, ?)",
+            (email, username, password)
+        )
+        
+        conn.commit()
+        conn.close()
+
+        return True
+    except:
+        return False
+
 
 @app.route('/')
 def index():
@@ -75,8 +90,11 @@ def register():
         elif not confirm_password:
             flash('Confirmed Password is required!', 'message-error')
         else:
-            flash('Your account was created', 'message-success')
-            return redirect(url_for('.login'))
+            if addUser(email, username, password):
+                flash('Your account was created!', 'message-success')
+                return redirect(url_for('.login'))
+            else:
+                flash('Your account could not be created!', 'message-error')
         
     return render_template('register.html')
 
