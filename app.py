@@ -1,13 +1,18 @@
-from flask import Flask, render_template, jsonify, request, url_for, flash, redirect
+from flask import Flask, render_template, jsonify, request, url_for, flash, redirect, session
 import sys
 import requests
 import sqlite3
+from flask_session import Session
 
 app = Flask(__name__)
 # A secret key funciona para o Flask para deixar uma sessão segura e poder lembrar todos os request
 # e mensagens acionadas em cada sessão. Apenas podem ser modificados dados de uma sessão com a secret key
 # https://www.digitalocean.com/community/tutorials/how-to-use-web-forms-in-a-flask-application
 app.config['SECRET_KEY'] = '27f09c6a065869155e37ed8e7830865a6046ec7d425c2f5c'
+# Configurando a sessão
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 HEADERS = {
     'Client-ID': 'tvpgyurlv8vc88kd9dzum9s0ldlbf2',
@@ -18,13 +23,14 @@ HEADERS = {
 
 def get_db_connection():
     conn = sqlite3.connect('database.db')
-    conn.row_factory = sqlite3.Row
+    # conn.row_factory = sqlite3.Row
     return conn
 
 def addUser(email, username, password):
     conn = get_db_connection()
     try:
         cur = conn.cursor()
+        
         cur.execute("INSERT INTO users (email, username, password) VALUES (?, ?, ?)",
             (email, username, password)
         )
@@ -41,16 +47,103 @@ def addUser(email, username, password):
 def searchUser(email, password):
     conn = get_db_connection()
     try:
-        conn.execute("SELECT * users WHERE email = ?",
-            (email)
-        )
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM users")
+        user = cur.fetchone()
+        configureSessionUser(user)
         
+        conn.commit()
         conn.close()
         return True
     except:
         conn.close()
         flash('Email address or Password are incorrect!', 'message-error')
         return False
+
+
+@app.route('/')
+def index():
+    conn = get_db_connection()
+    posts = conn.execute('SELECT * FROM posts').fetchall()
+    conn.close()
+    return render_template('index.html', posts=posts)
+
+
+def configureSessionUser(user):
+    print(session)
+    session["id"] = user[0]
+    session["email"] = user[1]
+    session["username"] = user[2]
+    print(session)
+    return 'Ok'
+
+
+def clearSession():
+    print(session)
+    for info in session:
+        print(info)
+        session.pop(info, None)
+    print(session)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+
+        if not email:
+            flash('Email is required!', 'message-error')
+        elif not password:
+            flash('Password is required!', 'message-error')
+        else:
+            # Tenta encontrar o usuario na base de dados
+            if searchUser(email, password):
+                return render_template('landing.html', email=email)
+            else:
+                return render_template('login.html')
+    
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    clearSession()
+    return redirect('/login')
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        email = request.form['email']
+        username = request.form['username']
+        password = request.form['password']
+        confirm_password = request.form['confirm-password']
+
+        if not email:
+            flash('Email is required!', 'message-error')
+        elif not username:
+            flash('Username is required!', 'message-error')
+        elif not password:
+            flash('Password is required!', 'message-error')
+        elif not confirm_password:
+            flash('Confirmed Password is required!', 'message-error')
+        else:
+            if addUser(email, username, password):
+                flash('Your account was created!', 'message-success')
+                return redirect('/login')
+            else:
+                flash('Your account could not be created!', 'message-error')
+        
+    return render_template('register.html')
+
+
+@app.route('/landing')
+def landing():
+    if not session.get("username"):
+        flash('You shall not pass!', 'message-error')
+        return redirect('/login')
+    return render_template('landing.html')
 
 
 @app.route('/top-games')
@@ -73,66 +166,6 @@ def top_games():
                                newJson=newJson)
     else:
         return jsonify({'error': 'Failed to retrieve game cover.'}), response.status_code
-
-
-@app.route('/')
-def index():
-    conn = get_db_connection()
-    posts = conn.execute('SELECT * FROM posts').fetchall()
-    conn.close()
-    return render_template('index.html', posts=posts)
-
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    
-    if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
-
-        if not email:
-            flash('Email is required!', 'message-error')
-        elif not password:
-            flash('Password is required!', 'message-error')
-        else:
-            # Tenta encontra o usuario na base de dados
-            if searchUser(email, password):
-                return render_template('landing.html', email=email)
-            else:
-                return render_template('login.html')
-    else:
-        return render_template('login.html')
-
-
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if request.method == 'POST':
-        email = request.form['email']
-        username = request.form['username']
-        password = request.form['password']
-        confirm_password = request.form['confirm-password']
-
-        if not email:
-            flash('Email is required!', 'message-error')
-        elif not username:
-            flash('Username is required!', 'message-error')
-        elif not password:
-            flash('Password is required!', 'message-error')
-        elif not confirm_password:
-            flash('Confirmed Password is required!', 'message-error')
-        else:
-            if addUser(email, username, password):
-                flash('Your account was created!', 'message-success')
-                return redirect(url_for('.login'))
-            else:
-                flash('Your account could not be created!', 'message-error')
-        
-    return render_template('register.html')
-
-
-@app.route('/landing')
-def landing():
-    return render_template('landing.html')
 
 
 if __name__ == '__main__':
