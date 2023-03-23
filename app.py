@@ -1,9 +1,9 @@
 from flask import Flask, render_template, jsonify, request, url_for, flash, redirect, session
 import sys
 import requests
-import sqlite3
 from flask_session import Session
 from sessionConfig import *
+from databaseFunctions import *
 
 app = Flask(__name__)
 # A secret key funciona para o Flask para deixar uma sessão segura e poder lembrar todos os request
@@ -20,48 +20,6 @@ HEADERS = {
     'Authorization': 'Bearer f1fzl61lle5vii2zwca6x2ghswne5z',
     'Content-Type': 'application/json',
 }
-
-
-def get_db_connection():
-    conn = sqlite3.connect('database.db')
-    # conn.row_factory = sqlite3.Row
-    return conn
-
-def addUser(email, username, password):
-    conn = get_db_connection()
-    try:
-        cur = conn.cursor()
-        
-        cur.execute("INSERT INTO users (email, username, password) VALUES (?, ?, ?)",
-            (email, username, password)
-        )
-        
-        conn.commit()
-        conn.close()
-
-        return True
-    except:
-        conn.close()
-        return False
-
-
-def searchUser(email, password):
-    conn = get_db_connection()
-    try:
-        cur = conn.cursor()
-        cur.execute("SELECT * FROM users WHERE email=? AND password=?", [email, password])
-        print(cur)
-        user = cur.fetchone()
-        print(user)
-        configureSessionUser(user)
-        
-        conn.commit()
-        conn.close()
-        return True
-    except:
-        conn.close()
-        flash('Email address or Password are incorrect!', 'message-error')
-        return False
 
 
 @app.route('/')
