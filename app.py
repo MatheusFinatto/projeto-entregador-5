@@ -3,6 +3,7 @@ import sys
 import requests
 import sqlite3
 from flask_session import Session
+from sessionConfig import *
 
 app = Flask(__name__)
 # A secret key funciona para o Flask para deixar uma sessão segura e poder lembrar todos os request
@@ -48,8 +49,9 @@ def searchUser(email, password):
     conn = get_db_connection()
     try:
         cur = conn.cursor()
-        cur.execute("SELECT * FROM users")
-        user = cur.fetchone()
+        cur.execute("SELECT * FROM users WHERE email=?", email)
+        user = cur.fetchall()
+        print(user)
         configureSessionUser(user)
         
         conn.commit()
@@ -69,23 +71,6 @@ def index():
     return render_template('index.html', posts=posts)
 
 
-def configureSessionUser(user):
-    print(session)
-    session["id"] = user[0]
-    session["email"] = user[1]
-    session["username"] = user[2]
-    print(session)
-    return 'Ok'
-
-
-def clearSession():
-    print(session)
-    for info in session:
-        print(info)
-        session.pop(info, None)
-    print(session)
-
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     
@@ -100,9 +85,12 @@ def login():
         else:
             # Tenta encontrar o usuario na base de dados
             if searchUser(email, password):
-                return render_template('landing.html', email=email)
+                return redirect('/landing')
             else:
                 return render_template('login.html')
+    else:
+        if session.get("username"):
+            return redirect('landing')
     
     return render_template('login.html')
 
