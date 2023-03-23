@@ -49,7 +49,8 @@ def searchUser(email, password):
     conn = get_db_connection()
     try:
         cur = conn.cursor()
-        cur.execute("SELECT * FROM users")
+        cur.execute("SELECT * FROM users WHERE email=? AND password=?", [email, password])
+        print(cur)
         user = cur.fetchone()
         print(user)
         configureSessionUser(user)
