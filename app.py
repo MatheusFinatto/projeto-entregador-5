@@ -23,12 +23,12 @@ HEADERS = {
     'Content-Type': 'application/json',
 }
 
+
 def generateRecoverPasswordCode():
     # choose from all uppercase letter
     letters = string.ascii_uppercase
     code = ''.join(random.choice(letters) for i in range(5))
     return code
-
 
 
 @app.route('/')
@@ -41,7 +41,7 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    
+
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
@@ -59,8 +59,9 @@ def login():
     else:
         if session.get("username"):
             return redirect('landing')
-    
+
     return render_template('login.html')
+
 
 @app.route('/logout')
 def logout():
@@ -109,7 +110,7 @@ def register():
                 return redirect('/login')
             else:
                 flash('Your account could not be created!', 'message-error')
-        
+
     return render_template('register.html')
 
 
@@ -126,7 +127,6 @@ def top_games():
     rating_count = request.args.get('rating_count', default=1000, type=int)
     limit = request.args.get('limit', default=20, type=int)
     url = 'https://api.igdb.com/v4/games'
-
     data = f'fields name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url; where rating_count > {rating_count}; sort rating desc; limit {limit};'
     headers = HEADERS
     response = requests.post(url, headers=headers, data=data)
@@ -141,6 +141,26 @@ def top_games():
                                newJson=newJson)
     else:
         return jsonify({'error': 'Failed to retrieve game cover.'}), response.status_code
+
+
+@app.route('/search')
+def search():
+    name = request.args.get('query')
+    print(name)
+    url = 'https://api.igdb.com/v4/games'
+    data = f'search "{name}"; fields name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url;'
+    headers = HEADERS
+    response = requests.post(url, headers=headers, data=data)
+    newJson = []
+    if response.ok:
+        print(response.json())
+        newJson = {"data": response.json().copy()}
+        for i in range(len(response.json())):
+            if 'cover' in newJson["data"][i]:
+                newJson["data"][i]['cover']["url"] = response.json(
+                )[i]['cover']["url"].replace("t_thumb", "t_1080p")
+
+        return render_template('search.html', newJson=newJson, name=name)
 
 
 if __name__ == '__main__':

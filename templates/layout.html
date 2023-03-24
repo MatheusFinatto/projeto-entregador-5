@@ -133,9 +133,9 @@
         </li>
       </ul>
 
-      <form>
+      <form action="{{ url_for('search') }}" method="GET">
         <div class="right input-field hide-on-med-and-down">
-          <input id="search" type="search" required />
+          <input id="search" type="search" name="query" required />
           <label class="label-icon" for="search">
             <i class="material-icons">search</i>
           </label>
@@ -147,51 +147,31 @@
 
   <main>
     {% with messages = get_flashed_messages(category_filter=["message-error"]) %}
-      {% if messages %}
-        <ul class="message-error">
-        {% for message in messages %}
-          <li>{{ message }}</li>
-          {{ break }}
-        {% endfor %}
-        </ul>
-      {% endif %}
+    {% if messages %}
+    <ul class="message-error">
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {{ break }}
+      {% endfor %}
+    </ul>
+    {% endif %}
     {% endwith %}
     {% with messages = get_flashed_messages(category_filter=["message-success"]) %}
-      {% if messages %}
-        <ul class="message-success">
-        {% for message in messages %}
-          <li>{{ message }}</li>
-          {{ break }}
-        {% endfor %}
-        </ul>
-      {% endif %}
+    {% if messages %}
+    <ul class="message-success">
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {{ break }}
+      {% endfor %}
+    </ul>
+    {% endif %}
     {% endwith %}
     {% block content %}{% endblock %}
   </main>
   <footer class="page-footer">
-    <!-- <div>
-      <div class="row">
-        <div class="col l6 s12">
-          <h5 class="white-text">Footer Content</h5>
-          <p class="grey-text text-lighten-4">
-            You can use rows and columns here to organize your footer content.
-          </p>
-        </div>
-        <div class="col l4 offset-l2 s12">
-          <h5 class="white-text">Links</h5>
-          <ul>
-            <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
-            <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
-            <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
-            <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
-          </ul>
-        </div>
-      </div>
-    </div> -->
     <div class="footer-copyright" id="footer-copyright">
       <div>
         © 2023 Steam Verde
-        <!-- <a class="grey-text text-lighten-4 right" href="#!">More Links</a> -->
       </div>
     </div>
   </footer>
