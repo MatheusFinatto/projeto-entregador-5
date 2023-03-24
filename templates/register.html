@@ -1,8 +1,14 @@
 {% extends "layout.html" %} {% block title %} Steam verde {% endblock %} {% block content %}
 <div class="container">
+  <h1>Register</h1>
   <div class="form-box">
     <form action="{{ url_for('register')}}" method="POST">
-      <h1>Register</h1>
+      <div class="social-logins">
+        <a href=""><div class="bg-google"></div></a>
+        <a href=""><div class="bg-github"></div></a>
+        <a href=""><div class="bg-twitter"></div></a>
+        <a href=""><div class="bg-instagram"></div></a>
+      </div>
       <div class="input-field">
         <label for="email"><b>Email</b></label>
         <input id="email" type="text" name="email" value="{{ request.form['email'] }}">

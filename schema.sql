@@ -5,5 +5,6 @@ CREATE TABLE users (
     email TEXT NOT NULL,
     username TEXT NOT NULL,
     password TEXT NOT NULL,
+    recover_code TEXT,
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

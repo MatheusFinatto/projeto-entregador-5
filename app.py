@@ -1,6 +1,8 @@
 from flask import Flask, render_template, jsonify, request, url_for, flash, redirect, session
 import sys
 import requests
+import random
+import string
 from flask_session import Session
 from sessionConfig import *
 from databaseFunctions import *
@@ -20,6 +22,13 @@ HEADERS = {
     'Authorization': 'Bearer f1fzl61lle5vii2zwca6x2ghswne5z',
     'Content-Type': 'application/json',
 }
+
+def generateRecoverPasswordCode():
+    # choose from all uppercase letter
+    letters = string.ascii_uppercase
+    code = ''.join(random.choice(letters) for i in range(5))
+    return code
+
 
 
 @app.route('/')
@@ -57,6 +66,25 @@ def login():
 def logout():
     clearSession()
     return redirect('/login')
+
+
+@app.route('/forgot-password', methods=['GET', 'POST'])
+def forgotPassword():
+    if request.method == 'POST':
+        email = request.form['email']
+
+        if not email:
+            flash('Email is required!', 'message-error')
+        else:
+            code = generateRecoverPasswordCode()
+
+            if setUserPasswordRecoverCode(code, email):
+                flash('Code sended!', 'message-success')
+                return render_template('forgot-password.html', code_sent=True)
+            else:
+                return render_template('forgot-password.html')
+
+    return render_template('forgot-password.html')
 
 
 @app.route('/register', methods=['GET', 'POST'])
