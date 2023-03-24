@@ -69,6 +69,14 @@
             List of top games
           </a>
         </li>
+        {% if session.get("username") %}
+        <li>
+          <a href="/logout">
+            <i class="material-icons left">view_module</i>
+            Logout
+          </a>
+        </li>
+        {% else %}
         <li>
           <a href="/login">
             <i class="material-icons left">view_module</i>
@@ -81,6 +89,7 @@
             Register
           </a>
         </li>
+        {% endif %}
       </ul>
 
       <ul class="sidenav" id="mobile-demo">
