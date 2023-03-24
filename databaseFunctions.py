@@ -43,3 +43,28 @@ def searchUser(email, password):
         conn.close()
         flash('Email address or Password are incorrect!', 'message-error')
         return False
+    
+
+def setUserPasswordRecoverCode(recover_code, email):
+    conn = get_db_connection()
+    try:
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM users WHERE email=?", [email])
+        user = cur.fetchone()
+
+        if user:
+            cur.execute("UPDATE users " +
+                        "SET recover_code=? " +
+                        "WHERE email=?", [recover_code, email])
+            conn.commit()
+            conn.close()
+            return True
+        else:
+            flash('No account found with this email!', 'message-error')
+            conn.commit()
+            conn.close()
+            return False
+        
+    except:
+        conn.close()
+        return False

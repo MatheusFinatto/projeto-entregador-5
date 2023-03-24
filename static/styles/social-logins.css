@@ -1,0 +1,32 @@
+.social-logins {
+    display: flex;
+    justify-content: center;
+}
+
+.bg-google {
+    display: inline-block;
+    width: 32px; height: 32px;
+    margin: 0 10px;
+    background: url('../img/social_logins_sprite.png') -10px -10px;
+}
+
+.bg-github {
+    display: inline-block;
+    width: 32px; height: 32px;
+    margin: 0 10px;
+    background: url('../img/social_logins_sprite.png') -10px -62px;
+}
+
+.bg-twitter {
+    display: inline-block;
+    width: 32px; height: 32px;
+    margin: 0 10px;
+    background: url('../img/social_logins_sprite.png') -10px -114px;
+}
+
+.bg-instagram {
+    display: inline-block;
+    width: 32px; height: 32px;
+    margin: 0 10px;
+    background: url('../img/social_logins_sprite.png') -10px -166px;
+}
