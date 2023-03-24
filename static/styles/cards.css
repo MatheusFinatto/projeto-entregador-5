@@ -111,11 +111,15 @@
   margin-bottom: 20px;
 }
 
+.rating {
+  height: 30px;
+}
+
 .star-rating {
   max-width: 125px;
   overflow: hidden;
   display: flex;
-  margin-bottom: 5px;
+  margin: 1px 0;
 }
 
 .star-rating img {
