@@ -10,21 +10,20 @@ block content %}
     <div id="filters">
         <form id="rating_count_form" action="/search" method="get">
             <div class="form-container">
+                <h5 id='filter-info'>Filters*
+                    <span class="tooltip">If no values were informed when the "filter" button is clicked, the default
+                        values of filter will be those of the placeholders </span>
+                </h5>
                 <div style="display: none;">
                     <label for="rating_count">Title: </label>
                     <input type="text" id="name" name="name" value="{{ name }}" />
                 </div>
-                <label for="rating_count">Minimum rating (0-100): </label>
-                <input type="number" id="rating" name="rating" value="{{ rating }}" placeholder="50" />
+                <label for="rating_count">Minimum rating (1-100): </label>
+                <input type="number" id="rating" name="rating" value="{{ rating }}" placeholder="1" />
                 <label for="rating_count">Minimum number of votes:</label>
-                <input type="number" id="rating_count" name="rating_count" value="{{ rating_count }}"
-                    placeholder="1000" />
+                <input type="number" id="rating_count" name="rating_count" value="{{ rating_count }}" placeholder="1" />
                 <label for="limit">Number of games displayed:</label>
-                <input type="number" id="rating_count" name="limit" value="{{ limit }}" placeholder="20" />
-                <!-- <label for="limit">Only games with image:</label>
-                <input type="number" id="rating_count" name="limit" value="{{ limit }}" placeholder="20" />
-                <label for="limit">Only games with rating:</label>
-                <input type="number" id="rating_count" name="limit" value="{{ limit }}" placeholder="20" /> -->
+                <input type="number" id="rating_count" name="limit" value="{{ limit }}" placeholder="1000" />
                 <button type="submit">Filter</button>
             </div>
         </form>
@@ -36,17 +35,14 @@ block content %}
     <section class="games-container">
         {% for item in newJson["data"] %}
         <div class="game-card">
-            {% if item['cover'] and item['cover']['url'] %}
             <img src="https:{{ item['cover']['url'] }}" id="cover" />
-            {% else %}
-            <img src="https://via.placeholder.com/800x600.png?text=Placeholder+Image
-            " id="cover" />
-            {% endif %}
             <h2>{{ item.name }}</h2>
+
             <section>
                 <h3>Platforms</h3>
                 {% if item['platforms']|length %}
                 <ul class="platforms">
+
                     {% for platform in item["platforms"]%}
                     {% if item["platforms"]|length > 6 %}
                     {% if loop.index < 6 %} {% if platform["platform_logo"] %} <li>
@@ -98,6 +94,7 @@ block content %}
                             <p class="platform-name">Show more</p>
                         </li>
                         {% endif %}
+
                 </ul>
                 {% else %}
                 <p id="no-platforms-exception">
@@ -105,28 +102,23 @@ block content %}
                 </p>
                 {% endif %}
             </section>
+
             <h3>Rating</h3>
-            <span class="rating">
-                {% if item["rating"]%}
-                <section class="stars">
-                    <div class="star-rating">
-                        <img src="../static/img/Star_full.svg.png" alt="Full star" />
-                        <img src="../static/img/Star_full.svg.png" alt="Full star" />
-                        <img src="../static/img/Star_full.svg.png" alt="Full star" />
-                        <img src="../static/img/Star_full.svg.png" alt="Full star" />
-                        <img src="../static/img/Star_full.svg.png" alt="Full star" />
-                    </div>
-                </section>
-                {% endif %}
-            </span>
-            {% if item["rating"]%}
-            <h4 id="rating-number">({{"%.2f"|format(item['rating']/20)}}/5.00)</h4>
+            <section class="stars">
+                <div class="star-rating">
+                    <img src="../static/img/Star_full.svg.png" alt="Full star" />
+                    <img src="../static/img/Star_full.svg.png" alt="Full star" />
+                    <img src="../static/img/Star_full.svg.png" alt="Full star" />
+                    <img src="../static/img/Star_full.svg.png" alt="Full star" />
+                    <img src="../static/img/Star_full.svg.png" alt="Full star" />
+                </div>
+            </section>
+
+            <h4 id="rating-number">({{"%.2f"|format(item.rating/20)}}/5.00)</h4>
             <span style="font-size: 10px">
                 Based on {{item.rating_count}} votes
             </span>
-            {% else %}
-            <p style="font-size: 12px;">No rating registered for this game</p>
-            {% endif %}
+
             <button>Details</button>
         </div>
         {% endfor %}

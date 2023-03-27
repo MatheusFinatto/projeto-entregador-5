@@ -6,6 +6,7 @@ import string
 from flask_session import Session
 from sessionConfig import *
 from databaseFunctions import *
+from helpers import coverConfig
 
 app = Flask(__name__)
 # A secret key funciona para o Flask para deixar uma sessão segura e poder lembrar todos os request
@@ -53,7 +54,6 @@ def login():
     else:
         if session.get("username"):
             return redirect('landing')
-
     return render_template('login.html')
 
 
@@ -125,23 +125,16 @@ def top_games():
     data = f'fields name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url; where rating_count > {rating_count}; sort rating desc; limit {limit};'
     headers = HEADERS
     response = requests.post(url, headers=headers, data=data)
-    newJson = []
     if response.ok:
-        # response.json() é um array de objetos (url de imagens)
-        newJson = {"data": response.json().copy()}
-        for i in range(len(response.json())):
-            newJson["data"][i]['cover']["url"] = response.json(
-            )[i]['cover']["url"].replace("t_thumb", "t_1080p")
+        newJson = coverConfig(response)
         return render_template('top-games.html',
                                newJson=newJson)
-    else:
-        return jsonify({'error': 'Failed to retrieve game cover.'}), response.status_code
 
 
 @app.route('/search')
 def search():
-    rating_count = request.args.get('rating_count', default=1000, type=int)
-    rating = request.args.get('rating', default=50, type=int)
+    rating_count = request.args.get('rating_count', default=1, type=int)
+    rating = request.args.get('rating', default=1, type=int)
     limit = request.args.get('limit', default=20, type=int)
     name = request.args.get('query')
     if not name:
@@ -150,14 +143,8 @@ def search():
     data = f'search "{name}"; fields name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url; where rating > {rating} & rating_count > {rating_count}; limit {limit};'
     headers = HEADERS
     response = requests.post(url, headers=headers, data=data)
-    newJson = []
     if response.ok:
-        newJson = {"data": response.json().copy()}
-        for i in range(len(response.json())):
-            if 'cover' in newJson["data"][i]:
-                newJson["data"][i]['cover']["url"] = response.json(
-                )[i]['cover']["url"].replace("t_thumb", "t_1080p")
-
+        newJson = coverConfig(response)
         return render_template('search.html', newJson=newJson, name=name)
 
 
