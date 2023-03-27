@@ -1,0 +1,709 @@
+{% extends "layout.html" %} {% block title %} Details {% endblock %} {% block
+content %}
+<p>
+  TO DO: add screenshots, description, etc. Ex:
+  <a href="https://www.igdb.com/games/hogwarts-legacy"
+    >https://www.igdb.com/games/hogwarts-legacy</a
+  >
+</p>
+<br />
+<br />
+<h1>{{ newJson["data"][0].name }}</h1>
+<!-- //TODO -->
+
+<div>
+  <section>
+    <div>
+      <img src="https:{{ newJson['data'][0]['cover']['url'] }}" id="cover" />
+      <section>
+        <h3>Platforms</h3>
+        {% if newJson["data"][0]['platforms']|length %}
+        <ul class="platforms">
+          {% for platform in newJson["data"][0]["platforms"]%} {% if
+          newJson["data"][0]["platforms"]|length > 6 %} {% if loop.index < 6 %}
+          {% if platform["platform_logo"] %}
+          <li>
+            <img
+              src='https:{{platform["platform_logo"]["url"]}}'
+              alt="Game Platform Logo"
+            />
+            <p class="platform-name">{{platform['name']}}</p>
+          </li>
+          {% else %}
+          <li>
+            <img
+              src="https://via.placeholder.com/300x200.png?text=Image+Not+Found"
+              alt="Game Platform Logo"
+            />
+            <p class="platform-name">{{platform['name']}}</p>
+          </li>
+          {% endif %} {% else %} {% if platform["platform_logo"] %}
+          <li style="display: none" id='B{{newJson["data"][0]["id"]}}'>
+            <img
+              src='https:{{platform["platform_logo"]["url"]}}'
+              alt="Game Platform Logo"
+            />
+            <p class="platform-name">{{platform['name']}}</p>
+          </li>
+          {% else %}
+          <li style="display: none" id='B{{newJson["data"][0]["id"]}}'>
+            <img
+              src="https://via.placeholder.com/300x200.png?text=Image+Not+Found"
+              alt="Game Platform Logo"
+            />
+            <p class="platform-name">{{platform['name']}}</p>
+          </li>
+          {% endif %} {% endif %} {% else %} {% if platform["platform_logo"] %}
+          <li>
+            <img
+              src='https:{{platform["platform_logo"]["url"]}}'
+              alt="Game Platform Logo"
+            />
+            <p class="platform-name">{{platform['name']}}</p>
+          </li>
+          {% else %}
+          <li>
+            <img
+              src="https://via.placeholder.com/300x200.png?text=Image+Not+Found"
+              alt="Game Platform Logo"
+            />
+            <p class="platform-name">{{platform['name']}}</p>
+          </li>
+          {% endif %} {% endif %} {% endfor %} {% if
+          newJson["data"][0]["platforms"]|length > 6 %}
+          <li
+            class="show-all-platforms-li"
+            id='A{{newJson["data"][0]["id"]}}'
+            onclick="showAllPlatforms(this.id)"
+          >
+            <button id="show-all-platforms">
+              <i id="plus-sign" class="fi fi-br-plus"></i>
+            </button>
+            <p class="platform-name">Show more</p>
+          </li>
+          {% endif %}
+        </ul>
+        {% else %}
+        <p id="no-platforms-exception">
+          No platforms were registered for this game
+        </p>
+        {% endif %}
+      </section>
+      <h3>Rating</h3>
+      <section class="stars">
+        <div class="star-rating">
+          <img src="../static/img/Star_full.svg.png" alt="Full star" />
+          <img src="../static/img/Star_full.svg.png" alt="Full star" />
+          <img src="../static/img/Star_full.svg.png" alt="Full star" />
+          <img src="../static/img/Star_full.svg.png" alt="Full star" />
+          <img src="../static/img/Star_full.svg.png" alt="Full star" />
+        </div>
+      </section>
+
+      <h4 id="rating-number">
+        ({{"%.2f"|format(newJson["data"][0].rating/20)}}/5.00)
+      </h4>
+      <span style="font-size: 10px">
+        Based on {{newJson["data"][0].rating_count}} votes
+      </span>
+
+      <a href="/details/{{ newJson['data'][0].id }}"
+        ><button>Details</button></a
+      >
+    </div>
+  </section>
+</div>
+
+{% endblock %}
+
+<!-- [
+  {
+    "id": 1942,
+    "age_ratings": [
+      32441,
+      46963,
+      57460,
+      67455,
+      78138,
+      78139,
+      78140
+    ],
+    "aggregated_rating": 91.72,
+    "aggregated_rating_count": 26,
+    "alternative_names": [
+      2427,
+      2495,
+      4159,
+      51940,
+      51941,
+      71879,
+      74560,
+      74561,
+      103139,
+      103784,
+      121895
+    ],
+    "artworks": [
+      142,
+      143,
+      144,
+      145,
+      146,
+      147,
+      148,
+      149,
+      150,
+      901,
+      1146,
+      1147,
+      1148
+    ],
+    "bundles": [
+      22439,
+      141472
+    ],
+    "category": 0,
+    "collection": 62,
+    "cover": {
+      "id": 89386,
+      "url": "//images.igdb.com/igdb/image/upload/t_thumb/co1wyy.jpg"
+    },
+    "created_at": 1361716512,
+    "dlcs": [
+      157580,
+      170449,
+      170450,
+      170451,
+      226413
+    ],
+    "expansions": [
+      12503,
+      13166
+    ],
+    "external_games": [
+      11306,
+      68441,
+      78478,
+      83864,
+      119254,
+      189745,
+      211029,
+      246257,
+      401086,
+      1238322,
+      1928370,
+      1931970,
+      1934807,
+      1935171,
+      1937739,
+      2067884,
+      2087999,
+      2088090,
+      2176359,
+      2220720,
+      2582912,
+      2589547,
+      2590142,
+      2594002,
+      2657070
+    ],
+    "first_release_date": 1431993600,
+    "follows": 1543,
+    "franchises": [
+      452
+    ],
+    "game_engines": [
+      24
+    ],
+    "game_modes": [
+      1
+    ],
+    "genres": [
+      12,
+      31
+    ],
+    "hypes": 179,
+    "involved_companies": [
+      17436,
+      17768,
+      17769,
+      17771,
+      42142,
+      64293,
+      196544
+    ],
+    "keywords": [
+      129,
+      151,
+      227,
+      296,
+      537,
+      592,
+      617,
+      623,
+      665,
+      770,
+      823,
+      1026,
+      1033,
+      1098,
+      1181,
+      1293,
+      1381,
+      1507,
+      1737,
+      2066,
+      2071,
+      2112,
+      2242,
+      2337,
+      2414,
+      2472,
+      2513,
+      2668,
+      3794,
+      3901,
+      3910,
+      4184,
+      4198,
+      4218,
+      4276,
+      4287,
+      4316,
+      4319,
+      4332,
+      4347,
+      4352,
+      4353,
+      4357,
+      4394,
+      4418,
+      4508,
+      4520,
+      4548,
+      4552,
+      4573,
+      4576,
+      4588,
+      4591,
+      4615,
+      4619,
+      4628,
+      4637,
+      4745,
+      4753,
+      4756,
+      4763,
+      4843,
+      4848,
+      4852,
+      4869,
+      4878,
+      4880,
+      4896,
+      4907,
+      5029,
+      5150,
+      5286,
+      5298,
+      5318,
+      5351,
+      5362,
+      5365,
+      5367,
+      5369,
+      5374,
+      5391,
+      5422,
+      5427,
+      5460,
+      5502,
+      5504,
+      5616,
+      5646,
+      5650,
+      5705,
+      5708,
+      5709,
+      5771,
+      5788,
+      5795,
+      5852,
+      5902,
+      5978,
+      6068,
+      6120,
+      6128,
+      6196,
+      6214,
+      6415,
+      6430,
+      6478,
+      6653,
+      6657,
+      6668,
+      6681,
+      6683,
+      6685,
+      6688,
+      6858,
+      6904,
+      7078,
+      7143,
+      7379,
+      7416,
+      7470,
+      7659,
+      7664,
+      8193,
+      8194,
+      8195,
+      8196,
+      8197,
+      8198,
+      8199,
+      8200,
+      8201,
+      8202,
+      15075,
+      15076,
+      16826,
+      16828,
+      16894,
+      18160,
+      18730,
+      19424,
+      19425,
+      19426
+    ],
+    "name": "The Witcher 3: Wild Hunt",
+    "platforms": [
+      {
+        "id": 6,
+        "name": "PC (Microsoft Windows)",
+        "platform_logo": {
+          "id": 203,
+          "url": "//images.igdb.com/igdb/image/upload/t_thumb/irwvwpl023f8y19tidgq.jpg"
+        }
+      },
+      {
+        "id": 48,
+        "name": "PlayStation 4",
+        "platform_logo": {
+          "id": 231,
+          "url": "//images.igdb.com/igdb/image/upload/t_thumb/pl6f.jpg"
+        }
+      },
+      {
+        "id": 49,
+        "name": "Xbox One",
+        "platform_logo": {
+          "id": 329,
+          "url": "//images.igdb.com/igdb/image/upload/t_thumb/pl95.jpg"
+        }
+      },
+      {
+        "id": 130,
+        "name": "Nintendo Switch",
+        "platform_logo": {
+          "id": 534,
+          "url": "//images.igdb.com/igdb/image/upload/t_thumb/pleu.jpg"
+        }
+      },
+      {
+        "id": 167,
+        "name": "PlayStation 5",
+        "platform_logo": {
+          "id": 463,
+          "url": "//images.igdb.com/igdb/image/upload/t_thumb/plcv.jpg"
+        }
+      },
+      {
+        "id": 169,
+        "name": "Xbox Series X|S",
+        "platform_logo": {
+          "id": 561,
+          "url": "//images.igdb.com/igdb/image/upload/t_thumb/plfl.jpg"
+        }
+      }
+    ],
+    "player_perspectives": [
+      2
+    ],
+    "rating": 94.85771003815371,
+    "rating_count": 3355,
+    "release_dates": [
+      23743,
+      23744,
+      23745,
+      226672,
+      430627,
+      431187
+    ],
+    "screenshots": [
+      9742,
+      9743,
+      9744,
+      9745,
+      21107,
+      853177,
+      853178,
+      853179,
+      853180,
+      853181
+    ],
+    "similar_games": [
+      80,
+      121,
+      472,
+      533,
+      1334,
+      1593,
+      1887,
+      3025,
+      9938,
+      11270
+    ],
+    "slug": "the-witcher-3-wild-hunt",
+    "storyline": "The Witcher 3: Wild Hunt concludes the story of the witcher Geralt of Rivia, the series\u0027 protagonist, whose story to date has been covered in the previous installments. Geralt\u0027s new mission comes in dark times as the mysterious and otherworldly army known as the Wild Hunt invades the Northern Kingdoms, leaving only blood soaked earth and fiery ruin in its wake; and it seems the Witcher is the key to stopping their cataclysmic rampage.",
+    "summary": "RPG and sequel to The Witcher 2 (2011), The Witcher 3 follows witcher Geralt of Rivia as he seeks out his former lover and his young subject while intermingling with the political workings of the wartorn Northern Kingdoms. Geralt has to fight monsters and deal with people of all sorts in order to solve complex problems and settle contentious disputes, each ranging from the personal to the world-changing.",
+    "tags": [
+      1,
+      17,
+      38,
+      268435468,
+      268435487,
+      536871041,
+      536871063,
+      536871139,
+      536871208,
+      536871449,
+      536871504,
+      536871529,
+      536871535,
+      536871577,
+      536871682,
+      536871735,
+      536871938,
+      536871945,
+      536872010,
+      536872093,
+      536872205,
+      536872293,
+      536872419,
+      536872649,
+      536872978,
+      536872983,
+      536873024,
+      536873154,
+      536873249,
+      536873326,
+      536873384,
+      536873425,
+      536873580,
+      536874706,
+      536874813,
+      536874822,
+      536875096,
+      536875110,
+      536875130,
+      536875188,
+      536875199,
+      536875228,
+      536875231,
+      536875244,
+      536875259,
+      536875264,
+      536875265,
+      536875269,
+      536875306,
+      536875330,
+      536875420,
+      536875432,
+      536875460,
+      536875464,
+      536875485,
+      536875488,
+      536875500,
+      536875503,
+      536875527,
+      536875531,
+      536875540,
+      536875549,
+      536875657,
+      536875665,
+      536875668,
+      536875675,
+      536875755,
+      536875760,
+      536875764,
+      536875781,
+      536875790,
+      536875792,
+      536875808,
+      536875819,
+      536875941,
+      536876062,
+      536876198,
+      536876210,
+      536876230,
+      536876263,
+      536876274,
+      536876277,
+      536876279,
+      536876281,
+      536876286,
+      536876303,
+      536876334,
+      536876339,
+      536876372,
+      536876414,
+      536876416,
+      536876528,
+      536876558,
+      536876562,
+      536876617,
+      536876620,
+      536876621,
+      536876683,
+      536876700,
+      536876707,
+      536876764,
+      536876814,
+      536876890,
+      536876980,
+      536877032,
+      536877040,
+      536877108,
+      536877126,
+      536877327,
+      536877342,
+      536877390,
+      536877565,
+      536877569,
+      536877580,
+      536877593,
+      536877595,
+      536877597,
+      536877600,
+      536877770,
+      536877816,
+      536877990,
+      536878055,
+      536878291,
+      536878328,
+      536878382,
+      536878571,
+      536878576,
+      536879105,
+      536879106,
+      536879107,
+      536879108,
+      536879109,
+      536879110,
+      536879111,
+      536879112,
+      536879113,
+      536879114,
+      536885987,
+      536885988,
+      536887738,
+      536887740,
+      536887806,
+      536889072,
+      536889642,
+      536890336,
+      536890337,
+      536890338
+    ],
+    "themes": [
+      1,
+      17,
+      38
+    ],
+    "total_rating": 93.28885501907686,
+    "total_rating_count": 3381,
+    "updated_at": 1679940341,
+    "url": "https://www.igdb.com/games/the-witcher-3-wild-hunt",
+    "videos": [
+      5987,
+      5988,
+      5989,
+      5990,
+      5991,
+      5992,
+      5993,
+      5994,
+      5995,
+      5996,
+      9648,
+      15748
+    ],
+    "websites": [
+      19101,
+      19102,
+      19103,
+      19104,
+      19105,
+      19106,
+      19107,
+      66471,
+      78076,
+      119948,
+      141346,
+      141347,
+      512145
+    ],
+    "checksum": "48ea4b2c-00f8-e206-e864-81cf79fd970a",
+    "language_supports": [
+      25,
+      27,
+      30,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      107,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      115,
+      116,
+      117,
+      118,
+      119,
+      120,
+      121,
+      122,
+      157788,
+      157789,
+      157790,
+      157793
+    ],
+    "game_localizations": [
+      181,
+      182
+    ]
+  }
+] -->

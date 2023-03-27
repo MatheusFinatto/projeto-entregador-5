@@ -1,16 +1,16 @@
 <section class="games-container">
     {% for item in newJson["data"] %}
     <div class="game-card">
-        <img src="https:{{ item['cover']['url'] }}" id="cover" />
+        <a href="/details/{{ item.id }}">
+            <img src="https:{{ item['cover']['url'] }}" id="cover" />
+        </a>
         <h2>{{ item.name }}</h2>
         <section>
             <h3>Platforms</h3>
             {% if item['platforms']|length %}
             <ul class="platforms">
-
-                {% for platform in item["platforms"]%}
-                {% if item["platforms"]|length > 6 %}
-                {% if loop.index < 6 %} {% if platform["platform_logo"] %} <li>
+                {% for platform in item["platforms"]%} {% if item["platforms"]|length >
+                6 %} {% if loop.index < 6 %} {% if platform["platform_logo"] %} <li>
                     <img src='https:{{platform["platform_logo"]["url"]}}' alt="Game Platform Logo" />
                     <p class="platform-name">{{platform['name']}}</p>
                     </li>
@@ -20,9 +20,7 @@
                             alt="Game Platform Logo" />
                         <p class="platform-name">{{platform['name']}}</p>
                     </li>
-                    {% endif %}
-                    {% else %}
-                    {% if platform["platform_logo"] %}
+                    {% endif %} {% else %} {% if platform["platform_logo"] %}
                     <li style="display: none" id='B{{item["id"]}}'>
                         <img src='https:{{platform["platform_logo"]["url"]}}' alt="Game Platform Logo" />
                         <p class="platform-name">{{platform['name']}}</p>
@@ -33,10 +31,7 @@
                             alt="Game Platform Logo" />
                         <p class="platform-name">{{platform['name']}}</p>
                     </li>
-                    {% endif %}
-                    {% endif %}
-                    {% else %}
-                    {% if platform["platform_logo"] %}
+                    {% endif %} {% endif %} {% else %} {% if platform["platform_logo"] %}
                     <li>
                         <img src='https:{{platform["platform_logo"]["url"]}}' alt="Game Platform Logo" />
                         <p class="platform-name">{{platform['name']}}</p>
@@ -47,19 +42,15 @@
                             alt="Game Platform Logo" />
                         <p class="platform-name">{{platform['name']}}</p>
                     </li>
-                    {% endif %}
-                    {% endif %}
-                    {% endfor %}
-
-                    {% if item["platforms"]|length > 6 %}
+                    {% endif %} {% endif %} {% endfor %} {% if item["platforms"]|length > 6
+                    %}
                     <li class="show-all-platforms-li" id='A{{item["id"]}}' onclick="showAllPlatforms(this.id)">
                         <button id="show-all-platforms">
-                            <i id='plus-sign' class="fi fi-br-plus"></i>
+                            <i id="plus-sign" class="fi fi-br-plus"></i>
                         </button>
                         <p class="platform-name">Show more</p>
                     </li>
                     {% endif %}
-
             </ul>
             {% else %}
             <p id="no-platforms-exception">
@@ -79,11 +70,9 @@
         </section>
 
         <h4 id="rating-number">({{"%.2f"|format(item.rating/20)}}/5.00)</h4>
-        <span style="font-size: 10px">
-            Based on {{item.rating_count}} votes
-        </span>
+        <span style="font-size: 10px"> Based on {{item.rating_count}} votes </span>
 
-        <button>Details</button>
+        <a href="/details/{{ item.id }}"><button>Details</button></a>
     </div>
     {% endfor %}
 </section>

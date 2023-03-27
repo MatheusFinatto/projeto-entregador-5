@@ -24,9 +24,8 @@ HEADERS = {
     'Content-Type': 'application/json',
 }
 
+
 # LOGIN AND REGISTER #
-
-
 def generateRecoverPasswordCode():
     # choose from all uppercase letter
     letters = string.ascii_uppercase
@@ -131,6 +130,7 @@ def top_games():
                                newJson=newJson)
 
 
+# SEARCH #
 @app.route('/search')
 def search():
     rating_count = request.args.get('rating_count', default=1, type=int)
@@ -146,6 +146,19 @@ def search():
     if response.ok:
         newJson = coverConfig(response)
         return render_template('search.html', newJson=newJson, name=name)
+
+
+# DETAILS #
+@app.route('/details/<int:game_id>')
+def game_details(game_id):
+    url = 'https://api.igdb.com/v4/games'
+    data = f'fields *, cover.url, platforms.name, platforms.platform_logo.url; where id = {game_id};'
+    headers = HEADERS
+    response = requests.post(url, headers=headers, data=data)
+    if response.ok:
+        newJson = coverConfig(response)
+        print(newJson)
+        return render_template('details.html', newJson=newJson)
 
 
 # HOME #
