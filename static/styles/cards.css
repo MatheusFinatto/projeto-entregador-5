@@ -2,6 +2,12 @@
   margin: 30px;
 }
 
+.filter-field {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 #add-filters {
   display: flex;
   justify-content: flex-end;
@@ -15,6 +21,30 @@
   padding: 5px;
 }
 
+#filter-info {
+  border-bottom: 1px dotted whitesmoke;
+  align-self: center;
+}
+
+.tooltip {
+  visibility: hidden;
+  width: 200px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  /* Position the tooltip */
+  position: absolute;
+  right: 30px;
+  z-index: 1;
+  font-size: 10px;
+}
+
+#filter-info:hover .tooltip {
+  visibility: visible;
+}
+
 #rating_count_form {
   display: flex;
   flex-direction: column;
@@ -24,7 +54,7 @@
 }
 #rating_count_form .form-container {
   border-radius: 5px;
-  padding: 10px;
+  padding: 20px;
   border: 1px solid #76b83f;
   display: flex;
   flex-direction: column;
