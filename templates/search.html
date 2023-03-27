@@ -18,12 +18,15 @@ block content %}
                     <label for="rating_count">Title: </label>
                     <input type="text" id="name" name="name" value="{{ name }}" />
                 </div>
-                <label for="rating_count">Minimum rating (1-100): </label>
-                <input type="number" id="rating" name="rating" value="{{ rating }}" placeholder="1" />
-                <label for="rating_count">Minimum number of votes:</label>
-                <input type="number" id="rating_count" name="rating_count" value="{{ rating_count }}" placeholder="1" />
-                <label for="limit">Number of games displayed:</label>
-                <input type="number" id="rating_count" name="limit" value="{{ limit }}" placeholder="1000" />
+                <div class="filter-field">
+                    <label for="rating_count">Minimum number of votes:</label>
+                    <input type="number" id="rating_count" name="rating_count" value="{{ rating_count }}"
+                        placeholder="1" />
+                </div>
+                <div class="filter-field">
+                    <label for="limit">Number of games displayed:</label>
+                    <input type="number" id="rating_count" name="limit" value="{{ limit }}" placeholder="20" />
+                </div>
                 <button type="submit">Filter</button>
             </div>
         </form>

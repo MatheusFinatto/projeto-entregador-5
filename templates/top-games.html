@@ -1,115 +1,121 @@
 {% extends "layout.html" %} {% block title %} Steam verde {% endblock %} {%
 block content %}
 
-<div class="container">
-  <h1 class="title">Best rated games!</h1>
-  <div id="filters">
-    <form id="rating_count_form" action="/top-games" method="get">
-      <div class="form-container">
-        <h5 id='filter-info'>Filters*
-          <span class="tooltip">If no values were informed when the "filter" button is clicked, the default
-            values of filter will be those of the placeholders </span>
-        </h5>
+<div id="filters">
+  <form id="rating_count_form" action="/top-games" method="get">
+    <div class="form-container">
+      <h5 id='filter-info'>Filters*
+        <span class="tooltip">If no values were informed when the "filter" button is clicked, the default
+          values of filter will be those of the placeholders </span>
+      </h5>
+      <div style="display: none;">
+        <label for="rating_count">Title: </label>
+        <input type="text" id="name" name="name" value="{{ name }}" />
+      </div>
+      <div class="filter-field">
         <label for="rating_count">Minimum number of votes:</label>
         <input type="number" id="rating_count" name="rating_count" value="{{ rating_count }}" placeholder="1000" />
+      </div>
+      <div class="filter-field">
         <label for="limit">Number of games displayed:</label>
         <input type="number" id="rating_count" name="limit" value="{{ limit }}" placeholder="20" />
-        <button type="submit">Filter</button>
       </div>
-    </form>
-    <div id='add-filters'>
-      <button onclick="showFilters(this)">Show filters</button>
+      <button type="submit">Filter</button>
     </div>
+  </form>
+  <div id='add-filters'>
+    <button onclick="showFilters(this)">Show filters</button>
   </div>
+</div>
 
-  <section class="games-container">
-    {% for item in newJson["data"] %}
-    <div class="game-card">
-      <img src="https:{{ item['cover']['url'] }}" id="cover" />
-      <h2>{{ item.name }}</h2>
+<section class="games-container">
+  {% for item in newJson["data"] %}
+  <div class="game-card">
+    <img src="https:{{ item['cover']['url'] }}" id="cover" />
+    <h2>{{ item.name }}</h2>
 
-      <section>
-        <h3>Platforms</h3>
-        {% if item['platforms']|length %}
-        <ul class="platforms">
+    <section>
+      <h3>Platforms</h3>
+      {% if item['platforms']|length %}
+      <ul class="platforms">
 
-          {% for platform in item["platforms"]%}
-          {% if item["platforms"]|length > 6 %}
-          {% if loop.index < 6 %} {% if platform["platform_logo"] %} <li>
+        {% for platform in item["platforms"]%}
+        {% if item["platforms"]|length > 6 %}
+        {% if loop.index < 6 %} {% if platform["platform_logo"] %} <li>
+          <img src='https:{{platform["platform_logo"]["url"]}}' alt="Game Platform Logo" />
+          <p class="platform-name">{{platform['name']}}</p>
+          </li>
+          {% else %}
+          <li>
+            <img src="https://via.placeholder.com/300x200.png?text=Image+Not+Found" alt="Game Platform Logo" />
+            <p class="platform-name">{{platform['name']}}</p>
+          </li>
+          {% endif %}
+          {% else %}
+          {% if platform["platform_logo"] %}
+          <li style="display: none" id='B{{item["id"]}}'>
             <img src='https:{{platform["platform_logo"]["url"]}}' alt="Game Platform Logo" />
             <p class="platform-name">{{platform['name']}}</p>
-            </li>
-            {% else %}
-            <li>
-              <img src="https://via.placeholder.com/300x200.png?text=Image+Not+Found" alt="Game Platform Logo" />
-              <p class="platform-name">{{platform['name']}}</p>
-            </li>
-            {% endif %}
-            {% else %}
-            {% if platform["platform_logo"] %}
-            <li style="display: none" id='B{{item["id"]}}'>
-              <img src='https:{{platform["platform_logo"]["url"]}}' alt="Game Platform Logo" />
-              <p class="platform-name">{{platform['name']}}</p>
-            </li>
-            {% else %}
-            <li style="display: none" id='B{{item["id"]}}'>
-              <img src="https://via.placeholder.com/300x200.png?text=Image+Not+Found" alt="Game Platform Logo" />
-              <p class="platform-name">{{platform['name']}}</p>
-            </li>
-            {% endif %}
-            {% endif %}
-            {% else %}
-            {% if platform["platform_logo"] %}
-            <li>
-              <img src='https:{{platform["platform_logo"]["url"]}}' alt="Game Platform Logo" />
-              <p class="platform-name">{{platform['name']}}</p>
-            </li>
-            {% else %}
-            <li>
-              <img src="https://via.placeholder.com/300x200.png?text=Image+Not+Found" alt="Game Platform Logo" />
-              <p class="platform-name">{{platform['name']}}</p>
-            </li>
-            {% endif %}
-            {% endif %}
-            {% endfor %}
+          </li>
+          {% else %}
+          <li style="display: none" id='B{{item["id"]}}'>
+            <img src="https://via.placeholder.com/300x200.png?text=Image+Not+Found" alt="Game Platform Logo" />
+            <p class="platform-name">{{platform['name']}}</p>
+          </li>
+          {% endif %}
+          {% endif %}
+          {% else %}
+          {% if platform["platform_logo"] %}
+          <li>
+            <img src='https:{{platform["platform_logo"]["url"]}}' alt="Game Platform Logo" />
+            <p class="platform-name">{{platform['name']}}</p>
+          </li>
+          {% else %}
+          <li>
+            <img src="https://via.placeholder.com/300x200.png?text=Image+Not+Found" alt="Game Platform Logo" />
+            <p class="platform-name">{{platform['name']}}</p>
+          </li>
+          {% endif %}
+          {% endif %}
+          {% endfor %}
 
-            {% if item["platforms"]|length > 6 %}
-            <li class="show-all-platforms-li" id='A{{item["id"]}}' onclick="showAllPlatforms(this.id)">
-              <button id="show-all-platforms">
-                <i id='plus-sign' class="fi fi-br-plus"></i>
-              </button>
-              <p class="platform-name">Show more</p>
-            </li>
-            {% endif %}
+          {% if item["platforms"]|length > 6 %}
+          <li class="show-all-platforms-li" id='A{{item["id"]}}' onclick="showAllPlatforms(this.id)">
+            <button id="show-all-platforms">
+              <i id='plus-sign' class="fi fi-br-plus"></i>
+            </button>
+            <p class="platform-name">Show more</p>
+          </li>
+          {% endif %}
 
-        </ul>
-        {% else %}
-        <p id="no-platforms-exception">
-          No platforms were registered for this game
-        </p>
-        {% endif %}
-      </section>
+      </ul>
+      {% else %}
+      <p id="no-platforms-exception">
+        No platforms were registered for this game
+      </p>
+      {% endif %}
+    </section>
 
-      <h3>Rating</h3>
-      <section class="stars">
-        <div class="star-rating">
-          <img src="../static/img/Star_full.svg.png" alt="Full star" />
-          <img src="../static/img/Star_full.svg.png" alt="Full star" />
-          <img src="../static/img/Star_full.svg.png" alt="Full star" />
-          <img src="../static/img/Star_full.svg.png" alt="Full star" />
-          <img src="../static/img/Star_full.svg.png" alt="Full star" />
-        </div>
-      </section>
+    <h3>Rating</h3>
+    <section class="stars">
+      <div class="star-rating">
+        <img src="../static/img/Star_full.svg.png" alt="Full star" />
+        <img src="../static/img/Star_full.svg.png" alt="Full star" />
+        <img src="../static/img/Star_full.svg.png" alt="Full star" />
+        <img src="../static/img/Star_full.svg.png" alt="Full star" />
+        <img src="../static/img/Star_full.svg.png" alt="Full star" />
+      </div>
+    </section>
 
-      <h4 id="rating-number">({{"%.2f"|format(item.rating/20)}}/5.00)</h4>
-      <span style="font-size: 10px">
-        Based on {{item.rating_count}} votes
-      </span>
+    <h4 id="rating-number">({{"%.2f"|format(item.rating/20)}}/5.00)</h4>
+    <span style="font-size: 10px">
+      Based on {{item.rating_count}} votes
+    </span>
 
-      <button>Details</button>
-    </div>
-    {% endfor %}
-  </section>
+    <button>Details</button>
+  </div>
+  {% endfor %}
+</section>
 </div>
 
 <script>

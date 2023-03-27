@@ -2,6 +2,12 @@
   margin: 30px;
 }
 
+.filter-field {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 #add-filters {
   display: flex;
   justify-content: flex-end;
@@ -48,7 +54,7 @@
 }
 #rating_count_form .form-container {
   border-radius: 5px;
-  padding: 10px;
+  padding: 20px;
   border: 1px solid #76b83f;
   display: flex;
   flex-direction: column;
