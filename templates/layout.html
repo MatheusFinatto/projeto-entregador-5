@@ -1,162 +1,225 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <!-- sidenav script -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var elems = document.querySelectorAll(".sidenav");
+        var instances = M.Sidenav.init(elems);
+      });
+    </script>
 
-<head>
-  <!-- sidenav script -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      var elems = document.querySelectorAll(".sidenav");
-      var instances = M.Sidenav.init(elems);
-    });
-  </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %} {% endblock %}</title>
+    <link
+      rel="icon"
+      href="../static/img/channels4_profile.png"
+      type="image/x-icon"
+    />
 
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{% block title %} {% endblock %}</title>
-  <link rel="icon" href="../static/img/channels4_profile.png" type="image/x-icon">
+    <!-- Materialize links -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
 
-  <!-- Materialize links -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <!-- Internal stylesheets -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/patterns/buttons.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/patterns/page-titles.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/patterns/links.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/patterns/placeholders.css') }}"
+    />
 
-  <!-- Internal stylesheets -->
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/patterns/buttons.css') }}" />
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/patterns/page-titles.css') }}" />
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/patterns/links.css') }}" />
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/patterns/placeholders.css') }}" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/index.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/navbar.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/footer.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/main.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/game-card.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/details.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/login_register.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/social-logins.css') }}"
+    />
 
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/index.css') }}" />
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/navbar.css') }}" />
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/footer.css') }}" />
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/main.css') }}" />
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/game-card.css') }}" />
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/login_register.css') }}" />
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/social-logins.css') }}" />
+    <!-- Jquery scripts -->
+    <script src="{{ url_for('static', filename='scripts/jquery.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts/register.js') }}"></script>
 
-  <!-- Jquery scripts -->
-  <script src="{{ url_for('static', filename='scripts/jquery.js') }}"></script>
-  <script src="{{ url_for('static', filename='scripts/register.js') }}"></script>
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Montserrat&display=swap"
+      rel="stylesheet"
+    />
 
-  <!-- Google fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Montserrat&display=swap"
-    rel="stylesheet">
+    <!-- FI icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn-uicons.flaticon.com/uicons-bold-rounded/css/uicons-bold-rounded.css"
+    />
+  </head>
 
-  <!-- FI icons -->
-  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-bold-rounded/css/uicons-bold-rounded.css'>
+  <body>
+    <nav>
+      <div class="nav-wrapper">
+        <a href="/">
+          <img
+            class="brand-logo"
+            src="../static/img/channels4_profile.png"
+            alt="steam-verde-icon"
+          />
+        </a>
 
+        <a href="#" data-target="mobile-demo" class="right sidenav-trigger"
+          ><i class="material-icons">menu</i></a
+        >
 
-</head>
+        <ul class="right hide-on-med-and-down">
+          <li>
+            <a href="/top-games">
+              <i class="material-icons left">view_module</i>
+              List of top games
+            </a>
+          </li>
+          {% if session.get("username") %}
+          <li>
+            <a href="/logout">
+              <i class="material-icons left">view_module</i>
+              Logout
+            </a>
+          </li>
+          {% else %}
+          <li>
+            <a href="/login">
+              <i class="material-icons left">view_module</i>
+              Login
+            </a>
+          </li>
+          <li>
+            <a href="/register">
+              <i class="material-icons left">view_module</i>
+              Register
+            </a>
+          </li>
+          {% endif %}
+        </ul>
 
-<body>
-  <nav>
-    <div class="nav-wrapper">
-      <a href="/">
-        <img class="brand-logo" src="../static/img/channels4_profile.png" alt="steam-verde-icon" />
-      </a>
+        <ul class="sidenav" id="mobile-demo">
+          <li style="display: flex">
+            <label class="label-icon" for="search"
+              ><i class="material-icons left" style="color: black"
+                >search</i
+              ></label
+            >
+            <input type="text" placeholder="Search" style="margin-top: 5px" />
+          </li>
+          <li>
+            <a href="sass.html">
+              <i class="material-icons left">search</i>
+              Link with Left Icon
+            </a>
+          </li>
+          <li>
+            <a href="/top-games">
+              <i class="material-icons left">view_module</i>
+              List of top games
+            </a>
+          </li>
+          <li>
+            <a href="collapsible.html"><i class="material-icons">refresh</i></a>
+          </li>
+          <li>
+            <a href="mobile.html"><i class="material-icons">more_vert</i></a>
+          </li>
+        </ul>
 
-      <a href="#" data-target="mobile-demo" class="right sidenav-trigger"><i class="material-icons">menu</i></a>
-
-      <ul class="right hide-on-med-and-down">
-        <li>
-          <a href="/top-games">
-            <i class="material-icons left">view_module</i>
-            List of top games
-          </a>
-        </li>
-        {% if session.get("username") %}
-        <li>
-          <a href="/logout">
-            <i class="material-icons left">view_module</i>
-            Logout
-          </a>
-        </li>
-        {% else %}
-        <li>
-          <a href="/login">
-            <i class="material-icons left">view_module</i>
-            Login
-          </a>
-        </li>
-        <li>
-          <a href="/register">
-            <i class="material-icons left">view_module</i>
-            Register
-          </a>
-        </li>
-        {% endif %}
-      </ul>
-
-      <ul class="sidenav" id="mobile-demo">
-        <li style="display: flex">
-          <label class="label-icon" for="search"><i class="material-icons left" style="color: black">search</i></label>
-          <input type="text" placeholder="Search" style="margin-top: 5px" />
-        </li>
-        <li>
-          <a href="sass.html">
-            <i class="material-icons left">search</i>
-            Link with Left Icon
-          </a>
-        </li>
-        <li>
-          <a href="/top-games">
-            <i class="material-icons left">view_module</i>
-            List of top games
-          </a>
-        </li>
-        <li>
-          <a href="collapsible.html"><i class="material-icons">refresh</i></a>
-        </li>
-        <li>
-          <a href="mobile.html"><i class="material-icons">more_vert</i></a>
-        </li>
-      </ul>
-
-      <form action="{{ url_for('search') }}" method="GET">
-        <div class="right input-field hide-on-med-and-down">
-          <input id="search" type="search" name="query" required />
-          <label class="label-icon" for="search">
-            <i class="material-icons">search</i>
-          </label>
-          <i class="material-icons">close</i>
-        </div>
-      </form>
-    </div>
-  </nav>
-
-  <main>
-    {% with messages = get_flashed_messages(category_filter=["message-error"]) %}
-    {% if messages %}
-    <ul class="message-error">
-      {% for message in messages %}
-      <li>{{ message }}</li>
-      {{ break }}
-      {% endfor %}
-    </ul>
-    {% endif %}
-    {% endwith %}
-    {% with messages = get_flashed_messages(category_filter=["message-success"]) %}
-    {% if messages %}
-    <ul class="message-success">
-      {% for message in messages %}
-      <li>{{ message }}</li>
-      {{ break }}
-      {% endfor %}
-    </ul>
-    {% endif %}
-    {% endwith %}
-    {% block content %}{% endblock %}
-  </main>
-  <footer class="page-footer">
-    <div class="footer-copyright" id="footer-copyright">
-      <div>
-        © 2023 Steam Verde
+        <form action="{{ url_for('search') }}" method="GET">
+          <div class="right input-field hide-on-med-and-down">
+            <input id="search" type="search" name="query" required />
+            <label class="label-icon" for="search">
+              <i class="material-icons">search</i>
+            </label>
+            <i class="material-icons">close</i>
+          </div>
+        </form>
       </div>
-    </div>
-  </footer>
+    </nav>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-</body>
+    <main>
+      {% with messages = get_flashed_messages(category_filter=["message-error"])
+      %} {% if messages %}
+      <ul class="message-error">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {{ break }} {% endfor %}
+      </ul>
+      {% endif %} {% endwith %} {% with messages =
+      get_flashed_messages(category_filter=["message-success"]) %} {% if
+      messages %}
+      <ul class="message-success">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {{ break }} {% endfor %}
+      </ul>
+      {% endif %} {% endwith %} {% block content %}{% endblock %}
+    </main>
+    <footer class="page-footer">
+      <div class="footer-copyright" id="footer-copyright">
+        <div>© 2023 Steam Verde</div>
+      </div>
+    </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  </body>
 </html>

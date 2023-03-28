@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, url_for, flash, redirect, session
+from flask import Flask, render_template, request, flash, redirect, session
 import sys
 import requests
 import random
@@ -6,7 +6,7 @@ import string
 from flask_session import Session
 from sessionConfig import *
 from databaseFunctions import *
-from helpers import coverConfig
+from imageConfig import coverConfig, artworkConfig
 
 app = Flask(__name__)
 # A secret key funciona para o Flask para deixar uma sessão segura e poder lembrar todos os request
@@ -152,12 +152,12 @@ def search():
 @app.route('/details/<int:game_id>')
 def game_details(game_id):
     url = 'https://api.igdb.com/v4/games'
-    data = f'fields *, cover.url, platforms.name, platforms.platform_logo.url; where id = {game_id};'
+    data = f'fields rating, name,rating_count, cover.url, platforms.name, platforms.platform_logo.url, artworks.url; where id = {game_id};'
     headers = HEADERS
     response = requests.post(url, headers=headers, data=data)
     if response.ok:
         newJson = coverConfig(response)
-        print(newJson)
+        newJson = artworkConfig(newJson)
         return render_template('details.html', newJson=newJson)
 
 
