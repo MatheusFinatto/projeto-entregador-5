@@ -68,3 +68,19 @@ def setUserPasswordRecoverCode(recover_code, email):
     except:
         conn.close()
         return False
+    
+
+def getRecoverCode(email):
+    conn = get_db_connection()
+    try:
+        cur = conn.cursor()
+        cur.execute("SELECT code FROM users WHERE email=?", [email])
+        code = cur.fetchone()
+
+        conn.commit()
+        conn.close()
+        return code
+        
+    except:
+        conn.close()
+        return None
