@@ -103,7 +103,10 @@ def forgotPassword():
 
 @app.route('/set-new-password', methods=['GET', 'POST'])
 def setNewPassword():
+    if request.method == 'POST':
+        return True
     return render_template('set-new-password.html')
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
