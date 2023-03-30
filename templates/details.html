@@ -1,0 +1,150 @@
+{% extends "layout.html" %} {% block title %} Details {% endblock %} {% block
+content %} {% if not newJson['data'][0]['artworks']|length > 0 or is_mobile%}
+<div
+  id="details-container"
+  style="
+background: url(https:{{ newJson['data'][0]['cover']['url'] }});
+background-size: cover;
+background-position: 50% 10%;"
+>
+  {% else %}
+  <div
+    id="details-container"
+    style="
+  background: url(https:{{ newJson['data'][0]['artworks'][0]['url'] }});
+  background-size: cover;
+  background-position: 50% 10%;
+  "
+  >
+    {% endif %}
+    <div id="details-content">
+      <p>
+        TO DO: add screenshots, description, etc. Ex:
+        <a href="https://www.igdb.com/games/hogwarts-legacy"
+          >https://www.igdb.com/games/hogwarts-legacy</a
+        >
+        {{is_mobile}}
+      </p>
+      <br />
+      <br />
+      <h1>{{ newJson["data"][0].name }}</h1>
+
+      <!-- //TODO -->
+
+      <div>
+        <section>
+          <div>
+            <img
+              src="https:{{ newJson['data'][0]['cover']['url'] }}"
+              id="cover"
+            />
+            <section>
+              <h3>Platforms</h3>
+              {% if newJson["data"][0]['platforms']|length %}
+              <ul class="platforms">
+                {% for platform in newJson["data"][0]["platforms"]%} {% if
+                newJson["data"][0]["platforms"]|length > 6 %} {% if loop.index <
+                6 %} {% if platform["platform_logo"] %}
+                <li>
+                  <img
+                    src='https:{{platform["platform_logo"]["url"]}}'
+                    alt="Game Platform Logo"
+                  />
+                  <p class="platform-name">{{platform['name']}}</p>
+                </li>
+                {% else %}
+                <li>
+                  <img
+                    src="https://via.placeholder.com/300x200.png?text=Image+Not+Found"
+                    alt="Game Platform Logo"
+                  />
+                  <p class="platform-name">{{platform['name']}}</p>
+                </li>
+                {% endif %} {% else %} {% if platform["platform_logo"] %}
+                <li style="display: none" id='B{{newJson["data"][0]["id"]}}'>
+                  <img
+                    src='https:{{platform["platform_logo"]["url"]}}'
+                    alt="Game Platform Logo"
+                  />
+                  <p class="platform-name">{{platform['name']}}</p>
+                </li>
+                {% else %}
+                <li style="display: none" id='B{{newJson["data"][0]["id"]}}'>
+                  <img
+                    src="https://via.placeholder.com/300x200.png?text=Image+Not+Found"
+                    alt="Game Platform Logo"
+                  />
+                  <p class="platform-name">{{platform['name']}}</p>
+                </li>
+                {% endif %} {% endif %} {% else %} {% if
+                platform["platform_logo"] %}
+                <li>
+                  <img
+                    src='https:{{platform["platform_logo"]["url"]}}'
+                    alt="Game Platform Logo"
+                  />
+                  <p class="platform-name">{{platform['name']}}</p>
+                </li>
+                {% else %}
+                <li>
+                  <img
+                    src="https://via.placeholder.com/300x200.png?text=Image+Not+Found"
+                    alt="Game Platform Logo"
+                  />
+                  <p class="platform-name">{{platform['name']}}</p>
+                </li>
+                {% endif %} {% endif %} {% endfor %} {% if
+                newJson["data"][0]["platforms"]|length > 6 %}
+                <li
+                  class="show-all-platforms-li"
+                  id='A{{newJson["data"][0]["id"]}}'
+                  onclick="showAllPlatforms(this.id)"
+                >
+                  <button id="show-all-platforms">
+                    <i id="plus-sign" class="fi fi-br-plus"></i>
+                  </button>
+                  <p class="platform-name">Show more</p>
+                </li>
+                {% endif %}
+              </ul>
+              {% else %}
+              <p id="no-platforms-exception">
+                No platforms were registered for this game
+              </p>
+              {% endif %}
+            </section>
+            <h3>Rating</h3>
+            <section class="stars">
+              <div class="star-rating">
+                <img src="../static/img/Star_full.svg.png" alt="Full star" />
+                <img src="../static/img/Star_full.svg.png" alt="Full star" />
+                <img src="../static/img/Star_full.svg.png" alt="Full star" />
+                <img src="../static/img/Star_full.svg.png" alt="Full star" />
+                <img src="../static/img/Star_full.svg.png" alt="Full star" />
+              </div>
+            </section>
+
+            <h4 id="rating-number">
+              ({{"%.2f"|format(newJson["data"][0].rating/20)}}/5.00)
+            </h4>
+            <span style="font-size: 10px">
+              Based on {{newJson["data"][0].rating_count}} votes
+            </span>
+
+            <a href="/details/{{ newJson['data'][0].id }}"
+              ><button>Details</button></a
+            >
+          </div>
+        </section>
+      </div>
+
+      <div class="artworks">
+        {% for item in newJson["data"][0]['artworks'] %}
+        <img src="{{ item['url'] }}" alt="" />
+        {%endfor%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,45 @@
+.form-box {
+  text-align: center;
+  margin: auto;
+  width: 450px;
+}
+
+.spacing {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.input-field {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 30px;
+}
+
+input[type="text"],
+input[type="password"] {
+  color: white;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  border-bottom-color: rgb(118, 184, 63) !important;
+}
+
+.password-constraints {
+  text-align: left;
+  font-size: 0.8em;
+  display: none;
+  margin-bottom: 10px;
+  /* visibility: hidden; */
+}
+
+@media only screen and (max-width: 600px) {
+  .form-box {
+    width: 80%;
+  }
+}
+
+.forgot-password {
+  display: flex;
+  justify-content: flex-start;
+}

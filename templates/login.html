@@ -1,0 +1,29 @@
+{% extends "layout.html" %} {% block title %} Steam verde {% endblock %} {% block content %}
+<div class="container">
+  <h1>Login</h1>
+  <div class="form-box">
+    <form action="{{ url_for('login')}}" method="POST">
+      <div class="social-logins">
+        <a href=""><div class="bg-google"></div></a>
+        <a href=""><div class="bg-github"></div></a>
+        <a href=""><div class="bg-twitter"></div></a>
+        <a href=""><div class="bg-instagram"></div></a>
+      </div>
+      <div class="input-field">
+        <label for="email"><b>Email</b></label>
+        <input id="email" type="text" value="{{ request.form['email'] }}" name="email">
+      </div>
+
+      <div class="input-field">
+        <label for="password"><b>Password</b></label>
+        <input id="password" type="password" name="password">
+      </div>
+      <p class="spacing forgot-password"><a href="forgot-password">Forgot your password?</a></p>
+
+      <button type="submit">Login</button>
+    </form>
+    <p class="spacing">No account? <a href="register">Create one</a></p>
+  </div>
+</div>
+</div>
+{% endblock %}

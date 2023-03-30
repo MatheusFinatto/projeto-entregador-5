@@ -1,0 +1,9 @@
+a {
+  color: #76b83f;
+}
+a:hover {
+  color: #2f6800;
+  -webkit-text-stroke-width: 0.7px;
+  -webkit-text-stroke-color: #76b83f;
+  transition: 1s linear;
+}

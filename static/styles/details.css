@@ -1,0 +1,16 @@
+.artworks img {
+  height: 100px;
+}
+
+#details-container {
+  height: 100%;
+}
+
+#details-content {
+  background-color: rgba(27, 41, 57, 0.932);
+  height: 100%;
+}
+
+#teste {
+  height: 100%;
+}
