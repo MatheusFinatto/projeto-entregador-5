@@ -269,6 +269,7 @@
 @media only screen and (max-width: 415px) {
   .game-card {
     width: 90%;
+    height: auto;
   }
   #cover {
     width: 100%;
@@ -298,7 +299,7 @@
 #game-card-buttons-section {
   display: flex;
   justify-content: space-evenly;
-  width: 50%;
+  width: 210px;
 }
 #game-card-buttons-section .button {
   display: flex;

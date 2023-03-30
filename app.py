@@ -7,6 +7,8 @@ from flask_session import Session
 from sessionConfig import *
 from databaseFunctions import *
 from imageConfig import coverConfig, artworkConfig
+from user_agents import parse
+
 
 app = Flask(__name__)
 # A secret key funciona para o Flask para deixar uma sessão segura e poder lembrar todos os request
@@ -151,6 +153,11 @@ def search():
 # DETAILS #
 @app.route('/details/<int:game_id>')
 def game_details(game_id):
+    user_agent_string = request.headers.get('User-Agent')
+    is_mobile = False
+    if user_agent_string:
+        user_agent = parse(user_agent_string)
+        is_mobile = user_agent.is_mobile
     url = 'https://api.igdb.com/v4/games'
     data = f'fields rating, name,rating_count, cover.url, platforms.name, platforms.platform_logo.url, artworks.url; where id = {game_id};'
     headers = HEADERS
@@ -158,7 +165,7 @@ def game_details(game_id):
     if response.ok:
         newJson = coverConfig(response)
         newJson = artworkConfig(newJson)
-        return render_template('details.html', newJson=newJson)
+        return render_template('details.html', newJson=newJson, is_mobile=is_mobile)
 
 
 # HOME #
