@@ -103,7 +103,19 @@ def forgotPassword():
 
 @app.route('/set-new-password', methods=['GET', 'POST'])
 def setNewPassword():
+    if request.method == 'POST':
+        password = request.form['password']
+        confirmPassword = request.form['confirm-password']
+        match_passwords = (password == confirmPassword)
+
+        if not password:
+            flash('Password is required!', 'message-error')
+        elif not confirmPassword:
+            flash('Confirmation of password is required!', 'message-error')
+        elif not match_passwords:
+            flash()
     return render_template('set-new-password.html')
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
