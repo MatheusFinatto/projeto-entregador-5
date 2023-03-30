@@ -157,7 +157,7 @@
   max-width: 125px;
   overflow: hidden;
   display: flex;
-  margin: 1px 0;
+  margin-bottom: 5px;
 }
 
 .star-rating img {
@@ -293,4 +293,18 @@
   align-items: center;
   width: 14px;
   height: 14px;
+}
+
+#game-card-buttons-section {
+  display: flex;
+  justify-content: space-evenly;
+  width: 50%;
+}
+#game-card-buttons-section .button {
+  display: flex;
+  font-size: 1.5rem;
+  width: 3rem;
+}
+#game-card-buttons-section .button i {
+  margin-top: 5px;
 }
