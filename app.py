@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, url_for, flash, redirect, session
+from flask import Flask, render_template, request, flash, redirect, session
 import sys
 import requests
 import random
@@ -7,6 +7,9 @@ from flask_session import Session
 from sessionConfig import *
 from databaseFunctions import *
 from emailConfig import *
+from dataConfigHelpers import imageConfig, setFavorites, setWishlist
+from user_agents import parse
+
 
 app = Flask(__name__)
 # A secret key funciona para o Flask para deixar uma sessão segura e poder lembrar todos os request
@@ -37,19 +40,12 @@ HEADERS = {
 }
 
 
+# LOGIN AND REGISTER #
 def generateRecoverPasswordCode():
     # choose from all uppercase letter
     letters = string.ascii_uppercase
     code = ''.join(random.choice(letters) for i in range(5))
     return code
-
-
-@app.route('/')
-def index():
-    conn = get_db_connection()
-    posts = conn.execute('SELECT * FROM posts').fetchall()
-    conn.close()
-    return render_template('index.html', posts=posts)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -72,7 +68,6 @@ def login():
     else:
         if session.get("username"):
             return redirect('landing')
-
     return render_template('login.html')
 
 
@@ -130,7 +125,6 @@ def register():
                 return redirect('/login')
             else:
                 flash('Your account could not be created!', 'message-error')
-
     return render_template('register.html')
 
 
@@ -142,6 +136,7 @@ def landing():
     return render_template('landing.html')
 
 
+# BEST GAMES #
 @app.route('/top-games')
 def top_games():
     rating_count = request.args.get('rating_count', default=1000, type=int)
@@ -150,37 +145,56 @@ def top_games():
     data = f'fields name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url; where rating_count > {rating_count}; sort rating desc; limit {limit};'
     headers = HEADERS
     response = requests.post(url, headers=headers, data=data)
-    newJson = []
     if response.ok:
-        # response.json() é um array de objetos (url de imagens)
-        newJson = {"data": response.json().copy()}
-        for i in range(len(response.json())):
-            newJson["data"][i]['cover']["url"] = response.json(
-            )[i]['cover']["url"].replace("t_thumb", "t_1080p")
-        return render_template('top-games.html',
-                               newJson=newJson)
-    else:
-        return jsonify({'error': 'Failed to retrieve game cover.'}), response.status_code
+        newJson = imageConfig(response, 'cover')
+        newJson = setFavorites(newJson)
+        newJson = setWishlist(newJson)
+        return render_template('top-games.html', newJson=newJson)
 
 
+# SEARCH #
 @app.route('/search')
 def search():
+    rating_count = request.args.get('rating_count', default=1, type=int)
+    rating = request.args.get('rating', default=1, type=int)
+    limit = request.args.get('limit', default=20, type=int)
     name = request.args.get('query')
-    print(name)
+    if not name:
+        name = request.args.get('name')
     url = 'https://api.igdb.com/v4/games'
-    data = f'search "{name}"; fields name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url;'
+    data = f'search "{name}"; fields name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url; where rating > {rating} & rating_count > {rating_count}; limit {limit};'
     headers = HEADERS
     response = requests.post(url, headers=headers, data=data)
-    newJson = []
     if response.ok:
-        print(response.json())
-        newJson = {"data": response.json().copy()}
-        for i in range(len(response.json())):
-            if 'cover' in newJson["data"][i]:
-                newJson["data"][i]['cover']["url"] = response.json(
-                )[i]['cover']["url"].replace("t_thumb", "t_1080p")
-
+        newJson = imageConfig(response, 'cover')
         return render_template('search.html', newJson=newJson, name=name)
+
+
+# DETAILS #
+@app.route('/details/<int:game_id>')
+def game_details(game_id):
+    user_agent_string = request.headers.get('User-Agent')
+    is_mobile = False
+    if user_agent_string:
+        user_agent = parse(user_agent_string)
+        is_mobile = user_agent.is_mobile
+    url = 'https://api.igdb.com/v4/games'
+    data = f'fields rating, name,rating_count, cover.url, platforms.name, platforms.platform_logo.url, artworks.url; where id = {game_id};'
+    headers = HEADERS
+    response = requests.post(url, headers=headers, data=data)
+    if response.ok:
+        newJson = imageConfig(response, 'cover')
+        newJson = imageConfig(newJson, 'artworks')
+        return render_template('details.html', newJson=newJson, is_mobile=is_mobile)
+
+
+# HOME #
+@app.route('/')
+def index():
+    conn = get_db_connection()
+    posts = conn.execute('SELECT * FROM posts').fetchall()
+    conn.close()
+    return render_template('index.html', posts=posts)
 
 
 if __name__ == '__main__':

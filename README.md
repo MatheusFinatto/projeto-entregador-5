@@ -17,7 +17,7 @@
     <br>
     <ul>
         <li>If that fails, open the  <code>requirements.txt</code> file and run the command <code>pip install</code> followed by the dependencies' names.</li>
-        <li>At the moment this is being written, the command would be <code>pip install Flask requests Flask_Session</code>, but more dependencies may be added by the moment you are reading it.</li>
+        <li>At the moment this is being written, the command would be <code>pip install Flask requests Flask_Session pyyaml ua-parser user-agents</code>, but more dependencies may be added by the moment you are reading it.</li>
     </ul>
     <br>
     <li>Run the command <code>flask run</code> to start the development server.</li>
