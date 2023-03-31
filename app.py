@@ -6,7 +6,7 @@ import string
 from flask_session import Session
 from sessionConfig import *
 from databaseFunctions import *
-from imageConfig import coverConfig, artworkConfig
+from dataConfigHelpers import imageConfig, setFavorites, setWishlist
 from user_agents import parse
 
 
@@ -105,7 +105,6 @@ def register():
                 return redirect('/login')
             else:
                 flash('Your account could not be created!', 'message-error')
-
     return render_template('register.html')
 
 
@@ -127,9 +126,10 @@ def top_games():
     headers = HEADERS
     response = requests.post(url, headers=headers, data=data)
     if response.ok:
-        newJson = coverConfig(response)
-        return render_template('top-games.html',
-                               newJson=newJson)
+        newJson = imageConfig(response, 'cover')
+        newJson = setFavorites(newJson)
+        newJson = setWishlist(newJson)
+        return render_template('top-games.html', newJson=newJson)
 
 
 # SEARCH #
@@ -146,7 +146,7 @@ def search():
     headers = HEADERS
     response = requests.post(url, headers=headers, data=data)
     if response.ok:
-        newJson = coverConfig(response)
+        newJson = imageConfig(response, 'cover')
         return render_template('search.html', newJson=newJson, name=name)
 
 
@@ -163,8 +163,8 @@ def game_details(game_id):
     headers = HEADERS
     response = requests.post(url, headers=headers, data=data)
     if response.ok:
-        newJson = coverConfig(response)
-        newJson = artworkConfig(newJson)
+        newJson = imageConfig(response, 'cover')
+        newJson = imageConfig(newJson, 'artworks')
         return render_template('details.html', newJson=newJson, is_mobile=is_mobile)
 
 

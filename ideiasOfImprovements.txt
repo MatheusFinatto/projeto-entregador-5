@@ -1,50 +1,48 @@
-add filter by year on search / top games / etc
-
-    
-
-Search games but exclude versions (editions)
-    fields name, involved_companies; search "Assassins Creed"; where version_parent = null;
-
-
-search/sort games by genre 
-
-    Get all games from specific genres
-    Notice how you can comma separate multiple IDs (8, 9, and 11). You can do this with games, companies and anything else. Also note that when you have multiple IDs they have to be surrounded by a parenthesis. Single ids can be queried both with and without the parenthesis.
-
-    https://api.igdb.com/v4/genres/
-
-    fields *; where id = (8,9,11);
-
-search/sort games by release date
+on file: game cards
+    add "if" to control if the game is favorited by the user. if it is, use filled heart; else, use empty heart;
+    if user clicks on a platform, should go to a page that renders info about that platform. inside that page,there will be a button to see games of that platform (or render the games inside the route, even)
 
 
 
-Coming soon games for Playstation 4
-    endpoint: https://api.igdb.com/v4/release_dates/
+on file search:
+    Add filter by year on search / top games / etc
+    Search games but exclude versions (editions)
+        fields name, involved_companies; search "Assassins Creed"; where version_parent = null;
+    search/sort games by genre 
 
-    fields *; where game.platforms = 48 & date > 1538129354; sort date asc;
-    1538129354: Is the timestamp in milliseconds of 28/09/2018 (This you need to generate yourself) 48 Is the platform id of Playstation 4.
+        Get all games from specific genres
+        Notice how you can comma separate multiple IDs (8, 9, and 11). You can do this with games, companies and anything else. Also note that when you have multiple IDs they have to be surrounded by a parenthesis. Single ids can be queried both with and without the parenthesis.
 
-Recently released games for Playstation 4
-    fields *; where game.platforms = 48 & date < 1538129354; sort date desc;
+        https://api.igdb.com/v4/genres/
+
+        fields *; where id = (8,9,11);
+
+    search/sort games by release date
+    Coming soon games for Playstation 4
+        endpoint: https://api.igdb.com/v4/release_dates/
+
+        fields *; where game.platforms = 48 & date > 1538129354; sort date asc;
+        1538129354: Is the timestamp in milliseconds of 28/09/2018 (This you need to generate yourself) 48 Is the platform id of Playstation 4.
+
+    Recently released games for Playstation 4
+        fields *; where game.platforms = 48 & date < 1538129354; sort date desc;
 
 
-Get all games that are playstation 4 exclusives
-    fields name,category,platforms;
-    where category = 0 & platforms = 48;
+    Get all games that are playstation 4 exclusives
+        fields name,category,platforms;
+        where category = 0 & platforms = 48;
 
-Get all games that are only released on playstation 4 AND PC (can be xbox, pc, mobile... accept user input?)
-    fields name,category,platforms;
-    where category = 0 & platforms = {48,6};
-
-
+    Get all games that are only released on playstation 4 AND PC (can be xbox, pc, mobile... accept user input?)
+        fields name,category,platforms;
+        where category = 0 & platforms = {48,6};
 
 
-on details page
+
+on file: details
     fields *; where id = 1942;
     fields artworks.*; --> needs to use 
-
-
-
-
-pip install pyyaml ua-parser user-agents
+    WE NEED REVIEWS!
+    gamer reviews, critique reviews, 
+    similar_games"
+    storyline
+    sumarry

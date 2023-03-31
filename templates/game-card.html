@@ -98,18 +98,35 @@
           <span class="buttons-tooltip">Details</span>
         </button></a
       >
+      {% if item["isFavorite"] %}
+      <a>
+        <button style="color: #a12d2d">
+          <i class="fi fi-sr-heart"></i>
+          <span class="buttons-tooltip">Remove from favorites</span>
+        </button>
+      </a>
+      {%else%}
       <a>
         <button>
           <i class="fi fi-rr-heart"></i>
           <span class="buttons-tooltip">Add to favorites</span>
         </button>
       </a>
+      {% endif %} {% if item["isWished"] %}
+      <a>
+        <button>
+          <i class="fi fi-rr-check"></i>
+          <span class="buttons-tooltip">Remove from wishlist</span>
+        </button>
+      </a>
+      {%else%}
       <a>
         <button>
           <i class="fi fi-rr-list"></i>
           <span class="buttons-tooltip">Add to wishlist</span>
         </button>
       </a>
+      {% endif %}
     </section>
   </div>
   {% endfor %}
