@@ -92,13 +92,24 @@
     <h4 id="rating-number">({{"%.2f"|format(item.rating/20)}}/5.00)</h4>
     <span style="font-size: 10px"> Based on {{item.rating_count}} votes </span>
     <section id="game-card-buttons-section">
-      <a href="/details/{{ item.id }}"><button>Details</button></a>
-      <button class="button">
-        <i class="fi fi-rr-heart"></i>
-      </button>
-      <button class="button">
-        <i class="fi fi-rr-list"></i>
-      </button>
+      <a href="/details/{{ item.id }}"
+        ><button>
+          <i class="fi fi-rr-comment-info"></i>
+          <span class="buttons-tooltip">Details</span>
+        </button></a
+      >
+      <a>
+        <button>
+          <i class="fi fi-rr-heart"></i>
+          <span class="buttons-tooltip">Add to favorites</span>
+        </button>
+      </a>
+      <a>
+        <button>
+          <i class="fi fi-rr-list"></i>
+          <span class="buttons-tooltip">Add to wishlist</span>
+        </button>
+      </a>
     </section>
   </div>
   {% endfor %}

@@ -26,7 +26,7 @@
   align-self: center;
 }
 
-.tooltip {
+.filters-tooltip {
   visibility: hidden;
   width: 200px;
   background-color: black;
@@ -41,7 +41,7 @@
   font-size: 10px;
 }
 
-#filter-info:hover .tooltip {
+#filter-info:hover .filters-tooltip {
   visibility: visible;
 }
 
@@ -301,11 +301,32 @@
   justify-content: space-evenly;
   width: 210px;
 }
-#game-card-buttons-section .button {
+#game-card-buttons-section button {
   display: flex;
   font-size: 1.5rem;
   width: 3rem;
 }
-#game-card-buttons-section .button i {
+#game-card-buttons-section button i {
   margin-top: 5px;
+}
+
+.buttons-tooltip {
+  visibility: hidden;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  font-size: 14px;
+  margin-top: 80px;
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+#game-card-buttons-section button:hover .buttons-tooltip {
+  visibility: visible;
+  opacity: 1;
 }
