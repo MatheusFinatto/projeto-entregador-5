@@ -108,6 +108,7 @@ def setNewPassword():
         elif not confirmPassword:
             flash('Confirmation of password is required!', 'message-error')
         elif not match_passwords:
+            # TODO Update de senha no banco
             flash()
     return render_template('set-new-password.html')
 
