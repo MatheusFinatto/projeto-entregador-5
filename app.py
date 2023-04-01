@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, redirect, session
+from flask import Flask, jsonify, render_template, request, flash, redirect, session
 import sys
 import requests
 import random
@@ -156,11 +156,8 @@ def top_games():
     response = requests.post(url, headers=headers, data=data)
     if response.ok:
         newJson = imageConfig(response, 'cover')
-        print(newJson)
         newJson = getFavorites(newJson)
-        print(newJson)
         newJson = getWishlist(newJson)
-        print(newJson)
         return render_template('top-games.html', newJson=newJson)
 
 
@@ -186,20 +183,22 @@ def search():
 def addFavorite():
     if request.method == 'POST':
         game_id = request.form['game_id']
-        url = request.form['root_url']
+        print(game_id)
         user_id = session.get("id")
         addFavoriteDB(user_id, game_id)
-        return redirect(url)
+        return jsonify({'success': True})
+    return jsonify({'success': False})
 
 
 @app.route('/remove-favorite', methods=['POST'])
 def removeFavorite():
     if request.method == 'POST':
         game_id = request.form['game_id']
-        url = request.form['root_url']
+        print(game_id)
         user_id = session.get("id")
         removeFavoriteDB(user_id, game_id)
-        return redirect(url)
+        return jsonify({'success': True})
+    return jsonify({'success': False})
 
 # DETAILS #
 

@@ -100,25 +100,21 @@
       >
       {% if item["isFavorite"] %}
       <a>
-        <form action="{{ url_for('removeFavorite')}}" method="POST">
-          <input type="hidden" name="game_id" value="{{ item['id'] }}" />
-          <input type="hidden" name="root_url" value="{{ request.path }}" />
-          <button style="color: #a12d2d">
-            <i class="fi fi-sr-heart"></i>
-            <span class="buttons-tooltip">Remove from favorites</span>
-          </button>
-        </form>
+        <button
+          style="color: #a12d2d"
+          onclick="removeFromFavorites(this)"
+          data-game-id="{{ item['id'] }}"
+        >
+          <i class="fi fi-sr-heart"></i>
+          <span class="buttons-tooltip">Remove from favorites</span>
+        </button>
       </a>
       {%else%}
       <a>
-        <form action="{{ url_for('addFavorite')}}" method="POST">
-          <input type="hidden" name="game_id" value="{{ item['id'] }}" />
-          <input type="hidden" name="root_url" value="{{ request.path }}" />
-          <button>
-            <i class="fi fi-rr-heart"></i>
-            <span class="buttons-tooltip">Add to favorites</span>
-          </button>
-        </form>
+        <button onclick="addToFavorites(this)" data-game-id="{{ item['id'] }}">
+          <i class="fi fi-rr-heart"></i>
+          <span class="buttons-tooltip">Add to favorites</span>
+        </button>
       </a>
       {% endif %} {% if item["isWished"] %}
       <a>
@@ -139,3 +135,44 @@
   </div>
   {% endfor %}
 </section>
+
+<script>
+  function addToFavorites(button) {
+    if (!button.disabled) {
+      // only proceed if button is not disabled
+      button.disabled = true; // disable button
+      var itemId = button.dataset.gameId;
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "/add-favorite");
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.onload = function () {
+        button.disabled = false; // re-enable button
+        if (xhr.status === 200) {
+          location.reload();
+        } else {
+          alert("Error adding item to favorites!");
+        }
+      };
+      xhr.send("game_id=" + encodeURIComponent(itemId));
+    }
+  }
+  function removeFromFavorites(button) {
+    if (!button.disabled) {
+      // only proceed if button is not disabled
+      button.disabled = true; // disable button
+      var itemId = button.dataset.gameId;
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "/remove-favorite");
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.onload = function () {
+        button.disabled = false; // re-enable button
+        if (xhr.status === 200) {
+          location.reload();
+        } else {
+          alert("Error removing item to favorites!");
+        }
+      };
+      xhr.send("game_id=" + encodeURIComponent(itemId));
+    }
+  }
+</script>
