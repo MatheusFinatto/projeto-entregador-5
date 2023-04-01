@@ -47,4 +47,7 @@
 <h4>Authorization: Bearer f1fzl61lle5vii2zwca6x2ghswne5z</h4>
 <h4>URL: https://api.igdb.com/v4/[ENDPOINT]</h4>
 
+<h2>How to access database</h2>
+<p>Download DB Browser (SQLite) and open the database.db file</p>
+
 
