@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, redirect, session
+from flask import Flask, jsonify, render_template, request, flash, redirect, session
 import sys
 import requests
 import random
@@ -7,7 +7,7 @@ from flask_session import Session
 from sessionConfig import *
 from databaseFunctions import *
 from emailConfig import *
-from dataConfigHelpers import getFavorites, getWishlist, imageConfig
+from APIConfigHelpers import getFavorites, getWishlist, imageConfig
 from user_agents import parse
 
 
@@ -22,7 +22,7 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 
 # Configurando email service
-app.config['MAIL_SERVER']='sandbox.smtp.mailtrap.io'
+app.config['MAIL_SERVER'] = 'sandbox.smtp.mailtrap.io'
 app.config['MAIL_PORT'] = 2525
 app.config['MAIL_USERNAME'] = '94e6efcfb7801a'
 app.config['MAIL_PASSWORD'] = '07b5faafdb617e'
@@ -178,28 +178,32 @@ def search():
     if response.ok:
         newJson = imageConfig(response, 'cover')
         return render_template('search.html', newJson=newJson, name=name)
-    
+
 
 @app.route('/add-favorite', methods=['POST'])
 def addFavorite():
     if request.method == 'POST':
         game_id = request.form['game_id']
-        url = request.form['root_url']
+        print(game_id)
         user_id = session.get("id")
         addFavoriteDB(user_id, game_id)
-        return redirect(url)
-        
+        return jsonify({'success': True})
+    return jsonify({'success': False})
+
 
 @app.route('/remove-favorite', methods=['POST'])
 def removeFavorite():
     if request.method == 'POST':
         game_id = request.form['game_id']
-        url = request.form['root_url']
+        print(game_id)
         user_id = session.get("id")
         removeFavoriteDB(user_id, game_id)
-        return redirect(url)
+        return jsonify({'success': True})
+    return jsonify({'success': False})
 
 # DETAILS #
+
+
 @app.route('/details/<int:game_id>')
 def game_details(game_id):
     user_agent_string = request.headers.get('User-Agent')
