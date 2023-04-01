@@ -1,5 +1,5 @@
+from flask import session
 from databaseFunctions import get_db_connection
-conn = get_db_connection()
 
 # troca a resolução das capas dos jogos,  que vem da IGDB, para fullHD
 
@@ -28,56 +28,65 @@ def imageConfig(response, imgType):
     return newJson
 
 
-# TODO: change placeholder lists for db selects
-favorites = [1942, 6036, 1026]
-wished = [19560]
+# def setFavorites(game_id):
+#     addFavoriteDB(session.get("id"), game_id)
+#     return 'Foi'
 
 
-def setFavorites(response):
-    newJson = response.copy()
-    for i in range(len(response['data'])):
-        is_favorite = response["data"][i]['id'] in favorites
-        newJson['data'][i]['isFavorite'] = is_favorite
-    return newJson
+def getFavorites(response):
+    # checa se o usuario está logado
+    if (session.get("username")):
+        # cria conexão
+        conn = get_db_connection()
 
+        # faz uma copia da query de games
+        newJson = response.copy()
 
-# def setFavorites(response):
-#     # checa se o usuario está logado
-#     if (session == True):
+        # busca os favoritos do usuário da db
+        cur = conn.cursor()
+        user_id = session.get("id")
+        cur.execute("SELECT game_id FROM favorites WHERE user_id=?", [user_id])
+        favorites = cur.fetchall()
 
-#         # faz uma copia da query de games
-#         newJson = response.copy()
+        # itera sobre os jogos vindos da API e verifica se seus id's foram marcados como favoritos
+        for i in range(len(response['data'])):
+            for j in range(len(favorites)):
+                is_favorite = response["data"][i]['id'] in favorites[j]
+                newJson['data'][i]['isFavorite'] = is_favorite
+                if is_favorite:
+                    break
+        return newJson
 
-#         # busca os favoritos do usuário da db
-#         favorites = conn.execute('SELECT * FROM favorites').fetchall()
-
-#         # itera sobre os jogos vindos da API e verifica se seus id's foram marcados como favoritos
-#         for i in range(len(response['data'])):
-#             is_favorite = response["data"][i]['id'] in favorites
-#             newJson['data'][i]['isFavorite'] = is_favorite
-#         return newJson
-
-
-def setWishlist(response):
-    print("WORKS")
-    newJson = response.copy()
-    for i in range(len(response['data'])):
-        is_wished = response["data"][i]['id'] in wished
-        newJson['data'][i]['isWished'] = is_wished
-    return newJson
 
 # def setWishlist(response):
-#     # checa se o usuario está logado
-#     if (session == True):
+#     print("WORKS")
+#     newJson = response.copy()
+#     for i in range(len(response['data'])):
+#         is_wished = response["data"][i]['id'] in wished
+#         newJson['data'][i]['isWished'] = is_wished
+#     return newJson
 
-#         # faz uma copia da query de games
-#         newJson = response.copy()
+def getWishlist(response):
+    # TODO MUDA OS NOME MATHEUS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    # checa se o usuario está logado
+    if (session.get("username")):
+        # cria conexão
+        conn = get_db_connection()
 
-#         # busca a lista de desejos do usuário da db
-#         wished = conn.execute('SELECT * FROM wishlist').fetchall()
+        # faz uma copia da query de games
+        newJson = response.copy()
 
-#         # itera sobre os jogos vindos da API e verifica se seus id's foram marcados como desejados
-#         for i in range(len(response['data'])):
-#             is_wished = response["data"][i]['id'] in wished
-#             newJson['data'][i]['isFavorite'] = is_wished
-#         return newJson
+        # busca os favoritos do usuário da db
+        cur = conn.cursor()
+        user_id = session.get("id")
+        cur.execute("SELECT game_id FROM favorites WHERE user_id=?", [user_id])
+        favorites = cur.fetchall()
+
+        # itera sobre os jogos vindos da API e verifica se seus id's foram marcados como favoritos
+        for i in range(len(response['data'])):
+            for j in range(len(favorites)):
+                is_favorite = response["data"][i]['id'] in favorites[j]
+                newJson['data'][i]['isFavorite'] = is_favorite
+                if is_favorite:
+                    break
+        return newJson

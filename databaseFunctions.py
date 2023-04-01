@@ -8,6 +8,60 @@ def get_db_connection():
     return conn
 
 
+def addFavoriteDB(user_id, game_id):
+    conn = get_db_connection()
+    try:
+        cur = conn.cursor()
+        
+        cur.execute("INSERT INTO favorites (user_id, game_id) VALUES (?, ?)",
+            [user_id, game_id]
+        )
+        
+        conn.commit()
+        conn.close()
+
+        return True
+    except:
+        conn.close()
+        return False
+    
+
+def removeFavoriteDB(user_id, game_id):
+    conn = get_db_connection()
+    try:
+        cur = conn.cursor()
+        
+        cur.execute("DELETE FROM favorites WHERE user_id=? AND game_id=?",
+            [user_id, game_id]
+        )
+        
+        conn.commit()
+        conn.close()
+
+        return True
+    except:
+        conn.close()
+        return False
+
+
+def addWishlistDB(user_id, game_id):
+    conn = get_db_connection()
+    try:
+        cur = conn.cursor()
+        
+        cur.execute("INSERT INTO wishlist (user_id, game_id) VALUES (?, ?)",
+            [user_id, game_id]
+        )
+        
+        conn.commit()
+        conn.close()
+
+        return True
+    except:
+        conn.close()
+        return False
+
+
 def addUser(email, username, password):
     conn = get_db_connection()
     try:
@@ -31,9 +85,7 @@ def searchUser(email, password):
     try:
         cur = conn.cursor()
         cur.execute("SELECT * FROM users WHERE email=? AND password=?", [email, password])
-        print(cur)
         user = cur.fetchone()
-        print(user)
         configureSessionUser(user)
         
         conn.commit()

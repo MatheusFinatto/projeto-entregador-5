@@ -7,7 +7,7 @@ from flask_session import Session
 from sessionConfig import *
 from databaseFunctions import *
 from emailConfig import *
-from dataConfigHelpers import imageConfig, setFavorites, setWishlist
+from dataConfigHelpers import getFavorites, getWishlist, imageConfig
 from user_agents import parse
 
 
@@ -156,8 +156,8 @@ def top_games():
     response = requests.post(url, headers=headers, data=data)
     if response.ok:
         newJson = imageConfig(response, 'cover')
-        newJson = setFavorites(newJson)
-        newJson = setWishlist(newJson)
+        newJson = getFavorites(newJson)
+        newJson = getWishlist(newJson)
         return render_template('top-games.html', newJson=newJson)
 
 
@@ -177,7 +177,26 @@ def search():
     if response.ok:
         newJson = imageConfig(response, 'cover')
         return render_template('search.html', newJson=newJson, name=name)
+    
 
+@app.route('/add-favorite', methods=['POST'])
+def addFavorite():
+    if request.method == 'POST':
+        game_id = request.form['game_id']
+        url = request.form['root_url']
+        user_id = session.get("id")
+        addFavoriteDB(user_id, game_id)
+        return redirect(url)
+        
+
+@app.route('/remove-favorite', methods=['POST'])
+def removeFavorite():
+    if request.method == 'POST':
+        game_id = request.form['game_id']
+        url = request.form['root_url']
+        user_id = session.get("id")
+        removeFavoriteDB(user_id, game_id)
+        return redirect(url)
 
 # DETAILS #
 @app.route('/details/<int:game_id>')
@@ -200,10 +219,7 @@ def game_details(game_id):
 # HOME #
 @app.route('/')
 def index():
-    conn = get_db_connection()
-    posts = conn.execute('SELECT * FROM posts').fetchall()
-    conn.close()
-    return render_template('index.html', posts=posts)
+    return render_template('index.html')
 
 
 if __name__ == '__main__':
