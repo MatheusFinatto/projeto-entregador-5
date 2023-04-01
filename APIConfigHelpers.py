@@ -36,6 +36,7 @@ def imageConfig(response, imgType):
 def getFavorites(response):
     # checa se o usuario está logado
     if (session.get("username")):
+        print("getting username")
         # cria conexão
         conn = get_db_connection()
 
@@ -56,6 +57,7 @@ def getFavorites(response):
                 if is_favorite:
                     break
         return newJson
+    return response
 
 
 # def setWishlist(response):
@@ -90,3 +92,4 @@ def getWishlist(response):
                 if is_favorite:
                     break
         return newJson
+    return response

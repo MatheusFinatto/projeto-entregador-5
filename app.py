@@ -7,7 +7,7 @@ from flask_session import Session
 from sessionConfig import *
 from databaseFunctions import *
 from emailConfig import *
-from dataConfigHelpers import getFavorites, getWishlist, imageConfig
+from APIConfigHelpers import getFavorites, getWishlist, imageConfig
 from user_agents import parse
 
 
@@ -22,7 +22,7 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 
 # Configurando email service
-app.config['MAIL_SERVER']='sandbox.smtp.mailtrap.io'
+app.config['MAIL_SERVER'] = 'sandbox.smtp.mailtrap.io'
 app.config['MAIL_PORT'] = 2525
 app.config['MAIL_USERNAME'] = '94e6efcfb7801a'
 app.config['MAIL_PASSWORD'] = '07b5faafdb617e'
@@ -156,8 +156,11 @@ def top_games():
     response = requests.post(url, headers=headers, data=data)
     if response.ok:
         newJson = imageConfig(response, 'cover')
+        print(newJson)
         newJson = getFavorites(newJson)
+        print(newJson)
         newJson = getWishlist(newJson)
+        print(newJson)
         return render_template('top-games.html', newJson=newJson)
 
 
@@ -177,7 +180,7 @@ def search():
     if response.ok:
         newJson = imageConfig(response, 'cover')
         return render_template('search.html', newJson=newJson, name=name)
-    
+
 
 @app.route('/add-favorite', methods=['POST'])
 def addFavorite():
@@ -187,7 +190,7 @@ def addFavorite():
         user_id = session.get("id")
         addFavoriteDB(user_id, game_id)
         return redirect(url)
-        
+
 
 @app.route('/remove-favorite', methods=['POST'])
 def removeFavorite():
@@ -199,6 +202,8 @@ def removeFavorite():
         return redirect(url)
 
 # DETAILS #
+
+
 @app.route('/details/<int:game_id>')
 def game_details(game_id):
     user_agent_string = request.headers.get('User-Agent')

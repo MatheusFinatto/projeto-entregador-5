@@ -101,8 +101,8 @@
       {% if item["isFavorite"] %}
       <a>
         <form action="{{ url_for('removeFavorite')}}" method="POST">
-          <input type="hidden" name="game_id" value="{{ item['id'] }}">
-          <input type="hidden" name="root_url" value="{{ request.path }}">
+          <input type="hidden" name="game_id" value="{{ item['id'] }}" />
+          <input type="hidden" name="root_url" value="{{ request.path }}" />
           <button style="color: #a12d2d">
             <i class="fi fi-sr-heart"></i>
             <span class="buttons-tooltip">Remove from favorites</span>
@@ -112,8 +112,8 @@
       {%else%}
       <a>
         <form action="{{ url_for('addFavorite')}}" method="POST">
-          <input type="hidden" name="game_id" value="{{ item['id'] }}">
-          <input type="hidden" name="root_url" value="{{ request.path }}">
+          <input type="hidden" name="game_id" value="{{ item['id'] }}" />
+          <input type="hidden" name="root_url" value="{{ request.path }}" />
           <button>
             <i class="fi fi-rr-heart"></i>
             <span class="buttons-tooltip">Add to favorites</span>
