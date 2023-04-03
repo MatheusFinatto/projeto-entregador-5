@@ -189,7 +189,7 @@ def favorites():
         favorites = getFavoritesDB()
         string = ",".join([str(x[0]) for x in favorites])
         url = 'https://api.igdb.com/v4/games'
-        data = f'fields name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url; where id = ({string});'
+        data = f'fields name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url; where id = ({string});limit 500;'
         headers = HEADERS
         response = requests.post(url, headers=headers, data=data)
         newJson = []
@@ -204,7 +204,6 @@ def favorites():
 def addFavorite():
     if request.method == 'POST':
         game_id = request.form['game_id']
-        print(game_id)
         user_id = session.get("id")
         addFavoriteDB(user_id, game_id)
         return jsonify({'success': True})
@@ -215,7 +214,6 @@ def addFavorite():
 def removeFavorite():
     if request.method == 'POST':
         game_id = request.form['game_id']
-        print(game_id)
         user_id = session.get("id")
         removeFavoriteDB(user_id, game_id)
         return jsonify({'success': True})
@@ -231,7 +229,7 @@ def wishlist():
         wishlist = getWishlistDB()
         string = ",".join([str(x[0]) for x in wishlist])
         url = 'https://api.igdb.com/v4/games'
-        data = f'fields name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url; where id = ({string});'
+        data = f'fields name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url; where id = ({string}); limit 500;'
         headers = HEADERS
         response = requests.post(url, headers=headers, data=data)
         newJson = []
@@ -246,7 +244,6 @@ def wishlist():
 def addWishlist():
     if request.method == 'POST':
         game_id = request.form['game_id']
-        print(game_id)
         user_id = session.get("id")
         addWishlistDB(user_id, game_id)
 
@@ -258,7 +255,6 @@ def addWishlist():
 def removeWishlist():
     if request.method == 'POST':
         game_id = request.form['game_id']
-        print(game_id)
         user_id = session.get("id")
         removeWishlistDB(user_id, game_id)
         return jsonify({'success': True})

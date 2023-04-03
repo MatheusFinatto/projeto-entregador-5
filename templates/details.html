@@ -42,6 +42,8 @@ background-position: 50% 10%;"
               <h3>Platforms</h3>
               {% if newJson["data"][0]['platforms']|length %}
               <ul class="platforms">
+                <i id="plus-sign" class="fi fi-br-plus"></i>
+
                 {% for platform in newJson["data"][0]["platforms"]%} {% if
                 newJson["data"][0]["platforms"]|length > 6 %} {% if loop.index <
                 6 %} {% if platform["platform_logo"] %}
