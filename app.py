@@ -89,9 +89,10 @@ def forgotPassword():
 
             if setUserPasswordRecoverCode(code, email):
                 sendRecoverCode(code, email, mail)
+                addCodeRecoverCookie(email, code, True)
                 return render_template('forgot-password.html', code_sent=True, code=code)
             else:
-                return render_template('forgot-password.html')
+                return render_template('forgot-password.html', code_sent=False, code=None)
 
     return render_template('forgot-password.html', code_sent=False, code=None)
 
@@ -99,35 +100,34 @@ def forgotPassword():
 @app.route('/set-password', methods=['GET', 'POST'])
 def setPassword():
     if request.method == 'POST':
-        print(request.form)
+        password = request.form['password']
+        confirmPassword = request.form['confirm-password']
+        email = session.get("email")
+        match_passwords = (password == confirmPassword)
 
-        return render_template('set-new-password.html')
-        # if request.form['password']:
-        #     password = request.form['password']
-        #     confirmPassword = request.form['confirm-password']
-        #     email = request.form['email']
-        #     match_passwords = (password == confirmPassword)
+        if not password:
+            flash('Password is required!', 'message-error')
+            return render_template('set-new-password.html')
+        elif not confirmPassword:
+            flash('Confirmation of password is required!', 'message-error')
+            return render_template('set-new-password.html')
+        elif not match_passwords:
+            flash('The passwords must be the same', 'message-error')
+            return render_template('set-new-password.html')
+        else:
+            if updatePassword(email, password):
+                flash('Your password has been changed', 'message-success')
+                if not session.get("username"):
+                    return render_template('login.html')
+                else:
+                    if session["recover"]:
+                        session["recover"] = False
 
-        #     if not password:
-        #         flash('Password is required!', 'message-error')
-        #         return render_template('set-new-password.html')
-        #     elif not confirmPassword:
-        #         flash('Confirmation of password is required!', 'message-error')
-        #         return render_template('set-new-password.html')
-        #     elif not match_passwords:
-        #         flash('The passwords must be the same', 'message-error')
-        #         return render_template('set-new-password.html')
-        #     else:
-        #         if updatePassword(email, password):
-        #             flash('Your password has been changed', 'message-success')
-        #             if session.get("username"):
-        #                 return render_template('login.html')
-        #             else:
-        #                 # TODO retornar para a tela de detalhes da conta do usuário
-        #                 return render_template('index.html')
-        #         else:
-        #             flash('Something went wrong. Please, try again', 'message-error')
-        #             return render_template('set-new-password.html')
+                    # TODO retornar para a tela de detalhes da conta do usuário
+                    return render_template('index.html')
+            else:
+                flash('Something went wrong. Please, try again', 'message-error')
+                return render_template('set-new-password.html')
 
     return render_template('set-new-password.html')
 
@@ -139,6 +139,7 @@ def register():
         username = request.form['username']
         password = request.form['password']
         confirm_password = request.form['confirm-password']
+        match_passwords = (password == confirm_password)
 
         if not email:
             flash('Email is required!', 'message-error')
@@ -148,6 +149,8 @@ def register():
             flash('Password is required!', 'message-error')
         elif not confirm_password:
             flash('Confirmed Password is required!', 'message-error')
+        elif not match_passwords:
+            flash('The passwords must be the same', 'message-error')
         else:
             if addUser(email, username, password):
                 flash('Your account was created!', 'message-success')
@@ -203,7 +206,6 @@ def search():
 def addFavorite():
     if request.method == 'POST':
         game_id = request.form['game_id']
-        print(game_id)
         user_id = session.get("id")
         addFavoriteDB(user_id, game_id)
         return jsonify({'success': True})
@@ -214,7 +216,6 @@ def addFavorite():
 def removeFavorite():
     if request.method == 'POST':
         game_id = request.form['game_id']
-        print(game_id)
         user_id = session.get("id")
         removeFavoriteDB(user_id, game_id)
         return jsonify({'success': True})

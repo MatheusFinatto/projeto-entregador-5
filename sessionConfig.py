@@ -5,7 +5,13 @@ def configureSessionUser(user):
     session["id"] = user[0]
     session["email"] = user[1]
     session["username"] = user[2]
-    return None
+
+
+def addCodeRecoverCookie(email, code, recover=False):
+    session["email"] = email
+    session["code"] = code
+    if recover:
+        session["recover"] = True
 
 
 def clearSession():
