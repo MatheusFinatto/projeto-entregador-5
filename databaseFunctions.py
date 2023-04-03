@@ -136,3 +136,18 @@ def getRecoverCode(email):
     except:
         conn.close()
         return None
+
+
+def updatePassword(email, password):
+    conn = get_db_connection()
+    try:
+        cur = conn.cursor()
+        cur.execute("UPDATE users " +
+                    "SET password=? " +
+                    "WHERE email=?", [password, email])
+        conn.commit()
+        conn.close()
+        return True
+    except:
+        conn.close()
+        return False

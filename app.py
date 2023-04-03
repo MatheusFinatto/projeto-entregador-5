@@ -96,20 +96,39 @@ def forgotPassword():
     return render_template('forgot-password.html', code_sent=False, code=None)
 
 
-@app.route('/set-new-password', methods=['GET', 'POST'])
-def setNewPassword():
+@app.route('/set-password', methods=['GET', 'POST'])
+def setPassword():
     if request.method == 'POST':
-        password = request.form['password']
-        confirmPassword = request.form['confirm-password']
-        match_passwords = (password == confirmPassword)
+        print(request.form)
 
-        if not password:
-            flash('Password is required!', 'message-error')
-        elif not confirmPassword:
-            flash('Confirmation of password is required!', 'message-error')
-        elif not match_passwords:
-            # TODO Update de senha no banco
-            flash()
+        return render_template('set-new-password.html')
+        # if request.form['password']:
+        #     password = request.form['password']
+        #     confirmPassword = request.form['confirm-password']
+        #     email = request.form['email']
+        #     match_passwords = (password == confirmPassword)
+
+        #     if not password:
+        #         flash('Password is required!', 'message-error')
+        #         return render_template('set-new-password.html')
+        #     elif not confirmPassword:
+        #         flash('Confirmation of password is required!', 'message-error')
+        #         return render_template('set-new-password.html')
+        #     elif not match_passwords:
+        #         flash('The passwords must be the same', 'message-error')
+        #         return render_template('set-new-password.html')
+        #     else:
+        #         if updatePassword(email, password):
+        #             flash('Your password has been changed', 'message-success')
+        #             if session.get("username"):
+        #                 return render_template('login.html')
+        #             else:
+        #                 # TODO retornar para a tela de detalhes da conta do usuário
+        #                 return render_template('index.html')
+        #         else:
+        #             flash('Something went wrong. Please, try again', 'message-error')
+        #             return render_template('set-new-password.html')
+
     return render_template('set-new-password.html')
 
 
