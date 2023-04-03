@@ -181,6 +181,25 @@ def search():
 
 
 # FAVORITES #
+@app.route('/favorites')
+def favorites():
+    if not session.get("username"):
+        return redirect('/login')
+    else:
+        favorites = getFavoritesDB()
+        string = ",".join([str(x[0]) for x in favorites])
+        url = 'https://api.igdb.com/v4/games'
+        data = f'fields name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url; where id = ({string}); limit 20;'
+        headers = HEADERS
+        response = requests.post(url, headers=headers, data=data)
+        newJson = []
+        if response.ok:
+            newJson = imageConfig(response, 'cover')
+            newJson = getFavorites(newJson)
+            newJson = getWishlist(newJson)
+        return render_template('favorites.html', newJson=newJson, forceUpdate=True)
+
+
 @app.route('/add-favorite', methods=['POST'])
 def addFavorite():
     if request.method == 'POST':
@@ -204,6 +223,25 @@ def removeFavorite():
 
 
 # WISHLIST #
+@app.route('/wishlist')
+def wishlist():
+    if not session.get("username"):
+        return redirect('/login')
+    else:
+        wishlist = getWishlistDB()
+        string = ",".join([str(x[0]) for x in wishlist])
+        url = 'https://api.igdb.com/v4/games'
+        data = f'fields name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url; where id = ({string}); limit 20;'
+        headers = HEADERS
+        response = requests.post(url, headers=headers, data=data)
+        newJson = []
+        if response.ok:
+            newJson = imageConfig(response, 'cover')
+            newJson = getFavorites(newJson)
+            newJson = getWishlist(newJson)
+        return render_template('wishlist.html', newJson=newJson, forceUpdate=True)
+
+
 @app.route('/add-wishlist', methods=['POST'])
 def addWishlist():
     if request.method == 'POST':

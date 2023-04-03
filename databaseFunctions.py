@@ -9,6 +9,22 @@ def get_db_connection():
     return conn
 
 
+def getFavoritesDB():
+    conn = get_db_connection()
+    try:
+        cur = conn.cursor()
+
+        cur.execute("SELECT game_id FROM favorites")
+        user = cur.fetchall()
+        conn.commit()
+        conn.close()
+
+        return user
+    except:
+        conn.close()
+        return False
+
+
 def addFavoriteDB(user_id, game_id):
     conn = get_db_connection()
     try:
@@ -40,6 +56,22 @@ def removeFavoriteDB(user_id, game_id):
         conn.close()
 
         return True
+    except:
+        conn.close()
+        return False
+
+
+def getWishlistDB():
+    conn = get_db_connection()
+    try:
+        cur = conn.cursor()
+
+        cur.execute("SELECT game_id FROM wishlist")
+        user = cur.fetchall()
+        conn.commit()
+        conn.close()
+
+        return user
     except:
         conn.close()
         return False
