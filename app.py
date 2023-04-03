@@ -90,26 +90,46 @@ def forgotPassword():
 
             if setUserPasswordRecoverCode(code, email):
                 sendRecoverCode(code, email, mail)
+                addCodeRecoverCookie(email, code, True)
                 return render_template('forgot-password.html', code_sent=True, code=code)
             else:
-                return render_template('forgot-password.html')
+                return render_template('forgot-password.html', code_sent=False, code=None)
 
     return render_template('forgot-password.html', code_sent=False, code=None)
 
 
-@app.route('/set-new-password', methods=['GET', 'POST'])
-def setNewPassword():
+@app.route('/set-password', methods=['GET', 'POST'])
+def setPassword():
     if request.method == 'POST':
         password = request.form['password']
         confirmPassword = request.form['confirm-password']
+        email = session.get("email")
         match_passwords = (password == confirmPassword)
 
         if not password:
             flash('Password is required!', 'message-error')
+            return render_template('set-new-password.html')
         elif not confirmPassword:
             flash('Confirmation of password is required!', 'message-error')
+            return render_template('set-new-password.html')
         elif not match_passwords:
-            flash()
+            flash('The passwords must be the same', 'message-error')
+            return render_template('set-new-password.html')
+        else:
+            if updatePassword(email, password):
+                flash('Your password has been changed', 'message-success')
+                if not session.get("username"):
+                    return render_template('login.html')
+                else:
+                    if session["recover"]:
+                        session["recover"] = False
+
+                    # TODO retornar para a tela de detalhes da conta do usuário
+                    return render_template('index.html')
+            else:
+                flash('Something went wrong. Please, try again', 'message-error')
+                return render_template('set-new-password.html')
+
     return render_template('set-new-password.html')
 
 
@@ -120,6 +140,7 @@ def register():
         username = request.form['username']
         password = request.form['password']
         confirm_password = request.form['confirm-password']
+        match_passwords = (password == confirm_password)
 
         if not email:
             flash('Email is required!', 'message-error')
@@ -129,6 +150,8 @@ def register():
             flash('Password is required!', 'message-error')
         elif not confirm_password:
             flash('Confirmed Password is required!', 'message-error')
+        elif not match_passwords:
+            flash('The passwords must be the same', 'message-error')
         else:
             if addUser(email, username, password):
                 flash('Your account was created!', 'message-success')
