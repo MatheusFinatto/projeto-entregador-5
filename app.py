@@ -7,7 +7,7 @@ from flask_session import Session
 from sessionConfig import *
 from databaseFunctions import *
 from emailConfig import *
-from APIConfigHelpers import getFavorites, getWishlist, imageConfig
+from APIConfigHelpers import *
 from user_agents import parse
 
 
@@ -20,6 +20,7 @@ app.config['SECRET_KEY'] = '27f09c6a065869155e37ed8e7830865a6046ec7d425c2f5c'
 # Configurando a sessão
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
+app.config['SESSION_FILE_DIR'] = 'sessions'
 
 # Configurando email service
 app.config['MAIL_SERVER'] = 'sandbox.smtp.mailtrap.io'
@@ -179,6 +180,7 @@ def search():
         return render_template('search.html', newJson=newJson, name=name)
 
 
+# FAVORITES #
 @app.route('/add-favorite', methods=['POST'])
 def addFavorite():
     if request.method == 'POST':
@@ -200,9 +202,32 @@ def removeFavorite():
         return jsonify({'success': True})
     return jsonify({'success': False})
 
+
+# WISHLIST #
+@app.route('/add-wishlist', methods=['POST'])
+def addWishlist():
+    if request.method == 'POST':
+        game_id = request.form['game_id']
+        print(game_id)
+        user_id = session.get("id")
+        addWishlistDB(user_id, game_id)
+
+        return jsonify({'success': True})
+    return jsonify({'success': False})
+
+
+@app.route('/remove-wishlist', methods=['POST'])
+def removeWishlist():
+    if request.method == 'POST':
+        game_id = request.form['game_id']
+        print(game_id)
+        user_id = session.get("id")
+        removeWishlistDB(user_id, game_id)
+        return jsonify({'success': True})
+    return jsonify({'success': False})
+
+
 # DETAILS #
-
-
 @app.route('/details/<int:game_id>')
 def game_details(game_id):
     user_agent_string = request.headers.get('User-Agent')

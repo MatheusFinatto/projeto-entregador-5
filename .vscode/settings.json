@@ -1,3 +1,4 @@
 {
-  "python.analysis.extraPaths": ["./routes-functions"]
+  "python.analysis.extraPaths": ["./routes-functions"],
+  "cSpell.words": ["jsonify"]
 }

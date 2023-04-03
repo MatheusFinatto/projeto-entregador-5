@@ -28,15 +28,9 @@ def imageConfig(response, imgType):
     return newJson
 
 
-# def setFavorites(game_id):
-#     addFavoriteDB(session.get("id"), game_id)
-#     return 'Foi'
-
-
 def getFavorites(response):
     # checa se o usuario está logado
     if (session.get("username")):
-        print("getting username")
         # cria conexão
         conn = get_db_connection()
 
@@ -60,16 +54,7 @@ def getFavorites(response):
     return response
 
 
-# def setWishlist(response):
-#     print("WORKS")
-#     newJson = response.copy()
-#     for i in range(len(response['data'])):
-#         is_wished = response["data"][i]['id'] in wished
-#         newJson['data'][i]['isWished'] = is_wished
-#     return newJson
-
 def getWishlist(response):
-    # TODO MUDA OS NOME MATHEUS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     # checa se o usuario está logado
     if (session.get("username")):
         # cria conexão
@@ -81,15 +66,15 @@ def getWishlist(response):
         # busca os favoritos do usuário da db
         cur = conn.cursor()
         user_id = session.get("id")
-        cur.execute("SELECT game_id FROM favorites WHERE user_id=?", [user_id])
-        favorites = cur.fetchall()
+        cur.execute("SELECT game_id FROM wishlist WHERE user_id=?", [user_id])
+        wishlist = cur.fetchall()
 
         # itera sobre os jogos vindos da API e verifica se seus id's foram marcados como favoritos
         for i in range(len(response['data'])):
-            for j in range(len(favorites)):
-                is_favorite = response["data"][i]['id'] in favorites[j]
-                newJson['data'][i]['isFavorite'] = is_favorite
-                if is_favorite:
+            for j in range(len(wishlist)):
+                is_wished = response["data"][i]['id'] in wishlist[j]
+                newJson['data'][i]['isWished'] = is_wished
+                if is_wished:
                     break
         return newJson
     return response
