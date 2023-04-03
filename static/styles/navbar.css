@@ -4,7 +4,7 @@ nav {
 }
 
 nav img {
-  margin: 4px 0 0 20px;
+  margin: 4px 0 0 50px;
   height: 55px;
   width: 55px;
 }
@@ -20,4 +20,14 @@ nav a:hover {
 
 .sidenav {
   padding: 10px;
+}
+
+nav ul a i {
+  font-size: 20px;
+}
+
+nav ul a:hover {
+  -webkit-text-stroke-width: 0.2px;
+  -webkit-text-stroke-color: whitesmoke;
+  transition: 0.6s ease-out;
 }

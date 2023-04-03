@@ -1,0 +1,19 @@
+{% extends "layout.html" %} {% block title %} You look lost, child {% endblock
+%} {% block content %}
+<div
+  style="background-image: url({{ url_for('static', filename='img/game-over.png') }}); height: 100vh"
+>
+  <div
+    style="text-align: center"
+    style="background-color: rgba(27, 41, 57, 0.86)"
+  >
+    <img src="/static/images/404-mario.png" alt="Mario 404 Error" />
+    <h1>Looks like Princess Peach is in another castle!</h1>
+    <p>
+      Sorry, but the page you're looking for isn't here. Please check the URL or
+      try searching again.
+    </p>
+    <a href="/">Return to Homepage!</a>
+  </div>
+</div>
+{% endblock %}
