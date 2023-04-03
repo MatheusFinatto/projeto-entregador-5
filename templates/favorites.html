@@ -2,33 +2,6 @@
     block content %}
     
     <h1>Favorites</h1>
-    
-    <div id="filters">
-      <form id="rating_count_form" action="/top-games" method="get">
-        <div class="form-container">
-          <h5 id='filter-info'>Filters*
-            <span class="filters-tooltip">If no values were informed when the "filter" button is clicked, the default
-              values of filter will be those of the placeholders </span>
-          </h5>
-          <div style="display: none;">
-            <label for="rating_count">Title: </label>
-            <input type="text" id="name" name="name" value="{{ name }}" />
-          </div>
-          <div class="filter-field">
-            <label for="rating_count">Minimum number of votes:</label>
-            <input type="number" id="rating_count" name="rating_count" value="{{ rating_count }}" placeholder="1000" />
-          </div>
-          <div class="filter-field">
-            <label for="limit">Number of games displayed:</label>
-            <input type="number" id="rating_count" name="limit" value="{{ limit }}" placeholder="20" />
-          </div>
-          <button type="submit">Filter</button>
-        </div>
-      </form>
-      <div id='add-filters'>
-        <button onclick="showFilters(this)">Show filters</button>
-      </div>
-    </div>
     {%if newJson['data']|length%}
     {% include 'game-card.html' %}
     {%else%}
@@ -36,8 +9,6 @@
     {%endif%}
     </div>
     </div>
-    
-    
     <script src="{{ url_for('static', filename='scripts/cards-containers.js') }}"></script>
     <script>
       // <!-- Star rating script-->

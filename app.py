@@ -189,7 +189,7 @@ def favorites():
         favorites = getFavoritesDB()
         string = ",".join([str(x[0]) for x in favorites])
         url = 'https://api.igdb.com/v4/games'
-        data = f'fields name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url; where id = ({string}); limit 20;'
+        data = f'fields name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url; where id = ({string});'
         headers = HEADERS
         response = requests.post(url, headers=headers, data=data)
         newJson = []
@@ -231,7 +231,7 @@ def wishlist():
         wishlist = getWishlistDB()
         string = ",".join([str(x[0]) for x in wishlist])
         url = 'https://api.igdb.com/v4/games'
-        data = f'fields name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url; where id = ({string}); limit 20;'
+        data = f'fields name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url; where id = ({string});'
         headers = HEADERS
         response = requests.post(url, headers=headers, data=data)
         newJson = []
