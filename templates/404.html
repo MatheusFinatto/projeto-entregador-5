@@ -1,17 +1,16 @@
-{% extends "layout.html" %} {% block title %} 404 {% endblock
-%} {% block content %}
-<div id="page404" style="background-image: url({{ url_for('static', filename='img/game-over.png') }}); background-repeat: no-repeat; background-size: cover;   height: 100%;"
+{% extends "layout.html" %} {% block title %} 404 - Not Found {% endblock %} {%
+block content %}
+<div
+  id="page404"
+  style="background-image: url({{ url_for('static', filename='img/game-over.png') }}); background-repeat: no-repeat; background-size: cover;   height: 100%;"
 >
   <div>
-    <h1> <span>      404    </span>     - Not Found</h1>
-  <h2 >Oh no! Looks like Princess Peach is in another castle!</h2>
+    <h2>Oh no! Looks like our Princess is in another castle!</h2>
+    <h3><span> 404 </span> - Not Found</h3>
     <p>
       Sorry, but the page you're looking for isn't here. Please check the URL or
       <a href="/">return to Homepage!</a>.
     </p>
-    
-
-    
   </div>
 </div>
 {% endblock %}
