@@ -1,7 +1,19 @@
+import datetime
 from flask import session
 from databaseFunctions import get_db_connection
 
 # troca a resolução das capas dos jogos,  que vem da IGDB, para fullHD
+
+
+def convert_timestamp(timestamp):
+    # Convert the timestamp to a datetime object
+    date_time = datetime.datetime.fromtimestamp(timestamp)
+
+    # Format the date as a string in the desired format
+    date_str = date_time.strftime('%d/%m/%Y')
+
+    # Return the formatted date string
+    return date_str
 
 
 def newJsonGenerator(json):
@@ -25,6 +37,16 @@ def imageConfig(response, imgType):
         for i in range(len(response['data'][0]['artworks'])):
             newJson['data'][0]['artworks'][i]['url'] = response['data'][0]['artworks'][i]['url'].replace(
                 "t_thumb", "t_1080p")
+    return newJson
+
+
+def timeConfig(response):
+    # response.json() é um array de objetos (url de imagens)
+    newJson = newJsonGenerator(response)
+    for i in range(len(response['data'])):
+        newJson["data"][i]['first_release_date'] = convert_timestamp(
+            (response['data'][i]['first_release_date']))
+        print((response['data'][i]['first_release_date']))
     return newJson
 
 

@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, render_template, request, flash, redirect, session
-import sys
+from time import time
 import requests
 import random
 import string
@@ -175,13 +175,14 @@ def top_games():
     rating_count = request.args.get('rating_count', default=1000, type=int)
     limit = request.args.get('limit', default=20, type=int)
     url = 'https://api.igdb.com/v4/games'
-    data = f'fields name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url; where rating_count > {rating_count}; sort rating desc; limit {limit};'
+    data = f'fields name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url, first_release_date; where rating_count > {rating_count}; sort rating desc; limit {limit};'
     headers = HEADERS
     response = requests.post(url, headers=headers, data=data)
     if response.ok:
         newJson = imageConfig(response, 'cover')
         newJson = getFavorites(newJson)
         newJson = getWishlist(newJson)
+        newJson = timeConfig(newJson)
         return render_template('top-games.html', newJson=newJson)
 
 
@@ -195,7 +196,7 @@ def search():
     if not name:
         name = request.args.get('name')
     url = 'https://api.igdb.com/v4/games'
-    data = f'search "{name}"; fields name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url; where rating > {rating} & rating_count > {rating_count}; limit {limit};'
+    data = f'search "{name}"; fields name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url, first_release_date; where rating > {rating} & rating_count > {rating_count}; limit {limit};'
     headers = HEADERS
     response = requests.post(url, headers=headers, data=data)
     if response.ok:
@@ -212,7 +213,7 @@ def favorites():
         favorites = getFavoritesDB()
         string = ",".join([str(x[0]) for x in favorites])
         url = 'https://api.igdb.com/v4/games'
-        data = f'fields name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url; where id = ({string});limit 500;'
+        data = f'fields name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url, first_release_date; where id = ({string});limit 500;'
         headers = HEADERS
         response = requests.post(url, headers=headers, data=data)
         newJson = []
@@ -220,6 +221,7 @@ def favorites():
             newJson = imageConfig(response, 'cover')
             newJson = getFavorites(newJson)
             newJson = getWishlist(newJson)
+            newJson = timeConfig(newJson)
         return render_template('favorites.html', newJson=newJson, forceUpdate=True)
 
 
@@ -252,7 +254,7 @@ def wishlist():
         wishlist = getWishlistDB()
         string = ",".join([str(x[0]) for x in wishlist])
         url = 'https://api.igdb.com/v4/games'
-        data = f'fields name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url; where id = ({string}); limit 500;'
+        data = f'fields name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url, first_release_date; where id = ({string}); limit 500;'
         headers = HEADERS
         response = requests.post(url, headers=headers, data=data)
         newJson = []
@@ -260,6 +262,7 @@ def wishlist():
             newJson = imageConfig(response, 'cover')
             newJson = getFavorites(newJson)
             newJson = getWishlist(newJson)
+            newJson = timeConfig(newJson)
         return render_template('wishlist.html', newJson=newJson, forceUpdate=True)
 
 
@@ -312,6 +315,45 @@ def index():
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('404.html'), 404
+
+
+# Lançamentos recentes #
+@app.route('/latest')
+def latest():
+    rating_count = request.args.get('rating_count', default=1000, type=int)
+    limit = request.args.get('limit', default=20, type=int)
+    url = 'https://api.igdb.com/v4/games'
+    timeInSeconds = round(time())
+    data = f'fields  name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url, first_release_date; where rating != null & first_release_date != null & cover != null & first_release_date <= {timeInSeconds}; sort first_release_date desc; limit 20;'
+    headers = HEADERS
+    response = requests.post(url, headers=headers, data=data)
+    if response.ok:
+        newJson = imageConfig(response, 'cover')
+        newJson = getFavorites(newJson)
+        newJson = getWishlist(newJson)
+        newJson = timeConfig(newJson)
+        return render_template('latest.html', newJson=newJson)
+
+
+# Lançamentos próximos #
+
+
+@app.route('/coming-soon')
+def coming_soon():
+    rating_count = request.args.get('rating_count', default=1000, type=int)
+    limit = request.args.get('limit', default=20, type=int)
+    timeInSeconds = round(time())
+    url = 'https://api.igdb.com/v4/games'
+    data = f'fields  name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url, first_release_date; where  first_release_date != null & cover != null & first_release_date > {timeInSeconds}; sort first_release_date asc; limit 20;'
+    headers = HEADERS
+    response = requests.post(url, headers=headers, data=data)
+    if response.ok:
+        newJson = imageConfig(response, 'cover')
+        newJson = getFavorites(newJson)
+        newJson = getWishlist(newJson)
+        newJson = timeConfig(newJson)
+        return render_template('top-games.html', newJson=newJson)
+    return render_template('coming-soon.html')
 
 
 if __name__ == '__main__':

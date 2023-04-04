@@ -107,7 +107,10 @@
       href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Montserrat&display=swap"
       rel="stylesheet"
     />
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- FI icons -->
     <link
@@ -184,25 +187,40 @@
               <i class="material-icons left"
                 ><i class="fi fi-rr-trophy-star"></i
               ></i>
-              Best rated
+              Super Stars
             </a>
           </li>
           <li>
-            <a href="/top-games">
+            <a href="/latest">
               <i class="material-icons left">
                 <i class="fi fi-rr-time-fast"></i>
               </i>
-              Latest released
+              Fresh Picks
             </a>
           </li>
           <li>
-            <a href="/top-games">
+            <a href="/coming-soon">
               <i class="material-icons left">
                 <i class="fi fi-rr-calendar"></i>
               </i>
-              Coming soon
+              Future Fun
             </a>
           </li>
+          {% if session.get("username") %}
+          <li>
+            <a class="dropdown-trigger" data-target="dropdown">
+              <i
+                class="fi fi-sr-user"
+                style="
+                  font-size: 36px;
+                  display: flex;
+                  align-items: center;
+                  margin: 0 10px;
+                "
+              ></i>
+            </a>
+          </li>
+          {% else %}
           <li>
             <a class="dropdown-trigger" data-target="dropdown">
               <i
@@ -216,6 +234,7 @@
               ></i>
             </a>
           </li>
+          {% endif %}
         </ul>
 
         <ul class="sidenav" id="mobile-demo">
