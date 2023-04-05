@@ -356,5 +356,10 @@ def coming_soon():
     return render_template('coming-soon.html')
 
 
+# Página do perfil do usuário
+@app.route('/profile')
+def profile():
+    return render_template('profile.html')
+
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True)

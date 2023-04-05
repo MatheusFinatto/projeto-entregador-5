@@ -1,0 +1,31 @@
+{% extends "layout.html" %} {% block title %} Steam verde - Profile {% endblock %} {% block content %}
+<div class="container">
+    <div class="about-user">
+        <div class="user-left">
+            <img class="profile-image" src="../static/img/Ednaldo.jpg">
+            <div class="username">
+                <h3>{{ session.get("username") }}</h3>
+            </div>
+        </div>
+        <div class="user-right">
+            <div class="form-box">
+                <form action="{{ url_for('profile')}}" method="POST">
+                    <div class="input-field">
+                        <label for="email"><b>Email</b></label>
+                        <input id="email" type="text" name="email" value="{{ session.get('email') }}">
+                    </div>
+                
+                    <div class="input-field">
+                        <label for="username"><b>Username</b></label>
+                        <input id="username" type="text" name="username" value="{{ session.get('username') }}">
+                    </div>
+                    <p>{{ session.get("created") }}</p>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="favorites">
+        
+    </div>
+</div>
+{% endblock %}

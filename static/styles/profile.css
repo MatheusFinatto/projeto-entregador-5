@@ -1,0 +1,23 @@
+.about-user {
+    display: flex;
+    justify-content: center;
+}
+
+.user-left {
+    float: left;
+}
+
+.profile-image {
+    background-color: purple;
+    border-radius: 50%;
+    height: 200px;
+    width: 200px;
+}
+
+.user-right {
+    float: right;
+    background-color: blue;
+    text-align: left !important;
+    min-height: 500px;
+    min-width: 500px;
+}
