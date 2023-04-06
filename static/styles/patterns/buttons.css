@@ -10,6 +10,7 @@ button {
   transition: 0.5s;
   height: 3rem;
   width: 7rem;
+  margin-bottom: 10px;
 }
 button:hover {
   background-color: transparent;

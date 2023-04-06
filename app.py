@@ -121,11 +121,12 @@ def setPassword():
                 if not session.get("username"):
                     return render_template('login.html')
                 else:
+                    print(session)
                     if session["recover"]:
                         session["recover"] = False
 
                     # TODO retornar para a tela de detalhes da conta do usuário
-                    return render_template('index.html')
+                    return redirect('/profile')
             else:
                 flash('Something went wrong. Please, try again', 'message-error')
                 return render_template('set-new-password.html')
