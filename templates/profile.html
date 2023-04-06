@@ -34,9 +34,12 @@
                     </div>
 
                     <!-- TODO  fazer a conversão de tempo do dado created para encaixar no texto -->
-                    <p class="input-field created">Created on: {{ session.get("created") }}</p>
-                    
-                    <button type="submit" id="save-profile">Save</button>
+                    <p class="created">Created on: {{ session.get("created") }}</p>
+
+                    <div class="options">
+                        <button type="submit" id="save-profile">Save</button>
+                        <p class="change-password"><a href="set-password">Change password</a></p>
+                    </div>
                 </form>
             </div>
         </div>

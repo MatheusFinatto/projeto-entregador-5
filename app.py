@@ -108,13 +108,13 @@ def setPassword():
 
         if not password:
             flash('Password is required!', 'message-error')
-            return render_template('set-new-password.html')
+            return render_template('set-password.html')
         elif not confirmPassword:
             flash('Confirmation of password is required!', 'message-error')
-            return render_template('set-new-password.html')
+            return render_template('set-password.html')
         elif not match_passwords:
             flash('The passwords must be the same', 'message-error')
-            return render_template('set-new-password.html')
+            return render_template('set-password.html')
         else:
             if updatePassword(email, password):
                 flash('Your password has been changed', 'message-success')
@@ -125,13 +125,12 @@ def setPassword():
                     if session["recover"]:
                         session["recover"] = False
 
-                    # TODO retornar para a tela de detalhes da conta do usuário
                     return redirect('/profile')
             else:
                 flash('Something went wrong. Please, try again', 'message-error')
-                return render_template('set-new-password.html')
+                return render_template('set-password.html')
 
-    return render_template('set-new-password.html')
+    return render_template('set-password.html')
 
 
 @app.route('/register', methods=['GET', 'POST'])
