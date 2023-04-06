@@ -178,12 +178,16 @@ def top_games():
     data = f'fields name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url, first_release_date; where rating_count > {rating_count}; sort rating desc; limit {limit};'
     headers = HEADERS
     response = requests.post(url, headers=headers, data=data)
+
+    # Desabilita botões de favoritos e wishlist caso o usuário não esteja logado
+    buttonStatus = "" if session.get('id') else "disabled"
+    
     if response.ok:
         newJson = imageConfig(response, 'cover')
         newJson = getFavorites(newJson)
         newJson = getWishlist(newJson)
         newJson = timeConfig(newJson)
-        return render_template('top-games.html', newJson=newJson)
+        return render_template('top-games.html', newJson=newJson, buttonStatus = buttonStatus)
 
 
 # SEARCH #

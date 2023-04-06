@@ -6,7 +6,7 @@ def configureSessionUser(user):
     session["email"] = user[1]
     session["username"] = user[2]
     session["profile_img"] = user[5]
-    session["created"] = user[6]
+    session["created"] = user[9]
 
 
 def addCodeRecoverCookie(email, code, recover=False):

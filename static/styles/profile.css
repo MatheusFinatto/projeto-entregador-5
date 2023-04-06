@@ -7,17 +7,16 @@
     float: left;
 }
 
+.user-right {
+    float: right;
+    text-align: left !important;
+    min-height: 500px;
+    min-width: 500px;
+}
+
 .profile-image {
     background-color: purple;
     border-radius: 50%;
     height: 200px;
     width: 200px;
-}
-
-.user-right {
-    float: right;
-    background-color: blue;
-    text-align: left !important;
-    min-height: 500px;
-    min-width: 500px;
 }

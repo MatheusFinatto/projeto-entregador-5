@@ -9,6 +9,9 @@ CREATE TABLE users (
     password TEXT NOT NULL,
     recover_code TEXT,
     profile_img BLOB,
+    first_name TEXT,
+    last_name TEXT,
+    country_id INT,
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
