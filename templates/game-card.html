@@ -127,17 +127,20 @@
       {% if item["isFavorite"] %}
       <a>
         <button
+          id="removeFavorite"
           style="color: #a12d2d"
           onclick="removeFromFavorites(this)"
           data-game-id="{{ item['id'] }}"
+          {{ buttonStatus }}
         >
           <i class="fi fi-sr-heart"></i>
           <span class="buttons-tooltip">Remove from favorites</span>
         </button>
       </a>
       {%else%}
-      <a>
-        <button onclick="addToFavorites(this)" data-game-id="{{ item['id'] }}">
+      <!-- TODO aplicar o id de mascara em todos os botões de favoritos e wishlist -->
+      <a id="addFavoriteMask">
+        <button id="addFavorite" onclick="addToFavorites(this)" data-game-id="{{ item['id'] }}" {{ buttonStatus }}>
           <i class="fi fi-rr-heart"></i>
           <span class="buttons-tooltip">Add to favorites</span>
         </button>
@@ -145,8 +148,10 @@
       {% endif %} {% if item["isWished"] %}
       <a>
         <button
+          id="removeWishlist"
           onclick="removeFromWishlist(this)"
           data-game-id="{{ item['id'] }}"
+          {{ buttonStatus }}
         >
           <i class="fi fi-rr-check"></i>
           <span class="buttons-tooltip">Remove from wishlist</span>
@@ -154,7 +159,7 @@
       </a>
       {%else%}
       <a>
-        <button onclick="addToWishlist(this)" data-game-id="{{ item['id'] }}">
+        <button id="addWishlist" onclick="addToWishlist(this)" data-game-id="{{ item['id'] }}"  {{ buttonStatus }}>
           <i class="fi fi-rr-list"></i>
           <span class="buttons-tooltip">Add to wishlist</span>
         </button>
@@ -165,6 +170,8 @@
   {% endfor %}
 </section>
 
+
+<script src="{{ url_for('static', filename='scripts/game-card-buttons.js') }}"></script>
 <script>
   function addToFavorites(button) {
     if (!button.disabled) {
@@ -187,6 +194,9 @@
         }
       };
       xhr.send("game_id=" + encodeURIComponent(itemId));
+    } else {
+      console.log('click')
+      alert('You must login first')
     }
   }
 

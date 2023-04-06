@@ -95,6 +95,11 @@
       type="text/css"
       href="{{ url_for('static', filename='styles/404.css') }}"
     />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/profile.css') }}"
+    />
 
     <!-- Jquery scripts -->
     <script src="{{ url_for('static', filename='scripts/jquery.js') }}"></script>
@@ -132,10 +137,10 @@
     <ul id="dropdown" class="dropdown-content">
       {% if session.get("username") %}
       <li>
-        <a href="#"> Profile </a>
+        <a href="/profile"> Profile </a>
       </li>
       <li>
-        <a href="#"> Change password </a>
+        <a href="/set-password"> Change password </a>
       </li>
       <li>
         <a href="/logout"> Logout </a>

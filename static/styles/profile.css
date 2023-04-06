@@ -1,0 +1,58 @@
+.about-user {
+    display: flex;
+    /* justify-content: center; */
+    margin-left: 5%;
+}
+
+.user-left {
+    float: left;
+    margin-right: 20px;
+}
+
+.user-right {
+    float: right;
+    text-align: left !important;
+    min-height: 500px;
+    min-width: 500px;
+}
+
+.profile-image {
+    /* background-color: purple; */
+    position: absolute;
+    background-image: url('../img/Ednaldo.jpg');
+    background-position: center;
+    border-radius: 50%;
+    height: 200px;
+    width: 200px;
+}
+
+.edit-image {
+    background-color: aliceblue;
+    background-image: url(../img/i-edit.png);
+    background-position: center;
+    background-size: contain;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    position: relative;
+    left: 140px;
+    top: 145px;
+    bottom: 0;
+    right: 0;
+}
+
+.edit-image:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+.created {
+    float: left;
+    /* position: absolute !important; */
+    margin-right: 40%;
+}
+
+#save-profile {
+    float: left;
+    display: block;
+}

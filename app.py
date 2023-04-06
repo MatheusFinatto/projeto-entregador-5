@@ -121,11 +121,12 @@ def setPassword():
                 if not session.get("username"):
                     return render_template('login.html')
                 else:
+                    print(session)
                     if session["recover"]:
                         session["recover"] = False
 
                     # TODO retornar para a tela de detalhes da conta do usuário
-                    return render_template('index.html')
+                    return redirect('/profile')
             else:
                 flash('Something went wrong. Please, try again', 'message-error')
                 return render_template('set-new-password.html')
@@ -178,12 +179,16 @@ def top_games():
     data = f'fields name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url, first_release_date; where rating_count > {rating_count}; sort rating desc; limit {limit};'
     headers = HEADERS
     response = requests.post(url, headers=headers, data=data)
+
+    # Desabilita botões de favoritos e wishlist caso o usuário não esteja logado
+    buttonStatus = "" if session.get('id') else "disabled"
+    
     if response.ok:
         newJson = imageConfig(response, 'cover')
         newJson = getFavorites(newJson)
         newJson = getWishlist(newJson)
         newJson = timeConfig(newJson)
-        return render_template('top-games.html', newJson=newJson)
+        return render_template('top-games.html', newJson=newJson, buttonStatus = buttonStatus)
 
 
 # SEARCH #
@@ -355,6 +360,11 @@ def coming_soon():
         return render_template('top-games.html', newJson=newJson)
     return render_template('coming-soon.html')
 
+
+# Página do perfil do usuário
+@app.route('/profile')
+def profile():
+    return render_template('profile.html')
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True)
