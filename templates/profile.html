@@ -52,6 +52,7 @@
         <div class="carousel">
             <h2 class="favorites-title">Favorites</h2>
             <!-- <div class="spacing"></div> -->
+            <!-- TODO Atualmente os itens do carrossel não abrem o link ao clicar, se sobrar tempo, corrigir isso -->
             {% for item in newJson["data"] %}
                 <!-- TODO pegar o clique se o carousel-item tiver a class active -->
                 <a class="carousel-item" href="/details/{{ item.id }}"><img src="https:{{ item['cover']['url'] }}"></a>
