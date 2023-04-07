@@ -363,7 +363,19 @@ def coming_soon():
 # Página do perfil do usuário
 @app.route('/profile')
 def profile():
-    return render_template('profile.html')
+    favorites = getFavoritesDB()
+    string = ",".join([str(x[0]) for x in favorites])
+    url = 'https://api.igdb.com/v4/games'
+    data = f'fields name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url, first_release_date; where id = ({string});limit 500;'
+    headers = HEADERS
+    response = requests.post(url, headers=headers, data=data)
+    newJson = []
+    if response.ok:
+        newJson = imageConfig(response, 'cover')
+        newJson = getFavorites(newJson)
+        newJson = getWishlist(newJson)
+        newJson = timeConfig(newJson)
+        return render_template('profile.html', newJson=newJson)
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True)
