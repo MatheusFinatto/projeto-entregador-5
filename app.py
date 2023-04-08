@@ -1,12 +1,17 @@
-from flask import Flask, jsonify, render_template, request, flash, redirect, session
+from flask import Flask, jsonify, render_template, request, flash, redirect, session, url_for
 from time import time
+from flask_dance.contrib.twitter import make_twitter_blueprint, twitter
+from flask_dance.contrib.github import make_github_blueprint, github
 import requests
 import random
 import string
+import os 
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 from flask_session import Session
 from sessionConfig import *
 from databaseFunctions import *
 from emailConfig import *
+from socialLogins import *
 from APIConfigHelpers import *
 from user_agents import parse
 
@@ -41,6 +46,31 @@ HEADERS = {
 }
 
 
+# HOME #
+@app.route('/')
+def index():
+    if twitter.authorized:
+        response = twitterAuth()
+        print(response)
+        if response == 'new':
+            return render_template('set-password.html')
+        elif response == 'login':
+            return render_template('index.html')
+        else:
+            flash('Something went wrong. Please, try again', 'message-error')
+            return render_template('login.html')
+    # elif github.authorized:
+    #     return
+    else:
+        return render_template('index.html')
+    accountInfo = github.get('/user')
+    if accountInfo.ok:
+        accountInfoJson = accountInfo.json()
+        print(accountInfoJson)
+        return '<h1>Your github name is @{}</h1>'.format(accountInfoJson['login'])
+    return '<h1>Failed</h1>'
+
+
 # LOGIN AND REGISTER #
 def generateRecoverPasswordCode():
     # choose from all uppercase letter
@@ -62,7 +92,9 @@ def login():
             flash('Password is required!', 'message-error')
         else:
             # Tenta encontrar o usuario na base de dados
-            if searchUser(email, password):
+            user = searchUser(email, password)
+            if user:
+                configureSessionUser(user)
                 return redirect('/landing')
             else:
                 return render_template('login.html')
@@ -70,6 +102,30 @@ def login():
         if session.get("username"):
             return redirect('landing')
     return render_template('login.html')
+
+
+twitter_blueprint = make_twitter_blueprint(api_key='OaP0WeCQ19FK7D5HE25oVq7is', api_secret='1AhNEgoZ6nBDAwV5uMIdsKZadwjty3KFaFXVxUWGlUtkGWXqHy')
+github_blueprint = make_github_blueprint(client_id='7be17c70865b560199c7', client_secret='7a4bee7baa0597f46549c6ea87b8af119bd46ce9')
+
+app.register_blueprint(twitter_blueprint, url_prefix='/twitter_login')
+app.register_blueprint(github_blueprint, url_prefix='/github_login')
+
+@app.route('/twitter')
+def twitter_login():
+    if not twitter.authorized:
+        return redirect(url_for('twitter.login'))
+    return redirect('/')
+
+
+@app.route('/github')
+def github_login():
+    if not github.authorized:
+        return redirect(url_for('github.login'))
+    accountInfo = github.get('/user')
+    if accountInfo.ok:
+        accountInfoJson = accountInfo.json()
+        return '<h1>Your github name is @{}</h1>'.format(accountInfoJson['login'])
+    return '<h1>Failed</h1>'
 
 
 @app.route('/logout')
@@ -307,12 +363,6 @@ def game_details(game_id):
         newJson = imageConfig(response, 'cover')
         newJson = imageConfig(newJson, 'artworks')
         return render_template('details.html', newJson=newJson, is_mobile=is_mobile)
-
-
-# HOME #
-@app.route('/')
-def index():
-    return render_template('index.html')
 
 
 # 404 #
