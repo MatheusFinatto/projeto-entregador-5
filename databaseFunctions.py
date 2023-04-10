@@ -1,5 +1,7 @@
 from flask import flash
 import sqlite3
+
+from sqlalchemy import Null
 from sessionConfig import *
 
 
@@ -129,6 +131,25 @@ def addUser(email, username, password):
     except:
         conn.close()
         return False
+    
+
+def addUserAuth(email, username, password, profile_img, first_name, last_name):
+    conn = get_db_connection()
+    is_auth = True
+    try:
+        cur = conn.cursor()
+
+        cur.execute("INSERT INTO users (email, username, password, profile_img, first_name, last_name, is_auth) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                    [email, username, password, profile_img, first_name, last_name, is_auth]
+                    )
+
+        conn.commit()
+        conn.close()
+
+        return True
+    except:
+        conn.close()
+        return False
 
 
 def searchUser(email, password):
@@ -138,14 +159,32 @@ def searchUser(email, password):
         cur.execute(
             "SELECT * FROM users WHERE email=? AND password=?", [email, password])
         user = cur.fetchone()
-        configureSessionUser(user)
 
         conn.commit()
         conn.close()
-        return True
+        return user
+
     except:
         conn.close()
         flash('Email address or Password are incorrect!', 'message-error')
+        return False
+    
+
+# Usada apenas para pegar o usuário e criar a sessão para ele caso tenha logado com social login
+def searchUserAuth(email):
+    conn = get_db_connection()
+    try:
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT * FROM users WHERE email=?", [email])
+        user = cur.fetchone()
+
+        conn.commit()
+        conn.close()
+        return user
+    except:
+        conn.close()
+        flash('Something went wrong.', 'message-error')
         return False
 
 

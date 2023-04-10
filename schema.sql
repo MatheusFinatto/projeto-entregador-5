@@ -5,14 +5,15 @@ DROP TABLE IF EXISTS wishlist;
 CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     email TEXT NOT NULL UNIQUE,
-    username TEXT NOT NULL UNIQUE,
+    username TEXT NOT NULL,
     password TEXT NOT NULL,
     recover_code TEXT,
     profile_img BLOB,
     first_name TEXT,
     last_name TEXT,
     country_id INT,
-    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    is_auth BOOLEAN DEFAULT false
 );
 
 CREATE TABLE favorites (

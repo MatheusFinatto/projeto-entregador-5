@@ -1,6 +1,13 @@
 from flask import session
 from flask_session import Session
 
+def configureAuthSessionUser(user):
+    session["id"] = user[0]
+    session["email"] = user[1]
+    session["username"] = user[2]
+    session["profile_img"] = user[5]
+    session["created"] = user[9]
+
 def configureSessionUser(user, recover=False):
     session["id"] = user[0]
     session["email"] = user[1]

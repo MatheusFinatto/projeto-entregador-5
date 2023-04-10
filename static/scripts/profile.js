@@ -1,7 +1,5 @@
 $(document).ready(function(){
-    $('.carousel').carousel({
-      padding: 50
-    });
+    $('.carousel').carousel();
   });
 
 

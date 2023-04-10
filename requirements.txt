@@ -5,3 +5,6 @@ Flask-Mail==0.9.1 # blinker-1.5 (pip install Flask-Mail)
 pyyaml==6.0 
 ua-parser==0.10.0 
 user-agents==2.2.0
+flask_dance==6.2.0 #pip install flask-dance[sqla]
+oauthlib==3.2.2 #pip install flask-dance[sqla]
+SQLAlchemy==2.0.9 #pip install flask-dance[sqla]
