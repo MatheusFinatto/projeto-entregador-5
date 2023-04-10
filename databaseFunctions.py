@@ -159,11 +159,11 @@ def searchUser(email, password):
         cur.execute(
             "SELECT * FROM users WHERE email=? AND password=?", [email, password])
         user = cur.fetchone()
-        print(user)
 
         conn.commit()
         conn.close()
         return user
+
     except:
         conn.close()
         flash('Email address or Password are incorrect!', 'message-error')
@@ -171,22 +171,21 @@ def searchUser(email, password):
     
 
 # Usada apenas para pegar o usuário e criar a sessão para ele caso tenha logado com social login
-# def getUser(email):
-#     conn = get_db_connection()
-#     try:
-#         cur = conn.cursor()
-#         cur.execute(
-#             "SELECT * FROM users WHERE email=?", [email])
-#         user = cur.fetchone()
-#         configureSessionUser(user)
+def searchUserAuth(email):
+    conn = get_db_connection()
+    try:
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT * FROM users WHERE email=?", [email])
+        user = cur.fetchone()
 
-#         conn.commit()
-#         conn.close()
-#         return True
-#     except:
-#         conn.close()
-#         flash('Something went wrong.', 'message-error')
-#         return False
+        conn.commit()
+        conn.close()
+        return user
+    except:
+        conn.close()
+        flash('Something went wrong.', 'message-error')
+        return False
 
 
 def setUserPasswordRecoverCode(recover_code, email):

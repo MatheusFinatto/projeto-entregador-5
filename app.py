@@ -49,26 +49,26 @@ HEADERS = {
 # HOME #
 @app.route('/')
 def index():
-    if twitter.authorized:
-        response = twitterAuth()
-        print(response)
-        if response == 'new':
-            return render_template('set-password.html')
-        elif response == 'login':
-            return render_template('index.html')
+    if not session.get('id'):
+        if twitter.authorized:
+            response = twitterAuth()
+            if response == 'new':
+                return redirect('/set-password')
+            elif response == 'login':
+                return redirect('/top-games')
+            else:
+                flash('Something went wrong. Please, try again', 'message-error')
+                return redirect('/login')
+        elif github.authorized:
+            accountInfo = github.get('/user')
+            if accountInfo.ok:
+                accountInfoJson = accountInfo.json()
+                print(accountInfoJson)
+                return '<h1>Your github name is @{}</h1>'.format(accountInfoJson['login'])
+            return '<h1>Failed</h1>'
         else:
-            flash('Something went wrong. Please, try again', 'message-error')
-            return render_template('login.html')
-    # elif github.authorized:
-    #     return
-    else:
-        return render_template('index.html')
-    accountInfo = github.get('/user')
-    if accountInfo.ok:
-        accountInfoJson = accountInfo.json()
-        print(accountInfoJson)
-        return '<h1>Your github name is @{}</h1>'.format(accountInfoJson['login'])
-    return '<h1>Failed</h1>'
+            return render_template('index.html')
+    return render_template('index.html')
 
 
 # LOGIN AND REGISTER #
@@ -177,7 +177,6 @@ def setPassword():
                 if not session.get("username"):
                     return render_template('login.html')
                 else:
-                    print(session)
                     if session["recover"]:
                         session["recover"] = False
 
@@ -423,9 +422,8 @@ def profile():
     if response.ok:
         newJson = imageConfig(response, 'cover')
         newJson = getFavorites(newJson)
-        newJson = getWishlist(newJson)
-        newJson = timeConfig(newJson)
         return render_template('profile.html', newJson=newJson)
+    return render_template('profile.html', newJson=[])
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True)
