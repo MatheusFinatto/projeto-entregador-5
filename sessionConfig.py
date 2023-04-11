@@ -7,6 +7,7 @@ def configureAuthSessionUser(user):
     session["username"] = user[2]
     session["profile_img"] = user[5]
     session["created"] = user[9]
+    session["recover"] = False
 
 def configureSessionUser(user, recover=False):
     session["id"] = user[0]
