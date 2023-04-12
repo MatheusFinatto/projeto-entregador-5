@@ -1,3 +1,10 @@
+from user_agents import parse
+from APIConfigHelpers import *
+from socialLogins import *
+from emailConfig import *
+from databaseFunctions import *
+from sessionConfig import *
+from flask_session import Session
 from flask import Flask, jsonify, render_template, request, flash, redirect, session, url_for
 from time import time
 from flask_dance.contrib.twitter import make_twitter_blueprint, twitter
@@ -5,15 +12,8 @@ from flask_dance.contrib.github import make_github_blueprint, github
 import requests
 import random
 import string
-import os 
+import os
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
-from flask_session import Session
-from sessionConfig import *
-from databaseFunctions import *
-from emailConfig import *
-from socialLogins import *
-from APIConfigHelpers import *
-from user_agents import parse
 
 
 app = Flask(__name__)
@@ -104,11 +104,14 @@ def login():
     return render_template('login.html')
 
 
-twitter_blueprint = make_twitter_blueprint(api_key='OaP0WeCQ19FK7D5HE25oVq7is', api_secret='1AhNEgoZ6nBDAwV5uMIdsKZadwjty3KFaFXVxUWGlUtkGWXqHy')
-github_blueprint = make_github_blueprint(client_id='7be17c70865b560199c7', client_secret='7a4bee7baa0597f46549c6ea87b8af119bd46ce9')
+twitter_blueprint = make_twitter_blueprint(
+    api_key='OaP0WeCQ19FK7D5HE25oVq7is', api_secret='1AhNEgoZ6nBDAwV5uMIdsKZadwjty3KFaFXVxUWGlUtkGWXqHy')
+github_blueprint = make_github_blueprint(
+    client_id='7be17c70865b560199c7', client_secret='7a4bee7baa0597f46549c6ea87b8af119bd46ce9')
 
 app.register_blueprint(twitter_blueprint, url_prefix='/twitter_login')
 app.register_blueprint(github_blueprint, url_prefix='/github_login')
+
 
 @app.route('/twitter')
 def twitter_login():
@@ -236,13 +239,13 @@ def top_games():
 
     # Desabilita botões de favoritos e wishlist caso o usuário não esteja logado
     buttonStatus = "" if session.get('id') else "disabled"
-    
+
     if response.ok:
         newJson = imageConfig(response, 'cover')
         newJson = getFavorites(newJson)
         newJson = getWishlist(newJson)
         newJson = timeConfig(newJson)
-        return render_template('top-games.html', newJson=newJson, buttonStatus = buttonStatus)
+        return render_template('top-games.html', newJson=newJson, buttonStatus=buttonStatus)
 
 
 # SEARCH #
@@ -424,6 +427,7 @@ def profile():
         newJson = getFavorites(newJson)
         return render_template('profile.html', newJson=newJson)
     return render_template('profile.html', newJson=[])
+
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True)

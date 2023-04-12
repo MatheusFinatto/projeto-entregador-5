@@ -109,6 +109,13 @@
   padding-bottom: 30px;
 }
 
+.games-container h2 {
+  font-size: 1.6rem;
+  margin: 15px 0;
+  max-width: 400px;
+  min-height: 60px;
+}
+
 .games-container div p {
   margin-bottom: 20px;
 }
@@ -121,13 +128,6 @@
 .games-container div button {
   display: flex;
   margin-top: 20px;
-}
-
-.games-container h2 {
-  font-size: 1.6rem;
-  margin: 15px 0 0 0;
-  max-width: 300px;
-  height: 60px;
 }
 
 .games-container h3 {
