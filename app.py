@@ -30,10 +30,10 @@ app.config["SESSION_TYPE"] = "filesystem"
 app.config['SESSION_FILE_DIR'] = 'sessions'
 
 # Configurando email service
-app.config['MAIL_SERVER'] = 'sandbox.smtp.mailtrap.io'
+app.config['MAIL_SERVER']='sandbox.smtp.mailtrap.io'
 app.config['MAIL_PORT'] = 2525
-app.config['MAIL_USERNAME'] = '94e6efcfb7801a'
-app.config['MAIL_PASSWORD'] = '07b5faafdb617e'
+app.config['MAIL_USERNAME'] = '8a7418047c15f3'
+app.config['MAIL_PASSWORD'] = '9823cf20679946'
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
 mail = Mail(app)
