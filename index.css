@@ -1,0 +1,93 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Montserrat", sans-serif;
+}
+
+html, body {
+  height: 100%; /* Set the height of the HTML and body elements to 100% */
+}
+
+html {
+  width: 100%;
+}
+
+main { 
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+h1 {
+  margin: 5% 4% 0 4%;
+}
+p{
+  text-align: center;
+  margin: 0 3%
+}
+
+.message-error {
+  padding: 20px;
+  width: 25%;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 10px;
+  text-align: center;
+  color: #970020;
+  background-color: #ffd5de;
+  border-radius: 5px;
+}
+
+.message-success {
+  padding: 20px;
+  width: 25%;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 10px;
+  text-align: center;
+  color: #180106;
+  background-color: #cffbc8;
+  border-radius: 5px;
+}
+
+#intro {
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 40vh;
+  align-items: center;
+}
+
+#intro p {
+  font-size: 1.5rem;
+  line-height: 3rem;
+}
+#intro h3 {
+  font-family: "Montserrat", sans-serif;
+  font-size: 2.25rem;
+  justify-self: center;
+  line-height: 4rem;
+  margin: 0;
+  width: 100%;
+}
+
+@media only screen and (max-width: 700px) {
+  #intro {
+    grid-template-columns: 1fr;
+  }
+  #intro h3 {
+    width: 90%;
+  }
+}
