@@ -2,6 +2,8 @@ from flask import Flask, jsonify, render_template, request, flash, redirect, ses
 from time import time
 from flask_dance.contrib.twitter import make_twitter_blueprint, twitter
 from flask_dance.contrib.github import make_github_blueprint, github
+from flask_dance.contrib.google import make_google_blueprint, google
+from flask_dance.contrib.discord import make_discord_blueprint, discord
 import requests
 import random
 import string
@@ -60,12 +62,15 @@ def index():
                 flash('Something went wrong. Please, try again', 'message-error')
                 return redirect('/login')
         elif github.authorized:
+            response = githubAuth()
             accountInfo = github.get('/user')
-            if accountInfo.ok:
-                accountInfoJson = accountInfo.json()
-                print(accountInfoJson)
-                return '<h1>Your github name is @{}</h1>'.format(accountInfoJson['login'])
-            return '<h1>Failed</h1>'
+            if response == 'new':
+                return redirect('/set-password')
+            elif response == 'login':
+                return redirect('/top-games')
+            else:
+                flash('Something went wrong. Please, try again', 'message-error')
+                return redirect('/login')
         else:
             return render_template('index.html')
     return render_template('index.html')
@@ -104,28 +109,29 @@ def login():
     return render_template('login.html')
 
 
-twitter_blueprint = make_twitter_blueprint(api_key='OaP0WeCQ19FK7D5HE25oVq7is', api_secret='1AhNEgoZ6nBDAwV5uMIdsKZadwjty3KFaFXVxUWGlUtkGWXqHy')
+google_blueprint = make_google_blueprint(client_id='', client_secret='')
 github_blueprint = make_github_blueprint(client_id='7be17c70865b560199c7', client_secret='7a4bee7baa0597f46549c6ea87b8af119bd46ce9')
+twitter_blueprint = make_twitter_blueprint(api_key='OaP0WeCQ19FK7D5HE25oVq7is', api_secret='1AhNEgoZ6nBDAwV5uMIdsKZadwjty3KFaFXVxUWGlUtkGWXqHy')
+discord_blueprint = make_discord_blueprint(client_id='', client_secret='')
 
-app.register_blueprint(twitter_blueprint, url_prefix='/twitter_login')
+app.register_blueprint(google_blueprint, url_prefix='/google_login')
 app.register_blueprint(github_blueprint, url_prefix='/github_login')
-
-@app.route('/twitter')
-def twitter_login():
-    if not twitter.authorized:
-        return redirect(url_for('twitter.login'))
-    return redirect('/')
+app.register_blueprint(twitter_blueprint, url_prefix='/twitter_login')
+app.register_blueprint(discord_blueprint, url_prefix='/discord_login')
 
 
 @app.route('/github')
 def github_login():
     if not github.authorized:
         return redirect(url_for('github.login'))
-    accountInfo = github.get('/user')
-    if accountInfo.ok:
-        accountInfoJson = accountInfo.json()
-        return '<h1>Your github name is @{}</h1>'.format(accountInfoJson['login'])
-    return '<h1>Failed</h1>'
+    return redirect('/')
+
+
+@app.route('/twitter')
+def twitter_login():
+    if not twitter.authorized:
+        return redirect(url_for('twitter.login'))
+    return redirect('/')
 
 
 @app.route('/logout')
