@@ -4,12 +4,12 @@
     <div class="profile-container">
         <div class="about-user">
             <div class="user-left">
+                <p id="meme-text"></p>
                 <div class="profile-image">
-                    <div id="edit-images" class="edit-image">
-                        <form action="{{ url_for('profile')}}">
-                            <input type="file" accept="image/*" id="input-file">
-                        </form>
-                    </div>
+                    <form action="{{ url_for('profile')}}">
+                        <div id="edit-images" class="edit-image"></div>
+                        <input type="file" accept="image/*" id="input-file">
+                    </form>
                 </div>
                 <div class="username">
                     <h3>{{ session.get("username") }}</h3>

@@ -133,6 +133,24 @@ def addUser(email, username, password):
         return False
     
 
+def updateUser(email,  username, first_name = "", last_name = ""):
+    conn = get_db_connection()
+    try:
+        cur = conn.cursor()
+
+        cur.execute("UPDATE users SET email = ?, username = ?, first_name = ?, last_name = ? WHERE email = ?",
+                    (email, username, first_name, last_name, email)
+                    )
+
+        conn.commit()
+        conn.close()
+
+        return True
+    except:
+        conn.close()
+        return False
+
+
 def addUserAuth(email, username, password, profile_img, first_name, last_name):
     conn = get_db_connection()
     is_auth = True
@@ -185,6 +203,25 @@ def searchUserAuth(email):
     except:
         conn.close()
         flash('Something went wrong.', 'message-error')
+        return False
+
+
+# Usada para pegar as informações do usuário para pesquisa rápida
+def getUser(email):
+    conn = get_db_connection()
+    try:
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT * FROM users WHERE email=?", [email])
+        user = cur.fetchone()
+
+        conn.commit()
+        conn.close()
+        return user
+
+    except:
+        conn.close()
+        flash('Email address are incorrect!', 'message-error')
         return False
 
 

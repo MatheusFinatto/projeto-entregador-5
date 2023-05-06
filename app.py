@@ -417,7 +417,7 @@ def coming_soon():
 
 
 # Página do perfil do usuário
-@app.route('/profile')
+@app.route('/profile', methods=['GET', 'POST'])
 def profile():
     favorites = getFavoritesDB()
     string = ",".join([str(x[0]) for x in favorites])
@@ -426,11 +426,42 @@ def profile():
     headers = HEADERS
     response = requests.post(url, headers=headers, data=data)
     newJson = []
-    if response.ok:
-        newJson = imageConfig(response, 'cover')
-        newJson = getFavorites(newJson)
-        return render_template('profile.html', newJson=newJson)
-    return render_template('profile.html', newJson=[])
+    print('entrou1')
+
+    if request.method == 'POST':
+        print('entrou')
+        email = request.form['email']
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        username = request.form['username']
+
+        if not email:
+            flash('Email is required!', 'message-error')
+        elif not username:
+            flash('Username is required!', 'message-error')
+        else:
+            if updateUser(email, username, first_name, last_name):
+                flash('Your account was updated!', 'message-success')
+            else:
+                flash('Your account could not be updated! Try again', 'message-error')
+
+        user = getUser(email)
+        updateSession(user)
+    
+        if response.ok:
+            newJson = imageConfig(response, 'cover')
+            newJson = getFavorites(newJson)
+            return render_template('profile.html', newJson=newJson)
+        
+        return render_template('profile.html', newJson=[])
+    
+    if request.method == 'GET':
+        if response.ok:
+            newJson = imageConfig(response, 'cover')
+            newJson = getFavorites(newJson)
+            return render_template('profile.html', newJson=newJson)
+        
+        return render_template('profile.html', newJson=[])
 
 
 if __name__ == '__main__':
