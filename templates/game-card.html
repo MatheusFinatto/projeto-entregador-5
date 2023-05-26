@@ -6,7 +6,7 @@
     </a>
     <h2>{{ item.name }}</h2>
     <section>
-      <h3>Coming soon!</h3>
+      <h3>Platforms</h3>
       {% if item['platforms']|length %}
       <ul class="platforms">
         {% for platform in item["platforms"]%} {% if item["platforms"]|length >
@@ -131,7 +131,9 @@
           style="color: #a12d2d"
           onclick="removeFromFavorites(this)"
           data-game-id="{{ item['id'] }}"
-          {{ buttonStatus }}
+          {{
+          buttonStatus
+          }}
         >
           <i class="fi fi-sr-heart"></i>
           <span class="buttons-tooltip">Remove from favorites</span>
@@ -140,7 +142,14 @@
       {%else%}
       <!-- TODO aplicar o id de mascara em todos os botões de favoritos e wishlist -->
       <a id="addFavoriteMask">
-        <button id="addFavorite" onclick="addToFavorites(this)" data-game-id="{{ item['id'] }}" {{ buttonStatus }}>
+        <button
+          id="addFavorite"
+          onclick="addToFavorites(this)"
+          data-game-id="{{ item['id'] }}"
+          {{
+          buttonStatus
+          }}
+        >
           <i class="fi fi-rr-heart"></i>
           <span class="buttons-tooltip">Add to favorites</span>
         </button>
@@ -151,7 +160,9 @@
           id="removeWishlist"
           onclick="removeFromWishlist(this)"
           data-game-id="{{ item['id'] }}"
-          {{ buttonStatus }}
+          {{
+          buttonStatus
+          }}
         >
           <i class="fi fi-rr-check"></i>
           <span class="buttons-tooltip">Remove from wishlist</span>
@@ -159,7 +170,14 @@
       </a>
       {%else%}
       <a>
-        <button id="addWishlist" onclick="addToWishlist(this)" data-game-id="{{ item['id'] }}"  {{ buttonStatus }}>
+        <button
+          id="addWishlist"
+          onclick="addToWishlist(this)"
+          data-game-id="{{ item['id'] }}"
+          {{
+          buttonStatus
+          }}
+        >
           <i class="fi fi-rr-list"></i>
           <span class="buttons-tooltip">Add to wishlist</span>
         </button>
@@ -169,7 +187,6 @@
   </div>
   {% endfor %}
 </section>
-
 
 <script src="{{ url_for('static', filename='scripts/game-card-buttons.js') }}"></script>
 <script>
@@ -195,8 +212,8 @@
       };
       xhr.send("game_id=" + encodeURIComponent(itemId));
     } else {
-      console.log('click')
-      alert('You must login first')
+      console.log("click");
+      alert("You must login first");
     }
   }
 

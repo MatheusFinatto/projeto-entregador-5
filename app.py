@@ -1,3 +1,10 @@
+from user_agents import parse
+from APIConfigHelpers import *
+from socialLogins import *
+from emailConfig import *
+from databaseFunctions import *
+from sessionConfig import *
+from flask_session import Session
 from flask import Flask, jsonify, render_template, request, flash, redirect, session, url_for
 from time import time
 from flask_dance.contrib.twitter import make_twitter_blueprint, twitter
@@ -7,15 +14,8 @@ from flask_dance.contrib.discord import make_discord_blueprint, discord
 import requests
 import random
 import string
-import os 
+import os
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
-from flask_session import Session
-from sessionConfig import *
-from databaseFunctions import *
-from emailConfig import *
-from socialLogins import *
-from APIConfigHelpers import *
-from user_agents import parse
 
 
 app = Flask(__name__)
@@ -30,10 +30,10 @@ app.config["SESSION_TYPE"] = "filesystem"
 app.config['SESSION_FILE_DIR'] = 'sessions'
 
 # Configurando email service
-app.config['MAIL_SERVER'] = 'sandbox.smtp.mailtrap.io'
+app.config['MAIL_SERVER']='sandbox.smtp.mailtrap.io'
 app.config['MAIL_PORT'] = 2525
-app.config['MAIL_USERNAME'] = '94e6efcfb7801a'
-app.config['MAIL_PASSWORD'] = '07b5faafdb617e'
+app.config['MAIL_USERNAME'] = '8a7418047c15f3'
+app.config['MAIL_PASSWORD'] = '9823cf20679946'
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
 mail = Mail(app)
@@ -116,6 +116,7 @@ def login():
         if session.get("username"):
             return redirect('landing')
     return render_template('login.html')
+
 
 
 google_blueprint = make_google_blueprint(client_id='', client_secret='')
@@ -251,13 +252,13 @@ def top_games():
 
     # Desabilita botões de favoritos e wishlist caso o usuário não esteja logado
     buttonStatus = "" if session.get('id') else "disabled"
-    
+
     if response.ok:
         newJson = imageConfig(response, 'cover')
         newJson = getFavorites(newJson)
         newJson = getWishlist(newJson)
         newJson = timeConfig(newJson)
-        return render_template('top-games.html', newJson=newJson, buttonStatus = buttonStatus)
+        return render_template('top-games.html', newJson=newJson, buttonStatus=buttonStatus)
 
 
 # SEARCH #
@@ -425,7 +426,7 @@ def coming_soon():
 
 
 # Página do perfil do usuário
-@app.route('/profile')
+@app.route('/profile', methods=['GET', 'POST'])
 def profile():
     favorites = getFavoritesDB()
     string = ",".join([str(x[0]) for x in favorites])
@@ -434,11 +435,43 @@ def profile():
     headers = HEADERS
     response = requests.post(url, headers=headers, data=data)
     newJson = []
-    if response.ok:
-        newJson = imageConfig(response, 'cover')
-        newJson = getFavorites(newJson)
-        return render_template('profile.html', newJson=newJson)
-    return render_template('profile.html', newJson=[])
+    print('entrou1')
+
+    if request.method == 'POST':
+        print('entrou')
+        email = request.form['email']
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        username = request.form['username']
+
+        if not email:
+            flash('Email is required!', 'message-error')
+        elif not username:
+            flash('Username is required!', 'message-error')
+        else:
+            if updateUser(email, username, first_name, last_name):
+                flash('Your account was updated!', 'message-success')
+            else:
+                flash('Your account could not be updated! Try again', 'message-error')
+
+        user = getUser(email)
+        updateSession(user)
+    
+        if response.ok:
+            newJson = imageConfig(response, 'cover')
+            newJson = getFavorites(newJson)
+            return render_template('profile.html', newJson=newJson)
+        
+        return render_template('profile.html', newJson=[])
+    
+    if request.method == 'GET':
+        if response.ok:
+            newJson = imageConfig(response, 'cover')
+            newJson = getFavorites(newJson)
+            return render_template('profile.html', newJson=newJson)
+        
+        return render_template('profile.html', newJson=[])
+
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True)
