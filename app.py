@@ -40,10 +40,19 @@ mail = Mail(app)
 
 Session(app)
 
+# Caso a API pare de responder, deve ser feito um post para POST: https://id.twitch.tv/oauth2/token?client_id=abcdefg12345&client_secret=hijklmn67890&grant_type=client_credentials
+# substituindo client_id e client_secret para os dados da API da Twithc, para receber uma nova access token para colocar no Authorization do HEADERS
+#
+# Resposta esperada:
+# {
+#     "access_token": "14qxb5v1pv80sfxvj5cu2ova51yojs",
+#     "expires_in": 5455989,
+#     "token_type": "bearer"
+# }
 
 HEADERS = {
-    'Client-ID': 'tvpgyurlv8vc88kd9dzum9s0ldlbf2',
-    'Authorization': 'Bearer f1fzl61lle5vii2zwca6x2ghswne5z',
+    'Client-ID': '96fcqym7jumwvac81mb74143m33ron',
+    'Authorization': 'Bearer 14qxb5v1pv80sfxvj5cu2ova51yojs',
     'Content-Type': 'application/json',
 }
 
@@ -417,7 +426,7 @@ def coming_soon():
 
 
 # Página do perfil do usuário
-@app.route('/profile')
+@app.route('/profile', methods=['GET', 'POST'])
 def profile():
     favorites = getFavoritesDB()
     string = ",".join([str(x[0]) for x in favorites])
@@ -426,11 +435,42 @@ def profile():
     headers = HEADERS
     response = requests.post(url, headers=headers, data=data)
     newJson = []
-    if response.ok:
-        newJson = imageConfig(response, 'cover')
-        newJson = getFavorites(newJson)
-        return render_template('profile.html', newJson=newJson)
-    return render_template('profile.html', newJson=[])
+    print('entrou1')
+
+    if request.method == 'POST':
+        print('entrou')
+        email = request.form['email']
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        username = request.form['username']
+
+        if not email:
+            flash('Email is required!', 'message-error')
+        elif not username:
+            flash('Username is required!', 'message-error')
+        else:
+            if updateUser(email, username, first_name, last_name):
+                flash('Your account was updated!', 'message-success')
+            else:
+                flash('Your account could not be updated! Try again', 'message-error')
+
+        user = getUser(email)
+        updateSession(user)
+    
+        if response.ok:
+            newJson = imageConfig(response, 'cover')
+            newJson = getFavorites(newJson)
+            return render_template('profile.html', newJson=newJson)
+        
+        return render_template('profile.html', newJson=[])
+    
+    if request.method == 'GET':
+        if response.ok:
+            newJson = imageConfig(response, 'cover')
+            newJson = getFavorites(newJson)
+            return render_template('profile.html', newJson=newJson)
+        
+        return render_template('profile.html', newJson=[])
 
 
 if __name__ == '__main__':

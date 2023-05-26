@@ -24,6 +24,15 @@ def addCodeRecoverCookie(email, code, recover=False):
     session["recover"] = recover
 
 
+def updateSession(user):
+    session["id"] = user[0]
+    session["email"] = user[1]
+    session["username"] = user[2]
+    session["profile_img"] = user[5]
+    session["first_name"] = user[6]
+    session["last_name"] = user[7]
+    session["created"] = user[9]
+
 def clearSession():
     for info in session:
         # Limpa todos os dados da sessão
