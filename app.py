@@ -40,10 +40,19 @@ mail = Mail(app)
 
 Session(app)
 
+# Caso a API pare de responder, deve ser feito um post para POST: https://id.twitch.tv/oauth2/token?client_id=abcdefg12345&client_secret=hijklmn67890&grant_type=client_credentials
+# substituindo client_id e client_secret para os dados da API da Twithc, para receber uma nova access token para colocar no Authorization do HEADERS
+#
+# Resposta esperada:
+# {
+#     "access_token": "14qxb5v1pv80sfxvj5cu2ova51yojs",
+#     "expires_in": 5455989,
+#     "token_type": "bearer"
+# }
 
 HEADERS = {
-    'Client-ID': 'tvpgyurlv8vc88kd9dzum9s0ldlbf2',
-    'Authorization': 'Bearer f1fzl61lle5vii2zwca6x2ghswne5z',
+    'Client-ID': '96fcqym7jumwvac81mb74143m33ron',
+    'Authorization': 'Bearer 14qxb5v1pv80sfxvj5cu2ova51yojs',
     'Content-Type': 'application/json',
 }
 
