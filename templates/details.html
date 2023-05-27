@@ -141,6 +141,7 @@ background-position: 50% 10%;"
       </div> -->
 
       <div class="artworks">
+        {% include 'rate-game.html'%}
         {% for item in newJson["data"][0]['artworks'] %}
         <img src="{{ item['url'] }}" alt="" />
         {%endfor%}
