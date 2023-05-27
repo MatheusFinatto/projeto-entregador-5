@@ -61,7 +61,20 @@
             {% else %}
                 <h6>No items added to the favorites list yet!</h6>
             {% endif %}
-            </div>
+        </div>
+        <div class="carousel">
+            <h2 class="favorites-title">My Ratings</h2>
+            <!-- <div class="spacing"></div> -->
+            <!-- TODO Atualmente os itens do carrossel não abrem o link ao clicar, se sobrar tempo, corrigir isso -->
+            {%if newJson['data']|length %}
+                {% for item in newJson["data"] %}
+                    <!-- TODO pegar o clique se o carousel-item tiver a class active -->
+                    <a class="carousel-item" href="/details/{{ item.id }}"><img src="https:{{ item['cover']['url'] }}"></a>
+                {% endfor %}
+            {% else %}
+                <h6>No items added to the favorites list yet!</h6>
+            {% endif %}
+        </div>
     </div>
 </div>
 <script src="{{ url_for('static', filename='scripts/profile.js') }}"></script>

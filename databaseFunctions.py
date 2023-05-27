@@ -279,3 +279,55 @@ def updatePassword(email, password):
     except:
         conn.close()
         return False
+    
+
+def addGameRating(user_id, game_id, rating):
+    conn = get_db_connection()
+    print(user_id, game_id, rating)
+    try:
+        cur = conn.cursor()
+
+        if getUserRating(user_id, game_id):
+            cur.execute("UPDATE ratings " +
+                        "SET rate=? " +
+                        "WHERE user_id=? AND game_id=?", [rating, user_id, game_id])
+            conn.commit()
+            conn.close()
+            return True
+        else:
+            cur.execute("INSERT INTO ratings (user_id, game_id, rate) VALUES (?, ?, ?)",
+                        [user_id, game_id, rating]
+                        )
+            conn.commit()
+            conn.close()
+            return True
+    except:
+        conn.close()
+        return False
+    
+
+# Retorna a avaliação do usuário para o jogo específicado, return float
+def getUserRating(user_id, game_id):
+    conn = get_db_connection()
+    try:
+        cur = conn.cursor()
+        cur.execute("SELECT rate FROM ratings WHERE user_id=? AND game_id=?", [user_id, game_id])
+        ratings = cur.fetchone()
+        conn.commit()
+        conn.close()
+        return ratings
+    except:
+        conn.close()
+        return False
+    
+def deleteUserRating(user_id, game_id):
+    conn = get_db_connection()
+    try:
+        cur = conn.cursor()
+        cur.execute("DELETE FROM ratings WHERE user_id=? AND game_id=?", [user_id, game_id])
+        conn.commit()
+        conn.close()
+        return True
+    except:
+        conn.close()
+        return False

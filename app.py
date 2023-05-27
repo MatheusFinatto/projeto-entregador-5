@@ -377,7 +377,9 @@ def game_details(game_id):
     if response.ok:
         newJson = imageConfig(response, 'cover')
         newJson = imageConfig(newJson, 'artworks')
-        return render_template('details.html', newJson=newJson, is_mobile=is_mobile)
+        # Pega a avaliação do jogo ao entrar na tela de detalhes para enviar para o elemento rate.game.html
+        gameRating = gameRateByUser(game_id)
+        return render_template('details.html', newJson=newJson, is_mobile=is_mobile, game_id=game_id, gameRating=gameRating)
 
 
 # 404 #
@@ -471,6 +473,34 @@ def profile():
             return render_template('profile.html', newJson=newJson)
         
         return render_template('profile.html', newJson=[])
+
+
+@app.route('/rate-game', methods=['POST'])
+def rateGame():
+    if request.method == 'POST':
+        print(request.form)
+        print(session.get("id"))
+        user_id = session.get("id")
+        game_id = request.form['game_id']
+        rating = float(request.form['rating'])
+
+        if rating < 0 or rating > 5:
+            flash('Rating must be between 0 and 5', 'message-error')
+
+        if addGameRating(user_id, game_id, rating):
+            return redirect(url_for('game_details', game_id=game_id))
+        else:
+            return "Nao salvou"
+
+
+def gameRateByUser(game_id):
+    user_id = session.get("id")
+    
+    rating = getUserRating(user_id=user_id, game_id=game_id)
+
+    rating = float(rating[0])
+
+    return rating
 
 
 if __name__ == '__main__':
