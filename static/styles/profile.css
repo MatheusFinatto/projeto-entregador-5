@@ -35,10 +35,9 @@
 }
 
 .profile-image {
-    /* background-color: purple; */
     position: absolute;
-    background-image: url('../img/Ednaldo.jpg');
     background-position: center;
+    background-size: cover;
     border-radius: 50%;
     height: 200px;
     width: 200px;

@@ -29,6 +29,12 @@ def splitName(name):
     return [first_name, last_name]
 
 
+def createDiscordImgLink(id, avatar):
+    link = 'https://cdn.discordapp.com/avatars/' + id + '/' + avatar + '.jpg'
+    print(link)
+    return link
+
+
 def googleAuth():
     print(google)
     googleAccountInfo = google.get("/oauth2/v1/userinfo")
@@ -42,15 +48,16 @@ def googleAuth():
         email = ''
         if email == '':
             email = username + '@gmail.com'
-        user = searchUserAuth(email)
+        user = searchUserInfo(email)
         if user == None:
             password = generatePassword()
+        profile_img = accountInfoJson['picture']
         
         # Checa se o usuário está sendo criado ou já existe
         if user == None:
             # Adiciona o usuário na base de dados
             if addUserAuth(email, username, password, profile_img, first_name, last_name):
-                user = searchUserAuth(email)
+                user = searchUserInfo(email)
                 if not user == None:
                     configureAuthSessionUser(user)
                     return 'new'
@@ -69,7 +76,7 @@ def githubAuth():
         email = ''
         if email == '':
             email = username + '@gmail.com'
-        user = searchUserAuth(email)
+        user = searchUserInfo(email)
         if user == None:
             password = generatePassword()
         name = accountInfoJson['name']
@@ -81,7 +88,7 @@ def githubAuth():
         if user == None:
             # Adiciona o usuário na base de dados
             if addUserAuth(email, username, password, '', first_name, last_name):
-                user = searchUserAuth(email)
+                user = searchUserInfo(email)
                 if not user == None:
                     configureAuthSessionUser(user)
                     return 'new'
@@ -100,7 +107,7 @@ def twitterAuth():
         email = ''
         if email == '':
             email = username + '@gmail.com'
-        user = searchUserAuth(email)
+        user = searchUserInfo(email)
         if user == None:
             password = generatePassword()
         name = accountInfoJson['name']
@@ -112,7 +119,35 @@ def twitterAuth():
         if user == None:
             # Adiciona o usuário na base de dados
             if addUserAuth(email, username, password, '', first_name, last_name):
-                user = searchUserAuth(email)
+                user = searchUserInfo(email)
+                if not user == None:
+                    configureAuthSessionUser(user)
+                    return 'new'
+        else:
+            configureAuthSessionUser(user)
+            return 'login'
+
+    return False
+
+
+def discordAuth():
+    discordAccountInfo = discord.get("/api/users/@me")
+    if (discordAccountInfo.ok):
+        accountInfoJson = discordAccountInfo.json()
+        first_name = ''
+        last_name = ''
+        username = accountInfoJson['username']
+        email = accountInfoJson['email']
+        user = searchUserInfo(email)
+        if user == None:
+            password = generatePassword()
+        profile_img = createDiscordImgLink(accountInfoJson['id'], accountInfoJson['avatar'])
+        
+        # Checa se o usuário está sendo criado ou já existe
+        if user == None:
+            # Adiciona o usuário na base de dados
+            if addUserAuth(email, username, password, profile_img, first_name, last_name):
+                user = searchUserInfo(email)
                 if not user == None:
                     configureAuthSessionUser(user)
                     return 'new'

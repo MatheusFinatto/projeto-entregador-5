@@ -189,7 +189,7 @@ def searchUser(email, password):
     
 
 # Usada apenas para pegar o usuário e criar a sessão para ele caso tenha logado com social login
-def searchUserAuth(email):
+def searchUserInfo(email):
     conn = get_db_connection()
     try:
         cur = conn.cursor()

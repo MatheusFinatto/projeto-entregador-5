@@ -1,6 +1,5 @@
 $(document).ready(function(){
-  console.log('AASFLASFASLFKL')
-    $('.carousel').carousel();
+  $('.carousel').carousel();
 });
 
 $("#edit-images").click(function () {
