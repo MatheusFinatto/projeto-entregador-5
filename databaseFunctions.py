@@ -7,7 +7,7 @@ from sessionConfig import *
 
 def get_db_connection():
     conn = sqlite3.connect('database.db')
-    # conn.row_factory = sqlite3.Row
+    conn.row_factory = sqlite3.Row
     return conn
 
 
@@ -316,6 +316,23 @@ def getUserRating(user_id, game_id):
         conn.commit()
         conn.close()
         return ratings
+    except:
+        conn.close()
+        return False
+    
+
+def userHasRating(user_id, game_id):
+    conn = get_db_connection()
+    try:
+        cur = conn.cursor()
+        cur.execute("SELECT rate FROM ratings WHERE user_id=? AND game_id=?", [user_id, game_id])
+        ratings = cur.fetchone()
+        conn.commit()
+        conn.close()
+        if (ratings):
+            return True
+        else:
+            return False
     except:
         conn.close()
         return False

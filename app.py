@@ -378,7 +378,17 @@ def game_details(game_id):
         newJson = imageConfig(response, 'cover')
         newJson = imageConfig(newJson, 'artworks')
         # Pega a avaliação do jogo ao entrar na tela de detalhes para enviar para o elemento rate.game.html
-        gameRating = gameRateByUser(game_id)
+        userId = session.get("id")
+        if not (userId):
+            gameRating = 0.0
+        elif (userHasRating(userId, game_id)):
+            gameRating = gameRateByUser(game_id)
+        else:
+            gameRating = 0.0
+
+        newJson['data'][0]['rating'] += gameRating
+        newJson['data'][0]['rating_count'] += 1
+        
         return render_template('details.html', newJson=newJson, is_mobile=is_mobile, game_id=game_id, gameRating=gameRating)
 
 
