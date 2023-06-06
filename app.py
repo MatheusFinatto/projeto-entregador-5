@@ -72,7 +72,26 @@ def index():
                 return redirect('/login')
         elif github.authorized:
             response = githubAuth()
-            accountInfo = github.get('/user')
+            if response == 'new':
+                return redirect('/set-password')
+            elif response == 'login':
+                return redirect('/top-games')
+            else:
+                flash('Something went wrong. Please, try again', 'message-error')
+                return redirect('/login')
+        elif google.authorized:
+            response = googleAuth()
+            print(response)
+            if response == 'new':
+                return redirect('/set-password')
+            elif response == 'login':
+                return redirect('/top-games')
+            else:
+                flash('Something went wrong. Please, try again', 'message-error')
+                return redirect('/login')
+        elif discord.authorized:
+            response = discordAuth()
+            print(response)
             if response == 'new':
                 return redirect('/set-password')
             elif response == 'login':
@@ -119,15 +138,22 @@ def login():
 
 
 
-google_blueprint = make_google_blueprint(client_id='', client_secret='')
+google_blueprint = make_google_blueprint(client_id='332524638083-shnopis8tjhlolo5f1ks1kskklc5poqd.apps.googleusercontent.com', client_secret='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', scope=["https://www.googleapis.com/auth/userinfo.profile", "openid"])
 github_blueprint = make_github_blueprint(client_id='7be17c70865b560199c7', client_secret='7a4bee7baa0597f46549c6ea87b8af119bd46ce9')
-twitter_blueprint = make_twitter_blueprint(api_key='OaP0WeCQ19FK7D5HE25oVq7is', api_secret='1AhNEgoZ6nBDAwV5uMIdsKZadwjty3KFaFXVxUWGlUtkGWXqHy')
-discord_blueprint = make_discord_blueprint(client_id='', client_secret='')
+twitter_blueprint = make_twitter_blueprint(api_key='wPMcQlohxRc8Eg7MYTN7QmrUR', api_secret='UfAtqAuXlbY8yWRwREZIxJl4JQloSHHDPWUsaGpzP944dYDAne')
+discord_blueprint = make_discord_blueprint(client_id='1115503575121002517', client_secret='ROrY-hMTiZ83mNhcANWTGSJp4wKmtT_G', scope=['email', 'identify'])
 
 app.register_blueprint(google_blueprint, url_prefix='/google_login')
 app.register_blueprint(github_blueprint, url_prefix='/github_login')
 app.register_blueprint(twitter_blueprint, url_prefix='/twitter_login')
 app.register_blueprint(discord_blueprint, url_prefix='/discord_login')
+
+
+@app.route('/google')
+def google_login():
+    if not google.authorized:
+        return redirect(url_for('google.login'))
+    return redirect('/')
 
 
 @app.route('/github')
@@ -141,6 +167,12 @@ def github_login():
 def twitter_login():
     if not twitter.authorized:
         return redirect(url_for('twitter.login'))
+    return redirect('/')
+
+@app.route('/discord')
+def discord_login():
+    if not discord.authorized:
+        return redirect(url_for('discord.login'))
     return redirect('/')
 
 
@@ -477,12 +509,15 @@ def profile():
         return render_template('profile.html', newJson=[])
     
     if request.method == 'GET':
+        profile_img = session.get('profile_img') if session.get('profile_img') else '../static/img/Ednaldo.jpg'
+        print(profile_img)
+
         if response.ok:
             newJson = imageConfig(response, 'cover')
             newJson = getFavorites(newJson)
-            return render_template('profile.html', newJson=newJson)
+            return render_template('profile.html', newJson=newJson, profile_img=profile_img)
         
-        return render_template('profile.html', newJson=[])
+        return render_template('profile.html', newJson=[], profile_img=profile_img)
 
 
 @app.route('/rate-game', methods=['POST'])

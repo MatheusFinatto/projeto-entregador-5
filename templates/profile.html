@@ -1,11 +1,19 @@
-{% extends "layout.html" %} {% block title %} Steam verde - Profile {% endblock %} {% block content %}
+{% extends "layout.html" %} {% block title %} Steam verde - Profile {% endblock %}
+{% block head %}
+  <style>
+    .profile-image {
+        background-image: url("{{ profile_img }}");
+    }
+</style>
+{% endblock %}
+{% block content %}
 <div class="container">
     <div class="spacing"></div>
     <div class="profile-container">
         <div class="about-user">
             <div class="user-left">
                 <p id="meme-text"></p>
-                <div class="profile-image">
+                <div class="profile-image"></div>
                     <form action="{{ url_for('profile')}}">
                         <div id="edit-images" class="edit-image"></div>
                         <input type="file" accept="image/*" id="input-file">
