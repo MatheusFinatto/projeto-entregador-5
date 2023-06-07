@@ -6,7 +6,7 @@ from flask_dance.contrib.twitter import make_twitter_blueprint, twitter
 from flask_dance.contrib.github import make_github_blueprint, github
 from flask_dance.contrib.google import make_google_blueprint, google
 from flask_dance.contrib.discord import make_discord_blueprint, discord
-from databaseFunctions import *
+from helpers.databaseFunctions import *
 
 
 def generatePassword():
@@ -14,6 +14,7 @@ def generatePassword():
     letters = string.ascii_uppercase
     password = ''.join(random.choice(letters) for i in range(8))
     return password
+
 
 def splitName(name):
     name = name.split()
@@ -52,7 +53,7 @@ def googleAuth():
         if user == None:
             password = generatePassword()
         profile_img = accountInfoJson['picture']
-        
+
         # Checa se o usuário está sendo criado ou já existe
         if user == None:
             # Adiciona o usuário na base de dados
@@ -83,7 +84,7 @@ def githubAuth():
         name = splitName(name)
         first_name = name[0]
         last_name = name[1]
-        
+
         # Checa se o usuário está sendo criado ou já existe
         if user == None:
             # Adiciona o usuário na base de dados
@@ -141,8 +142,9 @@ def discordAuth():
         user = searchUserInfo(email)
         if user == None:
             password = generatePassword()
-        profile_img = createDiscordImgLink(accountInfoJson['id'], accountInfoJson['avatar'])
-        
+        profile_img = createDiscordImgLink(
+            accountInfoJson['id'], accountInfoJson['avatar'])
+
         # Checa se o usuário está sendo criado ou já existe
         if user == None:
             # Adiciona o usuário na base de dados

@@ -2,7 +2,7 @@ from flask import flash
 import sqlite3
 
 from sqlalchemy import Null
-from sessionConfig import *
+from helpers.sessionConfig import *
 
 
 def get_db_connection():
@@ -131,9 +131,9 @@ def addUser(email, username, password):
     except:
         conn.close()
         return False
-    
 
-def updateUser(email,  username, first_name = "", last_name = ""):
+
+def updateUser(email,  username, first_name="", last_name=""):
     conn = get_db_connection()
     try:
         cur = conn.cursor()
@@ -158,7 +158,8 @@ def addUserAuth(email, username, password, profile_img, first_name, last_name):
         cur = conn.cursor()
 
         cur.execute("INSERT INTO users (email, username, password, profile_img, first_name, last_name, is_auth) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                    [email, username, password, profile_img, first_name, last_name, is_auth]
+                    [email, username, password, profile_img,
+                        first_name, last_name, is_auth]
                     )
 
         conn.commit()
@@ -186,7 +187,7 @@ def searchUser(email, password):
         conn.close()
         flash('Email address or Password are incorrect!', 'message-error')
         return False
-    
+
 
 # Usada apenas para pegar o usuário e criar a sessão para ele caso tenha logado com social login
 def searchUserInfo(email):
@@ -279,7 +280,7 @@ def updatePassword(email, password):
     except:
         conn.close()
         return False
-    
+
 
 def addGameRating(user_id, game_id, rating):
     conn = get_db_connection()
@@ -304,14 +305,15 @@ def addGameRating(user_id, game_id, rating):
     except:
         conn.close()
         return False
-    
+
 
 # Retorna a avaliação do usuário para o jogo específicado, return float
 def getUserRating(user_id, game_id):
     conn = get_db_connection()
     try:
         cur = conn.cursor()
-        cur.execute("SELECT rate FROM ratings WHERE user_id=? AND game_id=?", [user_id, game_id])
+        cur.execute("SELECT rate FROM ratings WHERE user_id=? AND game_id=?", [
+                    user_id, game_id])
         ratings = cur.fetchone()
         conn.commit()
         conn.close()
@@ -319,13 +321,14 @@ def getUserRating(user_id, game_id):
     except:
         conn.close()
         return False
-    
+
 
 def userHasRating(user_id, game_id):
     conn = get_db_connection()
     try:
         cur = conn.cursor()
-        cur.execute("SELECT rate FROM ratings WHERE user_id=? AND game_id=?", [user_id, game_id])
+        cur.execute("SELECT rate FROM ratings WHERE user_id=? AND game_id=?", [
+                    user_id, game_id])
         ratings = cur.fetchone()
         conn.commit()
         conn.close()
@@ -336,12 +339,14 @@ def userHasRating(user_id, game_id):
     except:
         conn.close()
         return False
-    
+
+
 def deleteUserRating(user_id, game_id):
     conn = get_db_connection()
     try:
         cur = conn.cursor()
-        cur.execute("DELETE FROM ratings WHERE user_id=? AND game_id=?", [user_id, game_id])
+        cur.execute("DELETE FROM ratings WHERE user_id=? AND game_id=?", [
+                    user_id, game_id])
         conn.commit()
         conn.close()
         return True

@@ -1,9 +1,9 @@
 from user_agents import parse
-from APIConfigHelpers import *
-from socialLogins import *
-from emailConfig import *
-from databaseFunctions import *
-from sessionConfig import *
+from helpers.APIConfigHelpers import *
+from helpers.socialLogins import *
+from helpers.emailConfig import *
+from helpers.databaseFunctions import *
+from helpers.sessionConfig import *
 from flask_session import Session
 from flask import Flask, jsonify, render_template, request, flash, redirect, session, url_for
 from time import time
@@ -30,7 +30,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 app.config['SESSION_FILE_DIR'] = 'sessions'
 
 # Configurando email service
-app.config['MAIL_SERVER']='sandbox.smtp.mailtrap.io'
+app.config['MAIL_SERVER'] = 'sandbox.smtp.mailtrap.io'
 app.config['MAIL_PORT'] = 2525
 app.config['MAIL_USERNAME'] = '8a7418047c15f3'
 app.config['MAIL_PASSWORD'] = '9823cf20679946'
@@ -41,7 +41,7 @@ mail = Mail(app)
 Session(app)
 
 # Caso a API pare de responder, deve ser feito um post para POST: https://id.twitch.tv/oauth2/token?client_id=abcdefg12345&client_secret=hijklmn67890&grant_type=client_credentials
-# substituindo client_id e client_secret para os dados da API da Twithc, para receber uma nova access token para colocar no Authorization do HEADERS
+# substituindo client_id e client_secret para os dados da API da Twitch, para receber uma nova access token para colocar no Authorization do HEADERS
 #
 # Resposta esperada:
 # {
@@ -137,11 +137,14 @@ def login():
     return render_template('login.html')
 
 
-
-google_blueprint = make_google_blueprint(client_id='332524638083-shnopis8tjhlolo5f1ks1kskklc5poqd.apps.googleusercontent.com', client_secret='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', scope=["https://www.googleapis.com/auth/userinfo.profile", "openid"])
-github_blueprint = make_github_blueprint(client_id='7be17c70865b560199c7', client_secret='7a4bee7baa0597f46549c6ea87b8af119bd46ce9')
-twitter_blueprint = make_twitter_blueprint(api_key='wPMcQlohxRc8Eg7MYTN7QmrUR', api_secret='UfAtqAuXlbY8yWRwREZIxJl4JQloSHHDPWUsaGpzP944dYDAne')
-discord_blueprint = make_discord_blueprint(client_id='1115503575121002517', client_secret='ROrY-hMTiZ83mNhcANWTGSJp4wKmtT_G', scope=['email', 'identify'])
+google_blueprint = make_google_blueprint(client_id='332524638083-shnopis8tjhlolo5f1ks1kskklc5poqd.apps.googleusercontent.com',
+                                         client_secret='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', scope=["https://www.googleapis.com/auth/userinfo.profile", "openid"])
+github_blueprint = make_github_blueprint(
+    client_id='7be17c70865b560199c7', client_secret='7a4bee7baa0597f46549c6ea87b8af119bd46ce9')
+twitter_blueprint = make_twitter_blueprint(
+    api_key='wPMcQlohxRc8Eg7MYTN7QmrUR', api_secret='UfAtqAuXlbY8yWRwREZIxJl4JQloSHHDPWUsaGpzP944dYDAne')
+discord_blueprint = make_discord_blueprint(
+    client_id='1115503575121002517', client_secret='ROrY-hMTiZ83mNhcANWTGSJp4wKmtT_G', scope=['email', 'identify'])
 
 app.register_blueprint(google_blueprint, url_prefix='/google_login')
 app.register_blueprint(github_blueprint, url_prefix='/github_login')
@@ -168,6 +171,7 @@ def twitter_login():
     if not twitter.authorized:
         return redirect(url_for('twitter.login'))
     return redirect('/')
+
 
 @app.route('/discord')
 def discord_login():
@@ -403,12 +407,13 @@ def game_details(game_id):
         user_agent = parse(user_agent_string)
         is_mobile = user_agent.is_mobile
     url = 'https://api.igdb.com/v4/games'
-    data = f'fields rating, name,rating_count, cover.url, platforms.name, platforms.platform_logo.url, artworks.url; where id = {game_id};'
+    data = f'fields rating, rating_count, name, cover.url, first_release_date, genres.name, platforms.name, summary, screenshots.url,  platforms.platform_logo.url, artworks.url; where id = {game_id};'
     headers = HEADERS
     response = requests.post(url, headers=headers, data=data)
     if response.ok:
         newJson = imageConfig(response, 'cover')
         newJson = imageConfig(newJson, 'artworks')
+        newJson = timeConfig(newJson)
         # Pega a avaliação do jogo ao entrar na tela de detalhes para enviar para o elemento rate.game.html
         userId = session.get("id")
         if not (userId):
@@ -420,7 +425,7 @@ def game_details(game_id):
 
         newJson['data'][0]['rating'] += gameRating
         newJson['data'][0]['rating_count'] += 1
-        
+
         return render_template('details.html', newJson=newJson, is_mobile=is_mobile, game_id=game_id, gameRating=gameRating)
 
 
@@ -433,11 +438,10 @@ def page_not_found(error):
 # Lançamentos recentes #
 @app.route('/latest')
 def latest():
-    rating_count = request.args.get('rating_count', default=1000, type=int)
     limit = request.args.get('limit', default=20, type=int)
     url = 'https://api.igdb.com/v4/games'
     timeInSeconds = round(time())
-    data = f'fields  name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url, first_release_date; where rating != null & first_release_date != null & cover != null & first_release_date <= {timeInSeconds}; sort first_release_date desc; limit 20;'
+    data = f'fields  name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url, first_release_date; where rating != null & first_release_date != null & cover != null & first_release_date <= {timeInSeconds}; sort first_release_date desc; limit {limit};'
     headers = HEADERS
     response = requests.post(url, headers=headers, data=data)
     if response.ok:
@@ -496,27 +500,29 @@ def profile():
             if updateUser(email, username, first_name, last_name):
                 flash('Your account was updated!', 'message-success')
             else:
-                flash('Your account could not be updated! Try again', 'message-error')
+                flash('Your account could not be updated! Try again',
+                      'message-error')
 
         user = getUser(email)
         updateSession(user)
-    
+
         if response.ok:
             newJson = imageConfig(response, 'cover')
             newJson = getFavorites(newJson)
             return render_template('profile.html', newJson=newJson)
-        
+
         return render_template('profile.html', newJson=[])
-    
+
     if request.method == 'GET':
-        profile_img = session.get('profile_img') if session.get('profile_img') else '../static/img/Ednaldo.jpg'
+        profile_img = session.get('profile_img') if session.get(
+            'profile_img') else '../static/img/Ednaldo.jpg'
         print(profile_img)
 
         if response.ok:
             newJson = imageConfig(response, 'cover')
             newJson = getFavorites(newJson)
             return render_template('profile.html', newJson=newJson, profile_img=profile_img)
-        
+
         return render_template('profile.html', newJson=[], profile_img=profile_img)
 
 
@@ -540,7 +546,7 @@ def rateGame():
 
 def gameRateByUser(game_id):
     user_id = session.get("id")
-    
+
     rating = getUserRating(user_id=user_id, game_id=game_id)
 
     rating = float(rating[0])

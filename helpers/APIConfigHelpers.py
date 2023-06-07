@@ -1,6 +1,6 @@
 import datetime
 from flask import session
-from databaseFunctions import get_db_connection
+from helpers.databaseFunctions import get_db_connection
 
 # troca a resolução das capas dos jogos,  que vem da IGDB, para fullHD
 
