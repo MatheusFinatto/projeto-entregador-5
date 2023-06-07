@@ -23,7 +23,14 @@ background-position: 50% 10%;"
       <h1>{{ newJson["data"][0].name }}</h1>
       <div>
         <section id="details-content-section">
-          <img src="https:{{ newJson['data'][0]['cover']['url'] }}" />
+          <section>
+            <img src="https:{{ newJson['data'][0]['cover']['url'] }}" />
+            <div class="carousel">
+              {% for item in newJson["data"][0]['artworks'] %}
+              <img src="{{ item['url'] }}" alt="" class="carousel-item" />
+              {%endfor%}
+            </div>
+          </section>
           <div>
             <section>
               <div>
@@ -115,14 +122,9 @@ background-position: 50% 10%;"
           </div>
         </section>
       </div>
-
-      <div class="artworks">
-        {% for item in newJson["data"][0]['artworks'] %}
-        <img src="{{ item['url'] }}" alt="" />
-        {%endfor%}
-      </div>
     </div>
   </div>
 </div>
+<script src="{{ url_for('static', filename='scripts/profile.js') }}"></script>
 
 {% endblock %}
