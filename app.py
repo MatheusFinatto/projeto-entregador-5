@@ -529,8 +529,10 @@ def profile():
 @app.route('/rate-game', methods=['POST'])
 def rateGame():
     if request.method == 'POST':
-        print(request.form)
-        print(session.get("id"))
+        if not session.get("id"):
+            flash('You must login in order to rate a game', 'message-error')
+            return redirect(url_for('login'))
+        
         user_id = session.get("id")
         game_id = request.form['game_id']
         rating = float(request.form['rating'])

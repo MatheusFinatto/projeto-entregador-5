@@ -1,6 +1,4 @@
 .rate-container {
-  border: 1px solid black;
-
   > h1 {
     font-size: 1rem;
   }
@@ -13,4 +11,19 @@
       text-align: center;
     }
   }
+}
+
+#ratingStars {
+  margin-bottom: 20px;
+}
+
+.stars {
+  display: inline-block;
+  font-size: 0;
+  cursor: pointer;
+}
+
+.stars img {
+  width: 30px;
+  height: 30px;
 }

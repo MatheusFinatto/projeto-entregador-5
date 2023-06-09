@@ -1,14 +1,22 @@
 <section class="rate-container">
-  <h1>{{gameRating}}</h1>
   <form action="{{ url_for('rateGame')}}" method="POST">
     <input
       type="text"
       name="game_id"
       placeholder="Game ID"
       value="{{ game_id }}"
-      readonly
+      hidden
     />
-    <input type="number" name="rating" value="{{ rating }}" />
+    <div id="ratingStars" class="stars" onmousemove="updateStars(event)">
+      <img src="../static/img/Star_empty.svg.png" alt="Estrela Vazia">
+      <img src="../static/img/Star_empty.svg.png" alt="Estrela Vazia">
+      <img src="../static/img/Star_empty.svg.png" alt="Estrela Vazia">
+      <img src="../static/img/Star_empty.svg.png" alt="Estrela Vazia">
+      <img src="../static/img/Star_empty.svg.png" alt="Estrela Vazia">
+    </div>
+    <input type="number" name="rating" value="{{ gameRating }}" id="game-rating" hidden>
     <button type="submit" style="display: block">Enviar</button>
   </form>
 </section>
+
+<script src="{{ url_for('static', filename='scripts/rate-game.js') }}"></script>
