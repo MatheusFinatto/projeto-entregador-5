@@ -1,0 +1,300 @@
+swagger: '2.0'
+info:
+  title: Documentação das APIs do Projeto Integrador V
+  version: 1.0.0
+paths:
+  /login:
+    post:
+      summary: Login social
+      description: Realiza o login do usuário.
+      parameters:
+        - name: login
+          description: Dados de login
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+              password:
+                type: string
+      responses:
+        '200':
+          description: Login realizado.
+        '400':
+          description: Requisição inválida.
+  /forgot-password:
+    post:
+      summary: Esqueceu a senha.
+      description: Redefine a senha do usuário.
+      parameters:
+        - name: forgotPassword
+          description: Envia um email para o usuário com o código para redefinir sua senha.
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+      responses:
+        '200':
+          description: Email de recuperação enviado.
+        '400':
+          description: Requisição inválida.
+  /set-password: 
+    post:
+      summary: Definir nova senha.
+      description: Define uma nova senha para o usuário logado.
+      parameters:
+        - name: setPassword
+          description: Redefine a senha do usuário.
+          schema:
+            type: object
+            properties:
+              password:
+                type: string
+              confirmPassword:
+                type: string
+      responses:
+        '200':
+          description: Senha redefinida.
+        '400':
+          description: Requisição inválida.
+  /register:
+    post:
+      summary: Registro de novo usuário.
+      description: Realização do registro de um novo usuário.
+      parameters:
+        - name: register
+          description: Registra novo usuário.
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+              username:
+                type: string
+              password:
+                type: string
+              confirmPassword:
+                type: string  
+      responses:
+        '200':
+          description: Usuário registrado.
+        '400':
+          description: Requisição inválida.
+  /landing:
+     get:
+      summary: Mostra a landing page do app
+      description: Retorna a landing page da aplicação
+      responses:
+        '200':
+          description: Sucesso
+          schema:
+            type: object
+            properties:
+              ursename:
+                type: string
+  /top-games:
+    get:
+      summary: Página Top Games
+      description: Retorna a página com os jogos mais avaliados da API
+      responses:
+        '200':
+          description: Sucesso
+  /search: 
+    get:
+      summary: Retorna os jogos filtrados
+      description: Retorna os jogos disponíveis com base na pesquia realizada
+      responses:
+        '200':
+          description: Sucesso
+          schema:
+            type: string
+            properties:
+              name:
+                type: string
+  /favorites:
+    get:
+      summary: Favoritos
+      description: Retorna os jogos definidos como favoritos pelo usuário.
+      responses:
+        '200':
+          description: Sucesso
+          schema:
+            type: array<object>
+  /add-favorite:
+    post:
+      summary: Adicionar Favorito
+      description: Adiciona um jogo como favorito para o usuário.
+      parameters:
+        - name: addFavorite
+          description: Registra novo favorito.
+          schema:
+            type: object
+            properties:
+              game_id:
+                type: int
+              user_id:
+                type: int
+      responses:
+        '200':
+          description: Jogo adicionado aos favoritos.
+        '400':
+          description: Requisição inválida.
+  /remove-favorite:
+    post:
+      summary: Remove Favoritos
+      description: Tira a favoritação do jogo especificado.
+      parameters:
+        - name: removeFavorite
+          description: Remove o jogo dos favoritos.
+          schema:
+            type: object
+            properties:
+              game_id:
+                type: int
+              user_id:
+                type: int
+      responses:
+        '200':
+          description: Jogo removido dos favoritos.
+        '400':
+          description: Requisição inválida.
+  /wishlist:
+    get:
+      summary: Wishlist
+      description: Retorna os jogos definidos como "Wishes" ou Desejados pelo usuário.
+      responses:
+        '200':
+          description: Sucesso
+          schema:
+            type: array<object>
+  /add-wishlist:
+    post:
+      summary: Adiciona Wishes
+      description: Adiciona o jogo para a lista de jogos desejados.
+      parameters:
+        - name: addWishlist
+          description: Adiciona o jogo aos Wishes.
+          schema:
+            type: object
+            properties:
+              game_id:
+                type: int
+              user_id:
+                type: int
+      responses:
+        '200':
+          description: Jogo adicionado na Wishlist.
+        '400':
+          description: Requisição inválida.
+  /remove-wishlist:
+    post:
+      summary: Remove Wishes
+      description: Remove o jogo da Wishlist do usuário.
+      parameters:
+        - name: removeWishlist
+          description: Remove o jogo dos Wishes.
+          schema:
+            type: object
+            properties:
+              game_id:
+                type: int
+              user_id:
+                type: int
+      responses:
+        '200':
+          description: Jogo removido da Wishlist.
+        '400':
+          description: Requisição inválida.
+  /details/<int:game_id>:
+    get:
+      summary: Game details
+      description: Retorna os detalhes do jogo selecionado.
+      responses:
+        '200':
+          description: Sucesso
+          schema:
+            type: object
+            parameters:
+              game_id:
+                type: int
+  /latest:
+    get:
+      summary: Jogos recentes
+      description: Retorna os jogos mais recentes.
+      responses:
+        '200':
+          description: Sucesso
+          schema:
+            type: array<object>
+  /coming-soon:
+    get:
+      summary: Jogos a serem lançados
+      description: Retorna os jogos que irão ser lançados e já foram anunciados.
+      responses:
+        '200':
+          description: Sucesso
+          schema:
+            type: array<object>
+  /profile:
+    post:
+      summary: Atualiza usuário
+      description: Atualiza os dados do usuário
+      parameters:
+        - name: profileUpdate
+          description: Atualiza os dados do usuário.
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+              first_name:
+                type: string
+              last_name:
+                type: string
+              username:
+                type: string
+      responses:
+        '200':
+          description: Dados atualizados.
+        '400':
+          description: Requisição inválida.
+    get:
+      summary: Perfil do usuário
+      description: Retorna os dados do usuário.
+      responses:
+        '200':
+          description: Sucesso
+          schema:
+            type: object
+            name: user
+  /rate-game:
+    post:
+      summary: Avalia o jogo
+      description: Avalia o jogo de uma a 5 estrelas
+      parameters:
+        - name: rateGame
+          description: Avaliação do jogo.
+          schema:
+            type: object
+            properties:
+              user_id:
+                type: int
+              game_id:
+                type: int
+              rating:
+                type: float
+      responses:
+        '200':
+          description: Jogo avaliado.
+        '400':
+          description: Requisição inválida.
+  /rating-resume:
+    get:
+      summary: Avaliações
+      description: Retorna a renderização da avaliação
+      responses:
+        '200':
+          description: Sucesso
+          schema:
+            type: object
