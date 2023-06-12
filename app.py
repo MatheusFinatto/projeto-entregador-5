@@ -81,7 +81,6 @@ def index():
                 return redirect('/login')
         elif google.authorized:
             response = googleAuth()
-            print(response)
             if response == 'new':
                 return redirect('/set-password')
             elif response == 'login':
@@ -91,7 +90,6 @@ def index():
                 return redirect('/login')
         elif discord.authorized:
             response = discordAuth()
-            print(response)
             if response == 'new':
                 return redirect('/set-password')
             elif response == 'login':
@@ -422,11 +420,17 @@ def game_details(game_id):
             gameRating = gameRateByUser(game_id)
         else:
             gameRating = 0.0
-
+        
         newJson['data'][0]['rating'] += gameRating
         newJson['data'][0]['rating_count'] += 1
 
-        return render_template('details.html', newJson=newJson, is_mobile=is_mobile, game_id=game_id, gameRating=gameRating)
+        avaliacao = session.get("avaliacao")
+        if avaliacao:
+            session.pop('avaliacao', None)
+
+        print(avaliacao)
+
+        return render_template('details.html', newJson=newJson, is_mobile=is_mobile, game_id=game_id, gameRating=gameRating, avaliacao=avaliacao)
 
 
 # 404 #
@@ -483,10 +487,8 @@ def profile():
     headers = HEADERS
     response = requests.post(url, headers=headers, data=data)
     newJson = []
-    print('entrou1')
 
     if request.method == 'POST':
-        print('entrou')
         email = request.form['email']
         first_name = request.form['first_name']
         last_name = request.form['last_name']
@@ -516,7 +518,6 @@ def profile():
     if request.method == 'GET':
         profile_img = session.get('profile_img') if session.get(
             'profile_img') else '../static/img/Ednaldo.jpg'
-        print(profile_img)
 
         if response.ok:
             newJson = imageConfig(response, 'cover')
@@ -541,9 +542,22 @@ def rateGame():
             flash('Rating must be between 0 and 5', 'message-error')
 
         if addGameRating(user_id, game_id, rating):
+            username = session.get('username')
+
+            session["avaliacao"] = {
+                'gameId': game_id,
+                'rating': rating,
+                'username': username
+            }
+
             return redirect(url_for('game_details', game_id=game_id))
         else:
             return "Nao salvou"
+
+
+@app.route('/rating-resume', methods=['GET', 'POST'])
+def ratingResume():
+    return render_template('rating-resume.html')
 
 
 def gameRateByUser(game_id):
