@@ -414,8 +414,8 @@ def game_details(game_id):
         else:
             gameRating = 0.0
 
-        newJson['data'][0]['rating'] += gameRating
-        newJson['data'][0]['rating_count'] += 1
+        # newJson['data'][0]['rating'] += gameRating
+        # newJson['data'][0]['rating_count'] += 1
 
         avaliacao = session.get("avaliacao")
         if avaliacao:

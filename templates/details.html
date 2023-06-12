@@ -83,43 +83,53 @@ background-position: 50% 10%;"
                 </div>
                 <div id="rating-container-details">
                   <h3 style="margin-bottom: 6px">Rating</h3>
-                  <section class="stars">
-                    <div class="star-rating">
-                      <img
-                        src="../static/img/Star_full.svg.png"
-                        alt="Full star"
-                      />
-                      <img
-                        src="../static/img/Star_full.svg.png"
-                        alt="Full star"
-                      />
-                      <img
-                        src="../static/img/Star_full.svg.png"
-                        alt="Full star"
-                      />
-                      <img
-                        src="../static/img/Star_full.svg.png"
-                        alt="Full star"
-                      />
-                      <img
-                        src="../static/img/Star_full.svg.png"
-                        alt="Full star"
-                      />
-                    </div>
-                  </section>
-
-                  <h4 id="rating-number">
-                    ({{"%.2f"|format(newJson["data"][0].rating/20)}}/5.00)
-                  </h4>
-                  <span style="font-size: 10px">
-                    Based on {{newJson["data"][0].rating_count}} votes
-                  </span>
-                </div>
-              </section>
-              <div>
-                <h3 style="font-size: 1.5rem">Rate this game:</h3>
-                {% include 'rate-game.html'%}
+                {% if newJson['data'][0]['rating'] %}
+                    <section class="stars">
+                      <div class="star-rating">
+                        <img
+                          src="../static/img/Star_full.svg.png"
+                          alt="Full star"
+                        />
+                        <img
+                          src="../static/img/Star_full.svg.png"
+                          alt="Full star"
+                        />
+                        <img
+                          src="../static/img/Star_full.svg.png"
+                          alt="Full star"
+                        />
+                        <img
+                          src="../static/img/Star_full.svg.png"
+                          alt="Full star"
+                        />
+                        <img
+                          src="../static/img/Star_full.svg.png"
+                          alt="Full star"
+                        />
+                      </div>
+                    </section>
+                    <h4 id="rating-number">
+                      ({{"%.2f"|format(newJson["data"][0].rating/20)}}/5.00)
+                    </h4>
+                    <span style="font-size: 10px">
+                      Based on {{newJson["data"][0].rating_count}} votes
+                    </span>
+                {% else %}
+                <p style="font-size: 0.9rem; margin-top: 15px">
+                  No ratings for this game yet!
+                </p>
+                {% endif %}
+                
               </div>
+                
+              </section>
+              {% if newJson['data'][0]['rating'] %}
+                <div>
+                  <h3 style="font-size: 1.5rem">Rate this game:</h3>
+                  {% include 'rate-game.html'%}
+                </div>
+              {% endif %}
+              
             </section>
           </div>
         </section>
