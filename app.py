@@ -285,7 +285,8 @@ def top_games():
     response = requests.post(url, headers=headers, data=data)
 
     # Desabilita botões de favoritos e wishlist caso o usuário não esteja logado
-    buttonStatus = "" if session.get('id') else "disabled"
+    buttonStatus = "enabled" if session.get('id') else "disabled"
+    print(buttonStatus)
 
     if response.ok:
         newJson = imageConfig(response, 'cover')
