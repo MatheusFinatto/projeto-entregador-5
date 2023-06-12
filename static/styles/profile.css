@@ -1,12 +1,14 @@
 .container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  justify-content: center;
+  width: 90%;
+  gap: 20px;
 }
 
 .about-user {
   display: flex;
-  justify-content: space-evenly;
-  width: 100%;
+  gap: 100px;
+  width: 60%;
 }
 
 .favorites-title {
@@ -26,7 +28,6 @@
 }
 
 .edit-image {
-  background-color: aliceblue;
   background-image: url(../img/i-edit.png);
   background-position: center;
   background-size: contain;
@@ -72,6 +73,26 @@ input[type="file"] {
   bottom: 0;
 }
 
-.carousel {
-  position: relative;
+.about-user form {
+  width: 400px;
+}
+
+.about-user {
+  > div {
+    width: 200px;
+  }
+}
+
+@media screen and (max-width: 1300px) {
+  .container {
+    flex-direction: column;
+    margin-top: 50px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  .about-user {
+    width: 100%;
+    justify-content: center;
+  }
 }
