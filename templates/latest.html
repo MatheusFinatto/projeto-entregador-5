@@ -4,7 +4,7 @@
     <h1>New Games</h1>
     
     <div id="filters">
-      <form id="rating_count_form" action="/top-games" method="get">
+      <form id="rating_count_form" action="/latest" method="get">
         <div class="form-container">
           <h5 id='filter-info'>Filters*
             <span class="filters-tooltip">If no values were informed when the "filter" button is clicked, the default
@@ -16,7 +16,7 @@
           </div>
           <div class="filter-field">
             <label for="rating_count">Minimum number of votes:</label>
-            <input type="number" id="rating_count" name="rating_count" value="{{ rating_count }}" placeholder="1000" />
+            <input type="number" id="rating_count" name="rating_count" value="{{ rating_count }}" placeholder="1" />
           </div>
           <div class="filter-field">
             <label for="limit">Number of games displayed:</label>

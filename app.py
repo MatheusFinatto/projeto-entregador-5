@@ -420,7 +420,7 @@ def game_details(game_id):
             gameRating = gameRateByUser(game_id)
         else:
             gameRating = 0.0
-        
+
         newJson['data'][0]['rating'] += gameRating
         newJson['data'][0]['rating_count'] += 1
 
@@ -442,10 +442,11 @@ def page_not_found(error):
 # Lançamentos recentes #
 @app.route('/latest')
 def latest():
+    rating_count = request.args.get('rating_count', default=1, type=int)
     limit = request.args.get('limit', default=20, type=int)
     url = 'https://api.igdb.com/v4/games'
     timeInSeconds = round(time())
-    data = f'fields  name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url, first_release_date; where rating != null & first_release_date != null & cover != null & first_release_date <= {timeInSeconds}; sort first_release_date desc; limit {limit};'
+    data = f'fields  name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url, first_release_date; where rating_count > {rating_count} & first_release_date != null & cover != null & first_release_date <= {timeInSeconds}; sort first_release_date desc; limit {limit};'
     headers = HEADERS
     response = requests.post(url, headers=headers, data=data)
     if response.ok:
@@ -461,11 +462,10 @@ def latest():
 
 @app.route('/coming-soon')
 def coming_soon():
-    rating_count = request.args.get('rating_count', default=1000, type=int)
     limit = request.args.get('limit', default=20, type=int)
     timeInSeconds = round(time())
     url = 'https://api.igdb.com/v4/games'
-    data = f'fields  name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url, first_release_date; where  first_release_date != null & cover != null & first_release_date > {timeInSeconds}; sort first_release_date asc; limit 20;'
+    data = f'fields  name, cover.url, rating, rating_count, platforms.name, platforms.platform_logo.url, first_release_date; where first_release_date != null & cover != null & first_release_date > {timeInSeconds}; sort first_release_date asc; limit {limit};'
     headers = HEADERS
     response = requests.post(url, headers=headers, data=data)
     if response.ok:
@@ -473,8 +473,7 @@ def coming_soon():
         newJson = getFavorites(newJson)
         newJson = getWishlist(newJson)
         newJson = timeConfig(newJson)
-        return render_template('top-games.html', newJson=newJson)
-    return render_template('coming-soon.html')
+        return render_template('coming-soon.html', newJson=newJson)
 
 
 # Página do perfil do usuário
@@ -533,7 +532,7 @@ def rateGame():
         if not session.get("id"):
             flash('You must login in order to rate a game', 'message-error')
             return redirect(url_for('login'))
-        
+
         user_id = session.get("id")
         game_id = request.form['game_id']
         rating = float(request.form['rating'])
