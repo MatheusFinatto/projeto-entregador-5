@@ -126,12 +126,12 @@ def login():
             user = searchUser(email, password)
             if user:
                 configureSessionUser(user)
-                return redirect('/landing')
+                return redirect('/')
             else:
                 return render_template('login.html')
     else:
         if session.get("username"):
-            return redirect('landing')
+            return redirect('/')
     return render_template('login.html')
 
 
@@ -264,14 +264,6 @@ def register():
             else:
                 flash('Your account could not be created!', 'message-error')
     return render_template('register.html')
-
-
-@app.route('/landing')
-def landing():
-    if not session.get("username"):
-        flash('You shall not pass!', 'message-error')
-        return redirect('/login')
-    return render_template('landing.html')
 
 
 # BEST GAMES #
