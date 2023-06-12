@@ -1,4 +1,4 @@
-swagger: '2.0'
+swagger: "2.0"
 info:
   title: Documentação das APIs do Projeto Integrador V
   version: 1.0.0
@@ -18,9 +18,9 @@ paths:
               password:
                 type: string
       responses:
-        '200':
+        "200":
           description: Login realizado.
-        '400':
+        "400":
           description: Requisição inválida.
   /forgot-password:
     post:
@@ -35,11 +35,11 @@ paths:
               email:
                 type: string
       responses:
-        '200':
+        "200":
           description: Email de recuperação enviado.
-        '400':
+        "400":
           description: Requisição inválida.
-  /set-password: 
+  /set-password:
     post:
       summary: Definir nova senha.
       description: Define uma nova senha para o usuário logado.
@@ -54,9 +54,9 @@ paths:
               confirmPassword:
                 type: string
       responses:
-        '200':
+        "200":
           description: Senha redefinida.
-        '400':
+        "400":
           description: Requisição inválida.
   /register:
     post:
@@ -75,37 +75,25 @@ paths:
               password:
                 type: string
               confirmPassword:
-                type: string  
-      responses:
-        '200':
-          description: Usuário registrado.
-        '400':
-          description: Requisição inválida.
-  /landing:
-     get:
-      summary: Mostra a landing page do app
-      description: Retorna a landing page da aplicação
-      responses:
-        '200':
-          description: Sucesso
-          schema:
-            type: object
-            properties:
-              ursename:
                 type: string
+      responses:
+        "200":
+          description: Usuário registrado.
+        "400":
+          description: Requisição inválida.
   /top-games:
     get:
       summary: Página Top Games
       description: Retorna a página com os jogos mais avaliados da API
       responses:
-        '200':
+        "200":
           description: Sucesso
-  /search: 
+  /search:
     get:
       summary: Retorna os jogos filtrados
       description: Retorna os jogos disponíveis com base na pesquia realizada
       responses:
-        '200':
+        "200":
           description: Sucesso
           schema:
             type: string
@@ -117,7 +105,7 @@ paths:
       summary: Favoritos
       description: Retorna os jogos definidos como favoritos pelo usuário.
       responses:
-        '200':
+        "200":
           description: Sucesso
           schema:
             type: array<object>
@@ -136,9 +124,9 @@ paths:
               user_id:
                 type: int
       responses:
-        '200':
+        "200":
           description: Jogo adicionado aos favoritos.
-        '400':
+        "400":
           description: Requisição inválida.
   /remove-favorite:
     post:
@@ -155,16 +143,16 @@ paths:
               user_id:
                 type: int
       responses:
-        '200':
+        "200":
           description: Jogo removido dos favoritos.
-        '400':
+        "400":
           description: Requisição inválida.
   /wishlist:
     get:
       summary: Wishlist
       description: Retorna os jogos definidos como "Wishes" ou Desejados pelo usuário.
       responses:
-        '200':
+        "200":
           description: Sucesso
           schema:
             type: array<object>
@@ -183,9 +171,9 @@ paths:
               user_id:
                 type: int
       responses:
-        '200':
+        "200":
           description: Jogo adicionado na Wishlist.
-        '400':
+        "400":
           description: Requisição inválida.
   /remove-wishlist:
     post:
@@ -202,16 +190,16 @@ paths:
               user_id:
                 type: int
       responses:
-        '200':
+        "200":
           description: Jogo removido da Wishlist.
-        '400':
+        "400":
           description: Requisição inválida.
   /details/<int:game_id>:
     get:
       summary: Game details
       description: Retorna os detalhes do jogo selecionado.
       responses:
-        '200':
+        "200":
           description: Sucesso
           schema:
             type: object
@@ -223,7 +211,7 @@ paths:
       summary: Jogos recentes
       description: Retorna os jogos mais recentes.
       responses:
-        '200':
+        "200":
           description: Sucesso
           schema:
             type: array<object>
@@ -232,7 +220,7 @@ paths:
       summary: Jogos a serem lançados
       description: Retorna os jogos que irão ser lançados e já foram anunciados.
       responses:
-        '200':
+        "200":
           description: Sucesso
           schema:
             type: array<object>
@@ -255,15 +243,15 @@ paths:
               username:
                 type: string
       responses:
-        '200':
+        "200":
           description: Dados atualizados.
-        '400':
+        "400":
           description: Requisição inválida.
     get:
       summary: Perfil do usuário
       description: Retorna os dados do usuário.
       responses:
-        '200':
+        "200":
           description: Sucesso
           schema:
             type: object
@@ -285,16 +273,16 @@ paths:
               rating:
                 type: float
       responses:
-        '200':
+        "200":
           description: Jogo avaliado.
-        '400':
+        "400":
           description: Requisição inválida.
   /rating-resume:
     get:
       summary: Avaliações
       description: Retorna a renderização da avaliação
       responses:
-        '200':
+        "200":
           description: Sucesso
           schema:
             type: object
