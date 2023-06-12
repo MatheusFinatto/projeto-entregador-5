@@ -169,7 +169,7 @@
         </button>
       </a>
       {%else%}
-      <a>
+      <a id="addWishlistMask">
         <button
           id="addWishlist"
           onclick="addToWishlist(this)"
@@ -190,6 +190,25 @@
 
 <script src="{{ url_for('static', filename='scripts/game-card-buttons.js') }}"></script>
 <script>
+  $(document).ready(function() {
+      $("#addFavoriteMask").click(function() {
+          let buttonStatus = '{{ buttonStatus }}'
+          if (buttonStatus == 'disabled') {
+              alert("You must be logged in to add to favorites!");
+              return
+          }  else {
+              return
+          }
+      })
+
+      $("#addWishlistMask").click(function() {
+        let buttonStatus = '{{ buttonStatus }}'
+          if (buttonStatus == 'disabled') {
+              alert("You must be logged in to add to wishlist!");
+              return
+          } 
+      })
+  });
   function addToFavorites(button) {
     if (!button.disabled) {
       // only proceed if button is not disabled
