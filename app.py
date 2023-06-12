@@ -126,12 +126,12 @@ def login():
             user = searchUser(email, password)
             if user:
                 configureSessionUser(user)
-                return redirect('/')
+                return redirect('/top-games')
             else:
                 return render_template('login.html')
     else:
         if session.get("username"):
-            return redirect('/')
+            return redirect('/top-games')
     return render_template('login.html')
 
 
