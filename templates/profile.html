@@ -1,89 +1,96 @@
-{% extends "layout.html" %} {% block title %} Steam verde - Profile {% endblock %}
-{% block head %}
-  <style>
-    .profile-image {
-        background-image: url("{{ profile_img }}");
-    }
+{% extends "layout.html" %} {% block title %} Steam verde - Profile {% endblock
+%} {% block head %}
+<style>
+  .profile-image {
+    background-image: url("{{ profile_img }}");
+  }
 </style>
-{% endblock %}
-{% block content %}
-<div class="container">
-    <div class="spacing"></div>
-    <div class="profile-container">
-        <div class="about-user">
-            <div class="user-left">
-                <p id="meme-text"></p>
-                <div class="profile-image"></div>
-                    <form action="{{ url_for('profile')}}">
-                        <div id="edit-images" class="edit-image"></div>
-                        <input type="file" accept="image/*" id="input-file">
-                    </form>
-                </div>
-                <div class="username">
-                    <h3>{{ session.get("username") }}</h3>
-                </div>
-            </div>
-            <div class="user-right">
-                <div class="form-box">
-                    <form action="{{ url_for('profile')}}" method="POST">
-                        <div class="input-field">
-                            <label for="email"><b>Email</b></label>
-                            <input id="email" type="text" name="email" value="{{ session.get('email') if session.get('email') else '' }}">
-                        </div>
-                    
-                        <div class="input-field">
-                            <label for="first_name"><b>First Name</b></label>
-                            <input id="first_name" type="text" name="first_name" value="{{ session.get('first_name') if session.get('first_name') else '' }}">
-                        </div>
-                    
-                        <div class="input-field">
-                            <label for="last_name"><b>Last Name</b></label>
-                            <input id="last_name" type="text" name="last_name" value="{{ session.get('last_name') if session.get('last_name') else '' }}">
-                        </div>
-                    
-                        <div class="input-field">
-                            <label for="username"><b>Username</b></label>
-                            <input id="username" type="text" name="username" value="{{ session.get('username') if session.get('username') else '' }}">
-                        </div>
-    
-                        <!-- TODO  fazer a conversão de tempo do dado created para encaixar no texto -->
-                        <p class="created">Created on: {{ session.get("created") }}</p>
-    
-                        <div class="options">
-                            <button type="submit" id="save-profile">Save</button>
-                            <p class="change-password"><a href="set-password">Change password</a></p>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="carousel">
-            <h2 class="favorites-title">Favorites</h2>
-            <!-- <div class="spacing"></div> -->
-            <!-- TODO Atualmente os itens do carrossel não abrem o link ao clicar, se sobrar tempo, corrigir isso -->
-            {%if newJson['data']|length %}
-                {% for item in newJson["data"] %}
-                    <!-- TODO pegar o clique se o carousel-item tiver a class active -->
-                    <a class="carousel-item" href="/details/{{ item.id }}"><img src="https:{{ item['cover']['url'] }}"></a>
-                {% endfor %}
-            {% else %}
-                <h6>No items added to the favorites list yet!</h6>
-            {% endif %}
-        </div>
-        <div class="carousel">
-            <h2 class="favorites-title">My Ratings</h2>
-            <!-- <div class="spacing"></div> -->
-            <!-- TODO Atualmente os itens do carrossel não abrem o link ao clicar, se sobrar tempo, corrigir isso -->
-            {%if newJson['data']|length %}
-                {% for item in newJson["data"] %}
-                    <!-- TODO pegar o clique se o carousel-item tiver a class active -->
-                    <a class="carousel-item" href="/details/{{ item.id }}"><img src="https:{{ item['cover']['url'] }}"></a>
-                {% endfor %}
-            {% else %}
-                <h6>No items added to the favorites list yet!</h6>
-            {% endif %}
-        </div>
+{% endblock %} {% block content %}
+<section class="container">
+  <div class="about-user">
+    <div>
+      <h2>{{ session.get("username") }}</h2>
+      <div class="profile-image"></div>
+      <form action="{{ url_for('profile')}}">
+        <div id="edit-images" class="edit-image"></div>
+        <input type="file" accept="image/*" id="input-file" />
+      </form>
     </div>
-</div>
+
+    <form action="{{ url_for('profile')}}" method="POST">
+      <div class="input-field">
+        <label for="email"><b>Email</b></label>
+        <input
+          id="email"
+          type="text"
+          name="email"
+          value="{{ session.get('email') if session.get('email') else '' }}"
+        />
+      </div>
+
+      <div class="input-field">
+        <label for="first_name"><b>First Name</b></label>
+        <input
+          id="first_name"
+          type="text"
+          name="first_name"
+          value="{{ session.get('first_name') if session.get('first_name') else '' }}"
+        />
+      </div>
+
+      <div class="input-field">
+        <label for="last_name"><b>Last Name</b></label>
+        <input
+          id="last_name"
+          type="text"
+          name="last_name"
+          value="{{ session.get('last_name') if session.get('last_name') else '' }}"
+        />
+      </div>
+
+      <div class="input-field">
+        <label for="username"><b>Username</b></label>
+        <input
+          id="username"
+          type="text"
+          name="username"
+          value="{{ session.get('username') if session.get('username') else '' }}"
+        />
+      </div>
+
+      <p class="created">Created on: {{ session.get("created") }}</p>
+
+      <div class="options">
+        <button type="submit" id="save-profile">Save</button>
+        <p class="change-password">
+          <a href="set-password">Change password</a>
+        </p>
+      </div>
+    </form>
+  </div>
+  <section class="carousel-container">
+    <div class="carousel">
+      <h2 class="favorites-title">Favorites</h2>
+      {%if newJson['data']|length %} {% for item in newJson["data"] %}
+      <a class="carousel-item" href="/details/{{ item.id }}"
+        ><img src="https:{{ item['cover']['url'] }}"
+      /></a>
+      {% endfor %} {% else %}
+      <h6>No items added to the favorites list yet!</h6>
+      {% endif %}
+    </div>
+    <div class="carousel">
+      <h2 class="favorites-title">My Ratings</h2>
+      {%if newJson['data']|length %} {% for item in newJson["data"] %}
+      <a class="carousel-item" href="/details/{{ item.id }}"
+        ><img src="https:{{ item['cover']['url'] }}"
+      /></a>
+      {% endfor %} {% else %}
+      <h6>No items added to the favorites list yet!</h6>
+      {% endif %}
+    </div>
+  </section>
+</section>
+
 <script src="{{ url_for('static', filename='scripts/profile.js') }}"></script>
 {% endblock %}
