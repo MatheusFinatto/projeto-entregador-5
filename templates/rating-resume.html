@@ -1,0 +1,38 @@
+<div id="ratingModal" class="modal rating-modal-container">
+  <div class="modal-content">
+    <img class="modal-game-image" src="{{ newJson['data'][0]['cover']['url'] }}" alt="Game Image">
+    <h5 class="game-name">{{ newJson["data"][0].name }}</h5>
+    <div id="ratingStarsModal" class="stars">
+      <img src="../static/img/Star_empty.svg.png" alt="Estrela Vazia">
+      <img src="../static/img/Star_empty.svg.png" alt="Estrela Vazia">
+      <img src="../static/img/Star_empty.svg.png" alt="Estrela Vazia">
+      <img src="../static/img/Star_empty.svg.png" alt="Estrela Vazia">
+      <img src="../static/img/Star_empty.svg.png" alt="Estrela Vazia">
+    </div>
+    <p class="modal-username">Rated by: {{ avaliacao.username }}</p>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" style="display: block" class="modal-close">Compartilhar</button>
+  </div>
+</div>
+<script>
+  $(document).ready(function() {
+    const rating = '{{ avaliacao.rating }}';
+
+    const stars = document.getElementById('ratingStarsModal');
+
+    const starEmpty = "../static/img/Star_empty.svg.png";
+    const starFull = "../static/img/Star_full.svg.png";
+
+    const starImages = stars.getElementsByTagName('img');
+
+    for (let i = 0; i < starImages.length; i++) {
+      if (i < rating) {
+        starImages[i].src = starFull;
+      } else {
+        starImages[i].src = starEmpty;
+      }
+    }
+  });
+</script>
+  

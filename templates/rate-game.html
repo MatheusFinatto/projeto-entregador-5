@@ -3,6 +3,7 @@
     <input
       type="text"
       name="game_id"
+      id="game-id"
       placeholder="Game ID"
       value="{{ game_id }}"
       hidden
@@ -15,8 +16,20 @@
       <img src="../static/img/Star_empty.svg.png" alt="Estrela Vazia">
     </div>
     <input type="number" name="rating" value="{{ gameRating }}" id="game-rating" hidden>
-    <button type="submit" style="display: block">Enviar</button>
+    <button type="submit" style="display: block" class="rateinfo">Enviar</button>
   </form>
 </section>
+{% include 'rating-resume.html' %}
 
 <script src="{{ url_for('static', filename='scripts/rate-game.js') }}"></script>
+<script>
+  $(document).ready(function() {
+    // Verifique se há informações de avaliação e abra o modal
+    let avaliacao = '{{ avaliacao }}';  // Recupere as informações da avaliação passadas pela rota
+    console.log(avaliacao);
+    if (!(avaliacao == 'None')) {
+      $('#ratingModal').modal();
+      $('#ratingModal').modal('open');
+    }
+  });
+</script>
